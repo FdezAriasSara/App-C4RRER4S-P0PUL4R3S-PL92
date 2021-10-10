@@ -8,13 +8,20 @@ import java.sql.Statement;
 
 public class Jdbc {
 
-/*  Configuration for Oracle 
-	private static String DRIVER = "com.mysql.jdbc.Driver";
-	private static String URL = "jdbc:mysql://156.35.94.99:3306/ips";
-	private static String USER = "user";
-	private static String PASS = "ips2021";
+/*  	private static String DRIVER = "org.hsqldb.jdbcDriver";
+	private static String URL = "jdbc:hsqldb:hsql://localhost";
+	private static String USER = "sa";
+	private static String PASS = "";
 */
-/* Configuration for Hsqldb
+
+/*  Configuration for Oracle 
+	private static String DRIVER = "oracle.jdbc.driver.OracleDriver";
+	private static String URL = "jdbc:oracle:thin:@156.35.94.99:1521:DESA";
+	private static String USER = "";
+	private static String PASS = "";
+*/
+	
+/* Configuration for MySQL
 */	
 	private static String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static String URL = "jdbc:mysql://130.61.249.212:3306/ips";
