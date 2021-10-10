@@ -3,8 +3,8 @@ package uo.ips.application.business.competicion;
 import java.sql.Date;
 
 public class CompeticionDto {
-	String idCompeticion;
-	String nombre;
-	Date fechaCompeticion;
-	String organizador;
+	public String idCompeticion;
+	public String nombre;
+	public Date fechaCompeticion;
+	public String organizador;
 }
