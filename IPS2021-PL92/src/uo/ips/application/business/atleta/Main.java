@@ -1,4 +1,4 @@
-package uo.ips.application.business.athlete;
+package uo.ips.application.business.atleta;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
