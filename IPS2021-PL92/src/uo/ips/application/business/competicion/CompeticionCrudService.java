@@ -4,6 +4,7 @@ import uo.ips.application.business.BusinessException;
 
 public interface CompeticionCrudService {
 	
-	public CompeticionDto AñadirCompeticion(CompeticionDto competicion) throws BusinessException;
-
+	public CompeticionDto añadirCompeticion(CompeticionDto competicion) throws BusinessException;
+	
+	public void inscribirAtleta(int idCompeticion, int idAtleta, int idCategoria) throws BusinessException;
 }

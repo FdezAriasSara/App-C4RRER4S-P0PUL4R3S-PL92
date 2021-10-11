@@ -7,4 +7,5 @@ public class CompeticionDto {
 	public String nombre;
 	public Date fechaCompeticion;
 	public String organizador;
+	public Date plazoInscripcion;
 }

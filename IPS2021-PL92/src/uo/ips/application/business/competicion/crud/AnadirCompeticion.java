@@ -11,13 +11,13 @@ import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 
 
-public class AñadirCompeticion {
+public class AnadirCompeticion {
 
-	private String SQL = "INSERT INTO Competicion (idCompeticion,nombre,fechaCompeticion,organizador) VALUES (?,?,?,?)";
+	private String SQL = "INSERT INTO Competicion (idCompeticion,nombre,fechaCompeticion,organizador,plazoInscripcion) VALUES ,(?,?,?,?,?)";
 	private String SQLGetCompeticion = "SELECT * FROM Competicion WHERE idCompeticion = ?";
 	private CompeticionDto competicion;
 	
-	public AñadirCompeticion(CompeticionDto competicion) {
+	public AnadirCompeticion(CompeticionDto competicion) {
 		this.competicion = competicion;
 	}
 
@@ -46,6 +46,7 @@ public class AñadirCompeticion {
 		pst.setString(2, competicion.nombre);
 		pst.setDate(3, competicion.fechaCompeticion);
 		pst.setString(4, competicion.organizador);
+		pst.setDate(5, competicion.plazoInscripcion);
 		
 		pst.executeUpdate();			
 

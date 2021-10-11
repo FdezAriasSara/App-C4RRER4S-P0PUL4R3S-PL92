@@ -27,7 +27,7 @@ public class Main {
          atleta.nombre = "Daniel";
          atleta.fechaNacimiento = new Date(2001,01,29);
          try {
-        	 BusinessFactory.forAtletaCrudService().añadirAtleta(atleta);        	 
+        	 BusinessFactory.forAtletaCrudService().anadirAtleta(atleta);        	 
          }catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -37,7 +37,7 @@ public class Main {
          competicion.nombre = "test";
          competicion.fechaCompeticion = new Date(99999);
          competicion.organizador = "testOrganizador";
-         BusinessFactory.forCompeticionCrudService().AñadirCompeticion(competicion);
+         BusinessFactory.forCompeticionCrudService().añadirCompeticion(competicion);
 	}
 
 }
