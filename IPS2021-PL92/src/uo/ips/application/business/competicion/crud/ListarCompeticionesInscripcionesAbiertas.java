@@ -15,7 +15,7 @@ import uo.ips.application.business.competicion.CompeticionDto;
 public class ListarCompeticionesInscripcionesAbiertas {
 	
 
-	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador FROM COMPETICION WHERE plazoinscripcion > ?";
+	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador FROM Competicion WHERE fechaCompeticion > ?";
 	
 	private List<CompeticionDto> competiciones;
 	
