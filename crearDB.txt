@@ -1,17 +1,27 @@
-	
+CREATE TABLE `Atleta` (
+	`idAtleta`INT NOT NULL AUTO_INCREMENT,
+	`dni` VARCHAR(255) NOT NULL,
+	`Email` VARCHAR(255) NOT NULL UNIQUE,
+	`Name` VARCHAR(255) NOT NULL,
+	`Surname` VARCHAR(255) NOT NULL,
+	`fechaNacimiento` DATE(255) NOT NULL,
+	PRIMARY KEY (`DNI`)
+);	
 
 CREATE TABLE `Competicion` (
 	`idCompeticion` INT NOT NULL AUTO_INCREMENT,
 	`nombre` VARCHAR(255) NOT NULL,
 	`fechaCompeticion` DATE NOT NULL,
 	`organizador` VARCHAR(255) NOT NULL,
+	`plazoInscripcion` DATE NOT NULL,
+	`nPlazas` INT NOT NULL,
 	PRIMARY KEY (`idCompeticion`)
 );
 
 CREATE TABLE `Inscripción` (
 	`idCompeticion` INT NOT NULL,
-	`dniAtleta` VARCHAR(255) NOT NULL,
-	`estado` VARCHAR(255) NOT NULL,
+	`idAtleta` VARCHAR(255) NOT NULL,
+	`estado` ENUM('Pre-inscrito','Inscrito','Pendiente de pago') NOT NULL,
 	`fechaInscripcion` DATE NOT NULL,
 	`fechaUltimoCambio` DATE NOT NULL,
 	`idCategoria` INT NOT NULL,
