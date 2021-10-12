@@ -6,7 +6,7 @@ public class InscripcionDto {
 
 	public static final int VACIO = -1;
 	public int idCompeticion;
-	public String idAtleta;	
+	public int idAtleta;	
 	public double cuota;
 	public Date fechaInscripcion;
 	public Date fechaUltimoCambio;
@@ -24,7 +24,7 @@ public class InscripcionDto {
 
 	
 
-	public InscripcionDto(int idCompeticion, String idAtleta, double cuota, Date fechaInscripcion,
+	public InscripcionDto(int idCompeticion, int idAtleta, double cuota, Date fechaInscripcion,
 			Date fechaUltimoCambio, int idCategoria, int posicionFinal, float tiempoQueTarda, Estado estado) {
 		
 		this.idCompeticion = idCompeticion;
