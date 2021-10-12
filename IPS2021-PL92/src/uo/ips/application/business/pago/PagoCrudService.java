@@ -6,11 +6,11 @@ public interface PagoCrudService {
 	 * @param pago
 	 * @return DTO del pago realizado
 	 */
-	PagoDto pagarConTarjeta(PagoDto pago) ;
+	PagoDto pagarConTarjeta(PagoDto pago,TarjetaDto tarjeta) ;
 	/**
 	 * Permite el pago de la cuota de inscripción  con transferencia bancaria.
 	 * @param pago
 	 * @return DTO del pago realizado
 	 */
-	PagoDto pagarConTransferencia(PagoDto pago);
+	PagoDto pagarConTransferencia(PagoDto pago,TransferenciaDto transferencia);
 }
