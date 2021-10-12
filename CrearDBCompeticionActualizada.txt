@@ -38,7 +38,7 @@ CREATE TABLE `Categoria` (
 	`nombreCategoria` VARCHAR(255) NOT NULL,
 	`edadMin` INT NOT NULL,
 	`edadMax` INT NOT NULL,
-	`sexo` INT NOT NULL,
+	`sexo` enum('masculino','femenino') NOT NULL,
 	PRIMARY KEY (`idCategoria`)
 );
 
