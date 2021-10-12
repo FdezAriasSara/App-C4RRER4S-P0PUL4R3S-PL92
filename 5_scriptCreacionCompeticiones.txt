@@ -1,0 +1,54 @@
+
+INSERT INTO Competicion (idCompeticion, nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+(1, 'Carrera Ponle Freno', STR_TO_DATE('5-12-2021', '%d-%m-%Y'), 
+'Atresmedia', STR_TO_DATE('1-01-2021', '%d-%m-%Y'), STR_TO_DATE('5-10-2012', '%d-%m-%Y'),'asfalto',15,300);   
+
+
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('Carrera Contra el Cancer', STR_TO_DATE('9-11-2021', '%d-%m-%Y'), 
+'AECC', STR_TO_DATE('9-10-2021', '%d-%m-%Y'), STR_TO_DATE('5-11-2021', '%d-%m-%Y'),'asfalto',12,1000);   
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('Tu a la playa, yo a la montaña', STR_TO_DATE('8-1-2022', '%d-%m-%Y'), 
+'RTPA', STR_TO_DATE('8-1-2021', '%d-%m-%Y'), STR_TO_DATE('25-11-2021', '%d-%m-%Y'),'montaña',23,120);  
+
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('Correr por latinoamerica', STR_TO_DATE('7-5-2022', '%d-%m-%Y'), 
+'Organizacion de latinoamericanos en España (OLE)', STR_TO_DATE('23-9-2021', '%d-%m-%Y'), STR_TO_DATE('23-3-2022', '%d-%m-%Y'),'asfalto',5,230);  
+
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('San Silvestre', STR_TO_DATE('31-12-2021', '%d-%m-%Y'), 
+'Ayto. de Oviedo', STR_TO_DATE('1-11-2021', '%d-%m-%Y'), STR_TO_DATE('31-12-2021', '%d-%m-%Y'),'asfalto',12,3000);  
+
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('Carrera en Zuecos', STR_TO_DATE('23-7-2022', '%d-%m-%Y'), 
+'Ayto. de Llanera', STR_TO_DATE('9-5-2022', '%d-%m-%Y'), STR_TO_DATE('5-7-2022', '%d-%m-%Y'),'montaña',60,100);   
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('Carrera por la ingenieria', STR_TO_DATE('8-12-2021', '%d-%m-%Y'), 
+'EII', STR_TO_DATE('10-9-2021', '%d-%m-%Y'), STR_TO_DATE('11-10-2021', '%d-%m-%Y'),'asfalto',5,1200);  
+
+
+INSERT INTO Competicion (nombre, fechaCompeticion, 
+organizador, plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles)    
+VALUES    
+('Regreso al futuro', STR_TO_DATE('7-5-2021', '%d-%m-%Y'), 
+'Hangar rebelde', STR_TO_DATE('7-3-2021', '%d-%m-%Y'), STR_TO_DATE('6-5-2021', '%d-%m-%Y'),'montaña',1,12);  
