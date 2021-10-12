@@ -1,4 +1,5 @@
 CREATE TABLE `Atleta` (
+	`idAtleta`INT NOT NULL AUTO_INCREMENT,
 	`DNI` VARCHAR(255) NOT NULL AUTO_INCREMENT,
 	`Email` VARCHAR(255) NOT NULL UNIQUE,
 	`Name` VARCHAR(255) NOT NULL,
@@ -8,7 +9,7 @@ CREATE TABLE `Atleta` (
 	PRIMARY KEY (`DNI`)
 );
 
-CREATE TABLE `Competición` (
+CREATE TABLE `Competicion` (
 	`idCompeticion` INT NOT NULL AUTO_INCREMENT,
 	`nombre` VARCHAR(255) NOT NULL,
 	`fechaCompeticion` DATE NOT NULL,
@@ -21,9 +22,9 @@ CREATE TABLE `Competición` (
 	PRIMARY KEY (`idCompeticion`)
 );
 
-CREATE TABLE `Inscripción` (
+CREATE TABLE `Inscripcion` (
 	`idCompeticion` INT NOT NULL,
-	`dniAtleta` VARCHAR(255) NOT NULL,
+	`idAtleta` INT NOT NULL,
 	`estado` VARCHAR(255) NOT NULL,
 	`fechaInscripcion` DATE NOT NULL,
 	`fechaUltimoCambio` DATE NOT NULL,
@@ -48,13 +49,13 @@ CREATE TABLE `ContieneCategoria` (
 	PRIMARY KEY (`idCompeticion`,`idCategoria`)
 );
 
-ALTER TABLE `Inscripción` ADD CONSTRAINT `Inscripción_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competición`(`idCompeticion`);
+ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competicion`(`idCompeticion`);
 
-ALTER TABLE `Inscripción` ADD CONSTRAINT `Inscripción_fk1` FOREIGN KEY (`dniAtleta`) REFERENCES `Atleta`(`DNI`);
+ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk1` FOREIGN KEY (`dniAtleta`) REFERENCES `Atleta`(`DNI`);
 
-ALTER TABLE `Inscripción` ADD CONSTRAINT `Inscripción_fk2` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`idCategoria`);
+ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk2` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`idCategoria`);
 
-ALTER TABLE `ContieneCategoria` ADD CONSTRAINT `ContieneCategoria_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competición`(`idCompeticion`);
+ALTER TABLE `ContieneCategoria` ADD CONSTRAINT `ContieneCategoria_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competicion`(`idCompeticion`);
 
 ALTER TABLE `ContieneCategoria` ADD CONSTRAINT `ContieneCategoria_fk1` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`idCategoria`);
 
