@@ -7,6 +7,5 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AlbUtil"/>
-	<classpathentry kind="lib" path="/AlbUtil/lib/mysql-connector-java-8.0.26.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
