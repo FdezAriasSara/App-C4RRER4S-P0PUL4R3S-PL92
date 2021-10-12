@@ -15,7 +15,7 @@ CREATE TABLE `Competicion` (
 	`fechaCompeticion` DATE NOT NULL,
 	`organizador` VARCHAR(255) NOT NULL,
 	`plazoInicioInscripcion` DATE NOT NULL,
-	`plazoFinInscripcion` INT NOT NULL,
+	`plazoFinInscripcion` DATE NOT NULL,
 	`tipoCompeticion` ENUM('montaña','asfalto') NOT NULL,
 	`distanciaKm` INT NOT NULL,
 	`plazasDisponibles` INT NOT NULL,
