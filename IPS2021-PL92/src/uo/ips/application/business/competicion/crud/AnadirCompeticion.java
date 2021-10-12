@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
-import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 
 
