@@ -16,7 +16,8 @@ public class ListarCompeticionesInscripcionesAbiertas {
 	
 
 
-	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador, tipoCompeticion, distanciaKm, plazasDisponibles, plazoInicioInscripcion,plazoFinInscripcion FROM Competicion WHERE fechaCompeticion > ?";
+	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador, tipoCompeticion, distanciaKm, plazasDisponibles, "+
+	"plazoInicioInscripcion, plazoFinInscripcion FROM Competicion WHERE plazoInicioInscripcion < ? and plazoFinInscripcion > ?";
 	
 	private List<CompeticionDto> competiciones;
 	
@@ -42,6 +43,8 @@ public class ListarCompeticionesInscripcionesAbiertas {
 		pst = c.prepareStatement(SQL);
 		
 		pst.setDate(1,sqlDate);
+		pst.setDate(2,sqlDate);
+		
 		
 		rs = pst.executeQuery();
 		
