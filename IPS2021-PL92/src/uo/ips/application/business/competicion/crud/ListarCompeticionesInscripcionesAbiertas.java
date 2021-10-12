@@ -15,7 +15,9 @@ import uo.ips.application.business.competicion.CompeticionDto;
 public class ListarCompeticionesInscripcionesAbiertas {
 	
 
-	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador FROM Competicion WHERE fechaCompeticion > ?";
+
+	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador, tipoCompeticion, distanciaKm, plazasDisponibles, "+
+	"plazoInicioInscripcion, plazoFinInscripcion FROM Competicion WHERE plazoInicioInscripcion < ? and plazoFinInscripcion > ?";
 	
 	private List<CompeticionDto> competiciones;
 	
@@ -41,12 +43,15 @@ public class ListarCompeticionesInscripcionesAbiertas {
 		pst = c.prepareStatement(SQL);
 		
 		pst.setDate(1,sqlDate);
+		pst.setDate(2,sqlDate);
+		
 		
 		rs = pst.executeQuery();
 		
 		while(rs.next()) {
 			
-			competiciones.add(new CompeticionDto(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4)));
+			competiciones.add(new CompeticionDto(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4),
+					rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getDate(8), rs.getDate(9)));
 			
 		}
 		
@@ -59,6 +64,5 @@ public class ListarCompeticionesInscripcionesAbiertas {
 	}
 	return competiciones;
 }
-	
 
 }
