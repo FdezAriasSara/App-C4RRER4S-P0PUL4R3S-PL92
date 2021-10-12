@@ -1,0 +1,6 @@
+drop table ContieneCategoria;
+drop table Inscripcion;
+drop table Categoria;
+drop table Atleta;
+drop table Competicion;
+drop table Pago;
