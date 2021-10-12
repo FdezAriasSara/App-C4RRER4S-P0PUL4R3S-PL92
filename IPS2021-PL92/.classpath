@@ -6,7 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Sara/Desktop/AlbUtil.zip"/>
-	<classpathentry kind="src" path="/AlbUtil"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/AlbUtil"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
