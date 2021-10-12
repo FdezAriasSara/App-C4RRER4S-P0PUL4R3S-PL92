@@ -37,7 +37,7 @@ public class Main {
          competicion.nombre = "test";
          competicion.fechaCompeticion = new Date(99999);
          competicion.organizador = "testOrganizador";
-         BusinessFactory.forCompeticionCrudService().añadirCompeticion(competicion);
+         BusinessFactory.forCompeticionCrudService().anadirCompeticion(competicion);
 	}
 
 }

@@ -9,7 +9,7 @@ import uo.ips.application.business.competicion.CompeticionDto;
 public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 
 	
-	public CompeticionDto añadirCompeticion(CompeticionDto competicion) throws BusinessException {
+	public CompeticionDto anadirCompeticion(CompeticionDto competicion) throws BusinessException {
 		return new AnadirCompeticion(competicion).execute();
 		
 	}

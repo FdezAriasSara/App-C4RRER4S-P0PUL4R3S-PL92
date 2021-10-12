@@ -8,7 +8,7 @@ public class AtletaCrudServiceImpl implements AtletaCrudService{
 
 	@Override
 	public AtletaDto anadirAtleta(AtletaDto atleta) throws BusinessException {
-		return new AñadirAtleta(atleta).execute();
+		return new AnadirAtleta(atleta).execute();
 	}
 
 }
