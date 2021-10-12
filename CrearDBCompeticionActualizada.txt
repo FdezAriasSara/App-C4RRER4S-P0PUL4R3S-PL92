@@ -4,6 +4,7 @@ CREATE TABLE `Atleta` (
 	`Name` VARCHAR(255) NOT NULL,
 	`Surname` VARCHAR(255) NOT NULL,
 	`fechaNacimiento` DATE(255) NOT NULL,
+	`sexo` ENUM('masculino','femenino') NOT NULL,
 	PRIMARY KEY (`DNI`)
 );
 
@@ -14,7 +15,7 @@ CREATE TABLE `Competición` (
 	`organizador` VARCHAR(255) NOT NULL,
 	`plazoInicioInscripcion` DATE NOT NULL,
 	`plazoFinInscripcion` INT NOT NULL,
-	`tipoCompeticion` ENUM('montaña','asfalto') NOT NULL,
+	`tipoCompeticion` VARCHAR(255) NOT NULL,
 	`distanciaKm` INT NOT NULL,
 	`plazasDisponibles` INT NOT NULL,
 	PRIMARY KEY (`idCompeticion`)
