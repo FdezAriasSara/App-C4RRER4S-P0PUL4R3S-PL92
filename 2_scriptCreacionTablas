@@ -61,10 +61,12 @@ CREATE TABLE `Pago`(
 `idPago` varchar(255) NOT NULL ,	
 `fechaPago` DATE NOT NULL,	
  `importe` INT NOT NULL,
+ `idCompeticion`INT NOT NULL,
 PRIMARY KEY (`idPago`,`idAtleta`)
 );
 
-ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk0` FOREIGN KEY (`idAtleta`) REFERENCES `Atleta`(`idAtleta`);
+ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk0` FOREIGN KEY (`idAtleta`) REFERENCES `Inscripcion`(`idAtleta`);
+ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk1` FOREIGN KEY (`idCompeticion`) REFERENCES `Inscripcion`(`idCompeticion`);
 
 ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competicion`(`idCompeticion`);
 
