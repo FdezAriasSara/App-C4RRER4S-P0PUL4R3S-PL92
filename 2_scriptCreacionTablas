@@ -22,6 +22,7 @@ CREATE TABLE `Competicion` (
 	PRIMARY KEY (`idCompeticion`)
 );
 
+
 CREATE TABLE `Inscripcion` (
 	`idCompeticion` INT NOT NULL,
 	`idAtleta` INT NOT NULL,
@@ -33,6 +34,8 @@ CREATE TABLE `Inscripcion` (
 	`tiempoQueTarda` FLOAT NOT NULL,
 	PRIMARY KEY (`idCompeticion`,`idAtleta`)
 );
+
+
 
 CREATE TABLE `Categoria` (
 	`idCategoria` INT NOT NULL AUTO_INCREMENT,
@@ -64,7 +67,7 @@ ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk0` FOREIGN KEY (`idAtleta`) REFERENCES
 
 ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competicion`(`idCompeticion`);
 
-ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk1` FOREIGN KEY (`dniAtleta`) REFERENCES `Atleta`(`DNI`);
+ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk1` FOREIGN KEY (`idAtleta`) REFERENCES `Atleta`(`idAtleta`);
 
 ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk2` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`idCategoria`);
 
