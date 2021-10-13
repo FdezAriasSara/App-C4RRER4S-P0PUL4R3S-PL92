@@ -24,7 +24,7 @@ public class Jdbc {
 /* Configuration for MySQL
 */	
 	private static String DRIVER = "com.mysql.cj.jdbc.Driver";
-	private static String URL = "jdbc:mysql://130.61.249.212:3306/ips";
+	private static String URL = "jdbc:mysql://130.61.249.212:8100/ips";
 	private static String USER = "user";
 	private static String PASS = "ips2021";
 	
