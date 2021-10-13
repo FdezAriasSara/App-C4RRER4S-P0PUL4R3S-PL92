@@ -26,7 +26,7 @@ CREATE TABLE `Competicion` (
 CREATE TABLE `Inscripcion` (
 	`idCompeticion` INT NOT NULL,
 	`idAtleta` INT NOT NULL,
-	`estado` ENUM('PRE_INSCRITO', 'INSCRITO', 'PENDIENTE') NOT NULL,
+	`estado` ENUM('PRE_INSCRITO', 'INSCRITO', 'TERMINADA') NOT NULL,
 	`fechaInscripcion` DATE NOT NULL,
 	`fechaUltimoCambio` DATE NOT NULL,
 	`idCategoria` INT NOT NULL,
