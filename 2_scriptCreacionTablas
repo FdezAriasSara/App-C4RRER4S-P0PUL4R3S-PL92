@@ -19,20 +19,24 @@ CREATE TABLE `Competicion` (
 	`tipoCompeticion` ENUM('montaña','asfalto') NOT NULL,
 	`distanciaKm` INT NOT NULL,
 	`plazasDisponibles` INT NOT NULL,
+    `estado` ENUM('PENDIENTE','TERMINADA') NOT NULL,
 	PRIMARY KEY (`idCompeticion`)
 );
+
 
 CREATE TABLE `Inscripcion` (
 	`idCompeticion` INT NOT NULL,
 	`idAtleta` INT NOT NULL,
-	`estado` VARCHAR(255) NOT NULL,
+	`estado` ENUM('PRE_INSCRITO', 'INSCRITO', 'TERMINADA') NOT NULL,
 	`fechaInscripcion` DATE NOT NULL,
 	`fechaUltimoCambio` DATE NOT NULL,
 	`idCategoria` INT NOT NULL,
 	`posicionFinal` INT NOT NULL,
-	`tiempoQueTarda` FLOAT NOT NULL,
+	`tiempoQueTarda` TIME NOT NULL,
 	PRIMARY KEY (`idCompeticion`,`idAtleta`)
 );
+
+
 
 CREATE TABLE `Categoria` (
 	`idCategoria` INT NOT NULL AUTO_INCREMENT,
@@ -64,7 +68,7 @@ ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk0` FOREIGN KEY (`idAtleta`) REFERENCES
 
 ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competicion`(`idCompeticion`);
 
-ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk1` FOREIGN KEY (`dniAtleta`) REFERENCES `Atleta`(`DNI`);
+ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk1` FOREIGN KEY (`idAtleta`) REFERENCES `Atleta`(`idAtleta`);
 
 ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk2` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`idCategoria`);
 
