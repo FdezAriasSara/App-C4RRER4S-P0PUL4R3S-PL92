@@ -19,6 +19,7 @@ CREATE TABLE `Competicion` (
 	`tipoCompeticion` ENUM('montaña','asfalto') NOT NULL,
 	`distanciaKm` INT NOT NULL,
 	`plazasDisponibles` INT NOT NULL,
+    `estado` ENUM('PENDIENTE','TERMINADA') NOT NULL,
 	PRIMARY KEY (`idCompeticion`)
 );
 
