@@ -32,7 +32,7 @@ CREATE TABLE `Inscripcion` (
 	`fechaUltimoCambio` DATE NOT NULL,
 	`idCategoria` INT NOT NULL,
 	`posicionFinal` INT NOT NULL,
-	`tiempoQueTarda` FLOAT NOT NULL,
+	`tiempoQueTarda` TIME NOT NULL,
 	PRIMARY KEY (`idCompeticion`,`idAtleta`)
 );
 
