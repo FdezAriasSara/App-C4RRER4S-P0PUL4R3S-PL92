@@ -46,6 +46,14 @@ public class InscripcionDto {
 		}
 		
 	}
+	
+	
+	public String toStringParaClasificacion() {
+		return "ID Atleta: " + idAtleta + 
+				" - ID Competicion: " + idCompeticion + 
+				" - Posicion: " + posicionFinal + 
+				" - Tiempo de carrera: " + tiempoQueTarda;
+	}
 
 
 

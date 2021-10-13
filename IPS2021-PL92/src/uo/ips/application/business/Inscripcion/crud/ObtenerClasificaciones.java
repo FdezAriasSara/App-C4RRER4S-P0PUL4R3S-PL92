@@ -1,7 +1,6 @@
 package uo.ips.application.business.Inscripcion.crud;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ public class ObtenerClasificaciones {
 	
 
 
-	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE idCompeticion = ? and a.sexo = ?";
+	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
@@ -87,6 +86,7 @@ public class ObtenerClasificaciones {
 	private boolean competicionHaTerminado() throws SQLException {
 		
 		pst = c.prepareStatement(SQL_Competicion_Terminada);
+		pst.setInt(1,idCompeticion);
 		rs = pst.executeQuery();
 		
 		rs.next();
@@ -103,13 +103,15 @@ public class ObtenerClasificaciones {
 		int pos = 1;
 		for(InscripcionDto ins : inscripciones) {
 			
-			ins.posicionFinal = 1;
+			ins.posicionFinal = pos;
 			
 			pst.setInt(1,pos);
 			pst.setInt(2, ins.idAtleta);
 			pst.setInt(3, ins.idCompeticion);
 			
 			pst.executeUpdate();
+			
+			pos++;
 			
 		}
 		
@@ -121,23 +123,28 @@ public class ObtenerClasificaciones {
 		quicksort(0,inscripciones.size()-1);
 	}
 	
+	/**
+	 * 
+	 * @param left init position
+	 * @param right Ultima posicion (de inicio debe ser size()-1)
+	 */
 	private void quicksort(int left, int right){
 		
 		
 		int i = left;
-		int j = right - 1;
+		int j = right;
 		InscripcionDto pivot;
 		
 		if (left < right){ //if there is one element it is not necessary
 			int center = (left + right)/2;
 			//if there are less than or equal to 3 elements, there are just ordered
-			if ((right - left) >= 3){ 
+
 				pivot = inscripciones.get(center); //choose the pivot
 				interchange(center, right); //hide the pivot
 
 				do {         
-			    	while (inscripciones.get(i).tiempoQueTardaEnSegundos <= pivot.tiempoQueTardaEnSegundos && i < right) i++; //first element > pivot
-			    	while (inscripciones.get(j).tiempoQueTardaEnSegundos >= pivot.tiempoQueTardaEnSegundos && j > left) j--; //first element < pivot
+			    	while (inscripciones.get(i).tiempoQueTardaEnSegundos <= pivot.tiempoQueTardaEnSegundos && i < j) i++; //first element > pivot
+			    	while (inscripciones.get(j).tiempoQueTardaEnSegundos >= pivot.tiempoQueTardaEnSegundos && j > i) j--; //first element < pivot
 			        if (i < j) interchange(i, j);
 			    } while (i < j);   //end while
 				
@@ -145,7 +152,7 @@ public class ObtenerClasificaciones {
 				interchange(i, right);
 				quicksort(left, i-1);
 				quicksort(i+1, right);		
-			} //if
+
 		} //if
 		
 		
