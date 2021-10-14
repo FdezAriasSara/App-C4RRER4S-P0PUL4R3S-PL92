@@ -8,7 +8,8 @@ import uo.ips.application.business.atleta.AtletaDto;
 public class DtoAssembler {
 	public static AtletaDto toAtletaDto(ResultSet m) throws SQLException {
 		AtletaDto dto = new AtletaDto();
-		dto.dni = m.getString("dni");
+		dto.idAtleta = m.getInt("idAtleta");
+		dto.dni = m.getString("DNI");
 		dto.nombre = m.getString("Name");
 		dto.apellido = m.getString("Surname");
 		dto.email = m.getString("Email");

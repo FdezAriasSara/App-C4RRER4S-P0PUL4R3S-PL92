@@ -13,7 +13,7 @@ import uo.ips.application.business.atleta.AtletaDto;
 
 public class CalcularCategoria {
 	private String SQLGetAtleta = "SELECT * FROM Atleta WHERE idAtleta = ?";
-	private String SLQGetIdCategoria = "SELECT idCategoria FROM Competicion co INNER JOIN ContieneCategoria cc ON co.idCompeticion = cc.idCompeticion "
+	private String SLQGetIdCategoria = "SELECT cat.idCategoria FROM Competicion co INNER JOIN ContieneCategoria cc ON co.idCompeticion = cc.idCompeticion "
 			+ "INNER JOIN Categoria cat ON cat.idCategoria = cc.idCategoria "
 			+ "WHERE co.idCompeticion = ? AND cat.edadMin < ? AND cat.edadMax > ? AND cat.sexo = ?";
 
@@ -22,7 +22,7 @@ public class CalcularCategoria {
 
 	public CalcularCategoria(int idAtleta, int idCompeticion) {
 		this.idAtleta = idAtleta;
-		this.idCompeticon = idCompeticon;
+		this.idCompeticon = idCompeticion;
 	}
 
 	public int excute() {
