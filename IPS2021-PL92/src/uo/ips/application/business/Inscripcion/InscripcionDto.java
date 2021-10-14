@@ -8,7 +8,6 @@ public class InscripcionDto {
 	public static final int VACIO = -1;
 	public int idCompeticion;
 	public int idAtleta;	
-	public double cuota;
 	public Date fechaInscripcion;
 	public Date fechaUltimoCambio;
 	public int idCategoria;
@@ -26,12 +25,11 @@ public class InscripcionDto {
 
 
 	@SuppressWarnings("deprecation")
-	public InscripcionDto(int idCompeticion, int idAtleta,double cuota, String estado, Date fechaInscripcion,
+	public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion,
 			Date fechaUltimoCambio, int idCategoria, int posicionFinal, Time tiempoQueTarda) {
 		
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
-		this.cuota = cuota;
 		this.fechaInscripcion = fechaInscripcion;
 		this.fechaUltimoCambio = fechaUltimoCambio;
 		this.idCategoria = idCategoria;

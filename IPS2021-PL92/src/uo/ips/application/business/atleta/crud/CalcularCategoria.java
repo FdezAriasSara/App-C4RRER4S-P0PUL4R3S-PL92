@@ -44,7 +44,7 @@ public class CalcularCategoria {
 	/**
 	 * Busca el atleta con la id que se le pasa y lo devuelve en forma e dto
 	 * 
-	 * @return atletaDto con la información del atleta buscado
+	 * @return atletaDto con la informaciï¿½n del atleta buscado
 	 * @throws SQLException
 	 */
 	private AtletaDto getAtleta() throws SQLException {
