@@ -9,4 +9,5 @@ public class AtletaDto {
 	public String nombre;
 	public String apellido;
 	public Date fechaNacimiento;
+	public String sexo;
 }
