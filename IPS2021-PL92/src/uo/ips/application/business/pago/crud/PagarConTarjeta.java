@@ -75,7 +75,7 @@ public class PagarConTarjeta {
 			// Cambio de 'Pre-inscrito' a 'Inscrito'
 			cambiarEstadoPst = c.prepareStatement(CAMBIAR_ESTADO_INSCRIPCION);
 			cambiarEstadoPst.setString(1, pago.idAtleta);
-			cambiarEstadoPst.setString(2, pago.idCompeticion);
+			cambiarEstadoPst.setString(2, this.idInscripcion);
 			cambiarEstadoPst.executeQuery(CAMBIAR_ESTADO_INSCRIPCION);
 
 			emitirJustificante(pago);
