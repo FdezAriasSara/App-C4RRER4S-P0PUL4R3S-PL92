@@ -11,9 +11,9 @@ import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.competicion.CompeticionDto;
 
 public class InscribirAtleta {
-	private String SQL = "INSERT INTO Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria) VALUES ,(?,?,?,?,?,?,?)";
+	private String SQL = "INSERT INTO Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria,posicionFinal,tiempoQueTarda) VALUES (?,?,?,?,?,?,?,?)";
 	private String SQLGetInscripcion = "SELECT * FROM Inscripcion WHERE idCompeticion = ? AND idAtleta = ?";
-	private String SQLGetCompeticionPlazas = "SELECT nPlazas FROM Competicion WHERE idCompeticion = ?";
+	private String SQLGetNumeroPlazas = "SELECT plazasDisponibles FROM Competicion WHERE idCompeticion = ?";
 	private String SQLGetNumeroInscritos = "SELECT Count(*) FROM Inscritos WhERE idCompeticion = ?";
 	private int  idCompeticion;
 	private int idAtleta;
@@ -37,16 +37,21 @@ public class InscribirAtleta {
 
 
 			if(yaEstaInscrito()) {
-				throw new BusinessException("Ya existe la competición");				
+				throw new BusinessException("El atleta ya está inscrito en la competición");				
+			}
+			if(!haySitio()) {
+				throw new BusinessException("La competición está llena");				
 			}
 
 			pst = c.prepareStatement(SQL);
 			pst.setInt(1, idCompeticion);
 			pst.setInt(2, idAtleta);
-			pst.setString(3, "Pre-inscrito");
+			pst.setString(3, "PRE_INSCRITO");
 			pst.setDate(4, new Date(System.currentTimeMillis()));
 			pst.setDate(5, new Date(System.currentTimeMillis()));
-			pst.setInt(5, idCategoria);
+			pst.setInt(6, idCategoria);
+			pst.setInt(7, -1);
+			pst.setInt(8, -1);
 
 			pst.executeUpdate();
 
@@ -68,22 +73,15 @@ public class InscribirAtleta {
 	}
 	
 	private boolean haySitio() throws SQLException {
-		pst = c.prepareStatement(SQLGetCompeticionPlazas);
+		
+		pst = c.prepareStatement(SQLGetNumeroPlazas);
 		pst.setInt(1, idCompeticion);
 		rs = pst.executeQuery();
 		rs.next();
-		int nplazas = rs.getInt(1);
+		int nPlazasDisponibles = rs.getInt(1);
 		Jdbc.close(rs,pst);
 		
-		pst = c.prepareStatement(SQLGetNumeroInscritos);
-		pst.setInt(1, idCompeticion);
-		rs = pst.executeQuery();
-		rs.next();
-		int nInscritos = rs.getInt(1);
-		Jdbc.close(rs,pst);
-		
-		boolean haySitio = nInscritos < nplazas;
-		return  rs.next();
+		return nPlazasDisponibles >0;
 	}
 
 }

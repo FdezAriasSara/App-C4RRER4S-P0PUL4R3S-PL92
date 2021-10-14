@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 
 import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
@@ -49,6 +50,28 @@ public class CompeticionController {
 				mainW.getTxtPCompeticiones().setEditable(false);
 			}
 		});
+		
+		
+		mainW.getBtnInscribirse().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				inscribirse(mainW.getTxtFEmail().getText(),mainW.getTxtFIDCompeticion().getText());				
+			}
+		});
+	}
+	
+	protected void inscribirse(String emailAtleta, String idCompeticionString) {
+		try {
+			int idCompeticion = Integer.parseInt(idCompeticionString);
+			competicionModel.inscribirAtleta(emailAtleta, idCompeticion);
+			JOptionPane.showMessageDialog(null, "Atleta Inscrito");
+			mainW.getLblError().setVisible(false);
+		} catch (BusinessException e) {
+			mainW.getLblError().setText(e.getMessage());
+			mainW.getLblError().setVisible(true);
+		}
+		
 	}
 	
 	

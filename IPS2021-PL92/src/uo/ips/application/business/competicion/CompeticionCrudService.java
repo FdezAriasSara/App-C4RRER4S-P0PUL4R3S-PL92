@@ -13,5 +13,8 @@ public interface CompeticionCrudService {
 	
 	public void inscribirAtleta(int idCompeticion, int idAtleta, int idCategoria) throws BusinessException;
 
+	public void inscribirAtleta(String email, int idCompeticion) throws BusinessException;
+
+	
 	public List<CompeticionDto> ListarCompeticionesInscripcionesAbiertas() throws BusinessException;
 }
