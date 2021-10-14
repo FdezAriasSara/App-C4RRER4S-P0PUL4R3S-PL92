@@ -1,0 +1,49 @@
+
+
+
+INSERT INTO Categoria (idCategoria, nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+(1, 'Infantil Total Masculino', 0, 7, 'masculino');   
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Trotadores Masculino', 8, 13, 'masculino');   
+
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Jovenes Promesas Masculino', 14, 18, 'masculino'); 
+
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Profesional Masculino', 18, 50, 'masculino'); 
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Leyendas Masculino', 50, 130, 'masculino'); 
+
+
+
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Infantil Total Femenino', 0, 7, 'femenino');   
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Trotadores Femenino', 8, 13, 'femenino');   
+
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Jovenes Promesas Femenino', 14, 18, 'femenino'); 
+
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Profesional Femenino', 18, 50, 'femenino'); 
+
+INSERT INTO Categoria (nombreCategoria, edadMin, edadMax, sexo)    
+VALUES    
+('Leyendas Femenino', 50, 130, 'femenino'); 

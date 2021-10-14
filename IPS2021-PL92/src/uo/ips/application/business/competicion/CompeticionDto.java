@@ -31,7 +31,19 @@ public class CompeticionDto {
 	}
 
 
-
+	public String toString() {
+		
+		return "ID: "+ idCompeticion + 
+				" - Nombre: " + nombre + 
+				" - Fecha competicion: " + fechaCompeticion + 
+				" - Organizador: " + organizador + 
+				" - Tipo de competicion: " + tipoCompeticion + 
+				" - Distancia en KM: " + distanciaKm +
+				" - Plazas disponibles: " + plazasDisponibles + 
+				" - Inicio periodo de inscripción: " + plazoInicioInscripcion + 
+				" - Fin periodo de inscripción: " + plazoFinInscripcion;
+		
+	}
 
 
 	

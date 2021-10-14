@@ -1,0 +1,40 @@
+INSERT INTO Atleta ( idAtleta, DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+( 1, 01, 'daniel@gmail.com', 'Daniel', 'Alvarez', STR_TO_DATE('1-01-2012', '%d-%m-%Y'),'masculino' );    
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+(02, 'sara@gmail.com', 'Sara', 'Fernandez', STR_TO_DATE('6-12-2000', '%d-%m-%Y'),'femenino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+(03, 'lais@gmail.com', 'Lais', 'Nomeselapellido', STR_TO_DATE('23-05-2001', '%d-%m-%Y'),'masculino' );   
+
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+(04, 'martin@gmail.com', 'Martin', 'Beltran', STR_TO_DATE('23-07-2001', '%d-%m-%Y'),'masculino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+('12233434L', 'motosara@gmail.com', 'Sara', 'Moto', STR_TO_DATE('8-6-1997', '%d-%m-%Y'),'femenino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+('85736453Y', 'josu@onlyfans.com', 'Josue', 'Fernandez', STR_TO_DATE('11-9-2001', '%d-%m-%Y'),'masculino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+('74970023P', 'ari@telecable.es', 'Ariadna', 'Vilaso', STR_TO_DATE('23-8-1965', '%d-%m-%Y'),'femenino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+('34523006H', 'xxoscarHDxx@hotmail.com', 'Oscar', 'Butifarra', STR_TO_DATE('6-12-2014', '%d-%m-%Y'),'masculino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+('56934596F', 'silVia@gmail.com', 'Silvia', 'Gonzalez', STR_TO_DATE('7-4-1987', '%d-%m-%Y'),'femenino' );   
+
+INSERT INTO Atleta (DNI, Email, Name, Surname, fechaNacimiento, sexo )    
+VALUES    
+('65750936L', 'elCorsario@gmail.com', 'Luis', 'Posada', STR_TO_DATE('6-6-1623', '%d-%m-%Y'),'masculino' );   

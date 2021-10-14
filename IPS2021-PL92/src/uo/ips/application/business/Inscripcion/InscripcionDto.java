@@ -1,6 +1,7 @@
 package uo.ips.application.business.Inscripcion;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public class InscripcionDto {
 
@@ -12,20 +13,21 @@ public class InscripcionDto {
 	public Date fechaUltimoCambio;
 	public int idCategoria;
 	public int posicionFinal;
-	public float tiempoQueTarda;
+	public Time tiempoQueTarda;
+	public int tiempoQueTardaEnSegundos;
 	public Estado estado;
 
 	public enum Estado {
-		PRE_INSCRITO, INSCRITO, PENDIENTE
+		PRE_INSCRITO, INSCRITO, TERMINADA
 
 	};
 
 	
 
-	
 
-	public InscripcionDto(int idCompeticion, int idAtleta, double cuota, Date fechaInscripcion,
-			Date fechaUltimoCambio, int idCategoria, int posicionFinal, float tiempoQueTarda, Estado estado) {
+	@SuppressWarnings("deprecation")
+	public InscripcionDto(int idCompeticion, int idAtleta,double cuota, String estado, Date fechaInscripcion,
+			Date fechaUltimoCambio, int idCategoria, int posicionFinal, Time tiempoQueTarda) {
 		
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
@@ -35,7 +37,24 @@ public class InscripcionDto {
 		this.idCategoria = idCategoria;
 		this.posicionFinal = posicionFinal;
 		this.tiempoQueTarda = tiempoQueTarda;
-		this.estado = estado;
+		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds() +  tiempoQueTarda.getMinutes()*60 + tiempoQueTarda.getHours()*60*60;
+		
+		
+		
+		switch(estado) {
+		case("PRE_INSCRITO"): this.estado = Estado.PRE_INSCRITO; break;
+		case("INSCRITO"):  this.estado = Estado.INSCRITO; break;
+		case("TERMINADA"):  this.estado = Estado.TERMINADA; break;
+		}
+		
+	}
+	
+	
+	public String toStringParaClasificacion() {
+		return "ID Atleta: " + idAtleta + 
+				" - ID Competicion: " + idCompeticion + 
+				" - Posicion: " + posicionFinal + 
+				" - Tiempo de carrera: " + tiempoQueTarda;
 	}
 
 
@@ -46,7 +65,7 @@ public class InscripcionDto {
 		this.fechaInscripcion = null;
 		this.fechaUltimoCambio = null;
 		this.posicionFinal = VACIO;
-		this.tiempoQueTarda = VACIO;
+		this.tiempoQueTardaEnSegundos = VACIO;
 	}
 
 }
