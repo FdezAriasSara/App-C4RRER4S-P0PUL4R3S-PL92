@@ -11,4 +11,10 @@ public class AtletaCrudServiceImpl implements AtletaCrudService{
 		return new AnadirAtleta(atleta).execute();
 	}
 
+	@Override
+	public int CalcularCategoria(int idAtleta, int idCompeticion) throws BusinessException {
+		// TODO Auto-generated method stub
+		return new CalcularCategoria(idAtleta, idCompeticion).excute();
+	}
+
 }

@@ -283,11 +283,27 @@ public class Main extends JFrame {
 	private JButton getBtnInscribirse() {
 		if (btnInscribirse == null) {
 			btnInscribirse = new JButton("Inscribirse");
+			btnInscribirse.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					inscribirse(getTxtFEmail().getText(),getTxtFIDCompeticion().getText());
+				}
+			});
 			btnInscribirse.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnInscribirse.setBounds(614, 418, 193, 34);
+			
 		}
 		return btnInscribirse;
 	}
+	protected void inscribirse(String emailAtleta, String idCompeticionString) {
+		try {
+			int idCompeticion = Integer.parseInt(idCompeticionString);
+			BusinessFactory.forCompeticionCrudService().inscribirAtleta(emailAtleta, idCompeticion);
+		} catch (BusinessException e) {
+			getLblError().setText(e.getMessage());
+		}
+		
+	}
+
 	private JLabel getLblError() {
 		if (lblError == null) {
 			lblError = new JLabel("Error: Ya estabas inscrito en dicha competicion");

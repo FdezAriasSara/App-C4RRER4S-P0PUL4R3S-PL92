@@ -19,10 +19,18 @@ public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 		new InscribirAtleta(idCompeticion,idAtleta,idCategoria).execute();
 		
 	}
+	
+	
 
 	@Override
 	public List<CompeticionDto> ListarCompeticionesInscripcionesAbiertas() throws BusinessException {
 		return new ListarCompeticionesInscripcionesAbiertas().execute();
+	}
+
+	@Override
+	public void inscribirAtleta(String email, int idCompeticion) throws BusinessException {
+		new InscribirAtletaPorEmail(email,idCompeticion).execute();
+		
 	}
 
 }
