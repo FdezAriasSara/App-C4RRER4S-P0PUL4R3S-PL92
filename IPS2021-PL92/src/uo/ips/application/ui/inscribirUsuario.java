@@ -20,6 +20,7 @@ import java.util.List;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
 
 public class inscribirUsuario extends JFrame {
 
@@ -70,6 +71,9 @@ public class inscribirUsuario extends JFrame {
 		JLabel lblCompeticion = new JLabel("Competicion");
 		lblCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panelCompeticion.add(lblCompeticion);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		panelCompeticion.add(scrollPane);
 		
 		JComboBox<CompeticionDto> comboBoxCompeticiones = new JComboBox();
 		panelCompeticion.add(comboBoxCompeticiones);
