@@ -55,16 +55,17 @@ CREATE TABLE `ContieneCategoria` (
 	PRIMARY KEY (`idCompeticion`,`idCategoria`)
 );
 
-
 CREATE TABLE `Pago`(
 `idAtleta` INT NOT NULL,
-`idPago` varchar(255) NOT NULL ,	
+`idPago` varchar(255) NOT NULL,	
 `fechaPago` DATE NOT NULL,	
  `importe` INT NOT NULL,
-PRIMARY KEY (`idPago`,`idAtleta`)
+ `idCompeticion` INT NOT NULL,
+PRIMARY KEY (`idAtleta`,`idCompeticion`)
 );
 
-ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk0` FOREIGN KEY (`idAtleta`) REFERENCES `Atleta`(`idAtleta`);
+ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk0` FOREIGN KEY (`idAtleta`) REFERENCES `Inscripcion`(`idAtleta`);
+ALTER TABLE `Pago` ADD CONSTRAINT `Pago_fk1` FOREIGN KEY (`idCompeticion`) REFERENCES `Inscripcion`(`idCompeticion`);
 
 ALTER TABLE `Inscripcion` ADD CONSTRAINT `Inscripcion_fk0` FOREIGN KEY (`idCompeticion`) REFERENCES `Competicion`(`idCompeticion`);
 
