@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import alb.util.assertion.Argument;
-import alb.util.file.FileUtil;
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.pago.PagoDto;
