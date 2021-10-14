@@ -51,7 +51,8 @@ public class PagarConTarjeta {
 			pagoPst.setString(1, pago.idAtleta);
 			pagoPst.setString(2, pago.pagoId);
 			pagoPst.setDate(3, pago.fechaPago);
-			pagoPst.setLong(4, pago.importe);
+			pagoPst.setLong(4, pago.importe);//el importe sale de la cuota de la inscripición
+			
 			pagoPst.executeQuery(REALIZAR_PAGO);
 
 			simularPago();
@@ -96,8 +97,8 @@ public class PagarConTarjeta {
 		return new PagoDto();
 	}
 
-	private void emitirJustificante(PagoDto pago) {
-		System.out.println(pago.toString());
+	private String emitirJustificante(PagoDto pago) {
+		return pago.toString();
 	
 	}
 
