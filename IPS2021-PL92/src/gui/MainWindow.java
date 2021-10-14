@@ -1,15 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import uo.ips.application.business.BusinessException;
-import uo.ips.application.business.BusinessFactory;
-import uo.ips.application.business.competicion.CompeticionDto;
 
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -20,10 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
 
@@ -47,10 +39,8 @@ public class MainWindow extends JFrame {
 	private JLabel lblSeleccion;
 	private JButton btnAtletaBienvenida;
 	private JButton btnOrganizadorBienvenida;
-	private JLabel lblIDAtleta;
 	private JLabel lblEmailAtleta;
 	private JTextField txtFEmail;
-	private JTextField txtFIDAtleta;
 	private JButton btnInscribirse;
 	private JLabel lblError;
 	private JButton btnRegistroAtleta;
@@ -111,10 +101,8 @@ public class MainWindow extends JFrame {
 			panel_atleta.add(getBtnListarCompeticionesAbiertas());
 			panel_atleta.add(getTxtFIDCompeticion());
 			panel_atleta.add(getLblInscribirse());
-			panel_atleta.add(getLblIDAtleta());
 			panel_atleta.add(getLblEmailAtleta());
 			panel_atleta.add(getTxtFEmail());
-			panel_atleta.add(getTxtFIDAtleta());
 			panel_atleta.add(getBtnInscribirse());
 			panel_atleta.add(getLblError());
 			panel_atleta.add(getBtnRegistroAtleta());
@@ -135,6 +123,19 @@ public class MainWindow extends JFrame {
 		}
 		return txtPCompeticiones;
 	}
+	
+	
+	/**
+	 * Para mostrar en el txt Pane las competiciones
+	 * @param competiciones
+	 */
+	public void presentarCompeticiones(String competiciones) {
+		txtPCompeticiones.setEditable(true);
+		txtPCompeticiones.setText(competiciones);
+		txtPCompeticiones.setEditable(false);
+	}
+	
+	
 	public JButton getBtnListarCompeticionesAbiertas() {
 		if (btnListarCompeticionesAbiertas == null) {
 			btnListarCompeticionesAbiertas = new JButton("Listar Competiciones");
@@ -209,19 +210,11 @@ public class MainWindow extends JFrame {
 		}
 		return btnOrganizadorBienvenida;
 	}
-	public JLabel getLblIDAtleta() {
-		if (lblIDAtleta == null) {
-			lblIDAtleta = new JLabel("Introduzca su ID de Atleta:");
-			lblIDAtleta.setFont(new Font("Dialog", Font.PLAIN, 15));
-			lblIDAtleta.setBounds(10, 418, 307, 34);
-		}
-		return lblIDAtleta;
-	}
 	public JLabel getLblEmailAtleta() {
 		if (lblEmailAtleta == null) {
 			lblEmailAtleta = new JLabel("Introduzca el email con el que se registr\u00F3:");
 			lblEmailAtleta.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblEmailAtleta.setBounds(10, 462, 307, 34);
+			lblEmailAtleta.setBounds(10, 418, 307, 34);
 		}
 		return lblEmailAtleta;
 	}
@@ -230,20 +223,10 @@ public class MainWindow extends JFrame {
 			txtFEmail = new JTextField();
 			txtFEmail.setFont(new Font("Dialog", Font.PLAIN, 15));
 			txtFEmail.setHorizontalAlignment(SwingConstants.CENTER);
-			txtFEmail.setBounds(327, 467, 240, 29);
+			txtFEmail.setBounds(327, 421, 240, 29);
 			txtFEmail.setColumns(10);
 		}
 		return txtFEmail;
-	}
-	public JTextField getTxtFIDAtleta() {
-		if (txtFIDAtleta == null) {
-			txtFIDAtleta = new JTextField();
-			txtFIDAtleta.setFont(new Font("Dialog", Font.PLAIN, 15));
-			txtFIDAtleta.setHorizontalAlignment(SwingConstants.CENTER);
-			txtFIDAtleta.setBounds(327, 423, 96, 29);
-			txtFIDAtleta.setColumns(10);
-		}
-		return txtFIDAtleta;
 	}
 	public JButton getBtnInscribirse() {
 		if (btnInscribirse == null) {
@@ -255,14 +238,41 @@ public class MainWindow extends JFrame {
 	}
 	public JLabel getLblError() {
 		if (lblError == null) {
-			lblError = new JLabel("Error: Ya estabas inscrito en dicha competicion");
+			lblError = new JLabel("Error:");
 			lblError.setVisible(false);
 			lblError.setForeground(Color.RED);
 			lblError.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblError.setBounds(10, 517, 558, 34);
+			lblError.setBounds(10, 462, 558, 34);
 		}
 		return lblError;
 	}
+	
+	
+	public void setErrorAlListarCompeticiones() {
+		lblError.setText("Error: Error al listar competiciones.");
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(true);
+	}
+	
+	public void setErrorYaEstabaInscrito() {
+		lblError.setText("Error: Ya estabas inscrito en dicha competicion.");
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(true);
+	}
+	
+	public void setErrorAtletaNoRegistrado() {
+		lblError.setText("Error: Atleta no registrado.");
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(true);
+	}
+	
+	public void setConfirmadaInscripcion() {
+		lblError.setText("Error: Atleta inscrito correctamente.");
+		lblError.setVisible(true);
+		lblError.setForeground(Color.GREEN);
+	}
+	
+	
 	public JButton getBtnRegistroAtleta() {
 		if (btnRegistroAtleta == null) {
 			btnRegistroAtleta = new JButton("Registrarse");

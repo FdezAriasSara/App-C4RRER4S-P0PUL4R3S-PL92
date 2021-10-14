@@ -35,20 +35,23 @@ public class CompeticionController {
 					competiciones = competicionModel.ListarCompeticionesInscripcionesAbiertas();
 					
 				} catch (BusinessException e1) {
-					mainW.getLblError().setText("Problemas al listar las carreras");
+					mainW.setErrorAlListarCompeticiones();
 				}
 				
 				for(CompeticionDto c : competiciones) {
 					allComp += c.toString() + "\n\n";
 				}
-				
-				mainW.getTxtPCompeticiones().setEditable(true);
-				
-				mainW.getTxtPCompeticiones().setText(allComp);
-				
-				mainW.getTxtPCompeticiones().setEditable(false);
+				mainW.presentarCompeticiones(allComp);
 			}
 		});
+		
+		
+		///////////////////////////////////////////////////////////////
+		
+		
+		
+		
+		
 	}
 	
 	
