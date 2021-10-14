@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import alb.util.jdbc.Jdbc;
+import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.DtoAssembler;
 import uo.ips.application.business.atleta.AtletaDto;
 
@@ -25,7 +26,7 @@ public class CalcularCategoria {
 		this.idCompeticon = idCompeticion;
 	}
 
-	public int excute() {
+	public int excute() throws BusinessException {
 		AtletaDto atleta;
 		int idCategoria = 0;
 		int edad;
@@ -46,8 +47,9 @@ public class CalcularCategoria {
 	 * 
 	 * @return atletaDto con la informaci�n del atleta buscado
 	 * @throws SQLException
+	 * @throws BusinessException 
 	 */
-	private AtletaDto getAtleta() throws SQLException {
+	private AtletaDto getAtleta() throws SQLException, BusinessException {
 		Connection c = null;
 		PreparedStatement pst = null;
 		AtletaDto atleta = null;
@@ -59,6 +61,7 @@ public class CalcularCategoria {
 			pst.setInt(1, idAtleta);
 
 			atleta = DtoAssembler.toAtletaDto(pst.executeQuery());
+			
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -109,8 +112,10 @@ public class CalcularCategoria {
 					pst.setString(4, sexo);
 					
 					rs = pst.executeQuery();
+					if(rs.next()) {
+						id = rs.getInt(1);						
+					}
 					
-					id = rs.getInt(1);
 
 				} catch (SQLException e) {
 					throw new RuntimeException(e);
