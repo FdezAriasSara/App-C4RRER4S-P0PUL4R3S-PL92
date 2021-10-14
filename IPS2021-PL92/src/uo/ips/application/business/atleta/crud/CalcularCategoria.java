@@ -20,7 +20,7 @@ public class CalcularCategoria {
 	private int idAtleta;
 	private int idCompeticon;
 
-	public CalcularCategoria(int idAtleta, int idCompeticon) {
+	public CalcularCategoria(int idAtleta, int idCompeticion) {
 		this.idAtleta = idAtleta;
 		this.idCompeticon = idCompeticon;
 	}
