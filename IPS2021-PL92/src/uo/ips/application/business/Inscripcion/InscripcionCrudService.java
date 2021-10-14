@@ -6,7 +6,9 @@ public interface InscripcionCrudService {
 	 * @param solicitud
 	 * @return
 	 */
-	InscripcionDto añadirInscripción(InscripcionDto solicitud);
+	InscripcionDto anadirInscripción(InscripcionDto solicitud);
+	
+	void inscribirAteta();
 	
 
 }

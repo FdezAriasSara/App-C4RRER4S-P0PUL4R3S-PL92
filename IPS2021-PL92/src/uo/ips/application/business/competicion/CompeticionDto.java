@@ -16,8 +16,8 @@ public class CompeticionDto {
 	
 	
 	public CompeticionDto(String idCompeticion, String nombre, Date fechaCompeticion, 
-			String organizador,String tipoCompeticion, int distanciaKm,int plazasDisponibles,
-			Date plazoInicioInscripcion, Date plazoFinInscripcion) {
+			String organizador,Date plazoInicioInscripcion, Date plazoFinInscripcion ,String tipoCompeticion,int distanciaKm,int plazasDisponibles
+			 ) {
 		
 		this.idCompeticion = idCompeticion;
 		this.nombre = nombre;
@@ -28,7 +28,6 @@ public class CompeticionDto {
 		this.plazasDisponibles = plazasDisponibles;
 		this.plazoFinInscripcion = plazoFinInscripcion;
 		this.plazoInicioInscripcion = plazoInicioInscripcion; 
-		
 	}
 
 
@@ -53,5 +52,11 @@ public class CompeticionDto {
 		nombre=null;
 		fechaCompeticion=null;
 		organizador = null;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return nombre;
 	}
 }

@@ -9,13 +9,13 @@ import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.atleta.AtletaDto;
 
-public class AñadirAtleta {
+public class AnadirAtleta {
 	
 private String SQL = "INSERT INTO Atleta (dni,email,nombre,apellido,fechaNacimiento) VALUES (?,?,?,?,?)";
 private String SQLGetAtleta = "SELECT * FROM Atleta WHERE dni = ?";
 private AtletaDto atleta;
 
-public AñadirAtleta(AtletaDto atleta) {
+public AnadirAtleta(AtletaDto atleta) {
 	this.atleta = atleta;
 }
 
