@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import alb.util.assertion.Argument;
+import alb.util.file.FileUtil;
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.pago.PagoDto;
@@ -16,8 +17,10 @@ public class PagarConTarjeta {
 	private PagoDto pago;
 	private TarjetaDto tarjeta;
 
-	private String CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripción WHERE idAtleta=? SET estado='Inscrito'  ";
+	private String CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripción WHERE idAtleta=? and idInscripcion=? SET estado='Inscrito'  ";
+	private String ENCONTRAR_ID_INSCRIPCION = "SELECT idInscripcion WHERE idAtleta=? and idCompetición=? ";
 	private String REALIZAR_PAGO = "INSERT INTO Pago (idAtleta,idPago,fechaPago,importe) VALUES (?,?,?,?) ";
+	private String idInscripcion;
 
 	public PagarConTarjeta(PagoDto pago, TarjetaDto tarjeta) {
 		Argument.isNotNull(tarjeta, "La tarjeta no puede ser null");
@@ -33,43 +36,69 @@ public class PagarConTarjeta {
 	public PagoDto execute() throws BusinessException {
 		// Process
 		Connection c = null;
-		ResultSet rs = null;
-		PreparedStatement pst = null;
+
+		PreparedStatement pagoPst = null;
+		PreparedStatement encontrarIdPst = null;
+		PreparedStatement cambiarEstadoPst = null;
+		ResultSet rsInscripcion = null;
 
 		try {
 			c = Jdbc.getConnection();
 
-			pst = c.prepareStatement(REALIZAR_PAGO);
-			//Realización del pago 
-			pago.pagoId= UUID.randomUUID().toString();
-			pst.setString(1, pago.idAtleta);
-			pst.setString(2, pago.pagoId);
-			pst.setDate(3, pago.fechaPago);
-			pst.setLong(4, pago.importe);
-			
-			pst.executeQuery(REALIZAR_PAGO);
+			pagoPst = c.prepareStatement(REALIZAR_PAGO);
+			// Realización del pago
+			pago.pagoId = UUID.randomUUID().toString();
+			pagoPst.setString(1, pago.idAtleta);
+			pagoPst.setString(2, pago.pagoId);
+			pagoPst.setDate(3, pago.fechaPago);
+			pagoPst.setLong(4, pago.importe);
+			pagoPst.executeQuery(REALIZAR_PAGO);
+
 			simularPago();
-			//Cambio de 'Pre-inscrito' a 'Inscrito' 
-			pst = c.prepareStatement(CAMBIAR_ESTADO_INSCRIPCION);
-			pst.setString(1, pago.idAtleta);
-			rs = pst.executeQuery();
+			// Para cambiar el estado de la inscripción necesito el idInscripicón
+			// accedo a él mediante los atributos idAtleta e idCompeticion de pagoDto
+			encontrarIdPst = c.prepareStatement(ENCONTRAR_ID_INSCRIPCION);
+			encontrarIdPst.setString(1, pago.idAtleta);
+			encontrarIdPst.setString(2, pago.idCompeticion);
+			rsInscripcion = encontrarIdPst.executeQuery(ENCONTRAR_ID_INSCRIPCION);
+			if (rsInscripcion.next()) {
+				this.idInscripcion = rsInscripcion.getString(0);
+				// Al ser una clave primaria , la combinación claveAtleta-competción no puede
+				// darse más de una vez
 
-			emitirJustificante();
+			} else {
+				throw new BusinessException("No pudo encontrarse la inscripicón para la competición con id:"
+						+ pago.idCompeticion+ " del atleta con id:" + pago.idAtleta);
+			}
 
-			pst.close();
+			// Cambio de 'Pre-inscrito' a 'Inscrito'
+			cambiarEstadoPst = c.prepareStatement(CAMBIAR_ESTADO_INSCRIPCION);
+			cambiarEstadoPst.setString(1, pago.idAtleta);
+			cambiarEstadoPst.setString(2, pago.idCompeticion);
+			cambiarEstadoPst.executeQuery(CAMBIAR_ESTADO_INSCRIPCION);
 
-			pst.executeUpdate();
+			emitirJustificante(pago);
+
+			cambiarEstadoPst.close();
+
+			cambiarEstadoPst.executeUpdate();
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rs, pst, c);
+			Jdbc.close(pagoPst);
+			Jdbc.close(rsInscripcion, encontrarIdPst);
+
+			Jdbc.close(cambiarEstadoPst);
+			Jdbc.close(c);
+
 		}
 		return new PagoDto();
 	}
 
-	private void emitirJustificante() {
-	//TODO: Hacer operaciones fileutil necesarias para emitir el justificante
+	private void emitirJustificante(PagoDto pago) {
+		System.out.println(pago.toString());
+	
 	}
 
 	private void simularPago() {
