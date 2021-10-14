@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
-public class Main extends JFrame {
+public class MainWindow extends JFrame {
 
 	/**
 	 * 
@@ -53,27 +53,14 @@ public class Main extends JFrame {
 	private JTextField txtFIDAtleta;
 	private JButton btnInscribirse;
 	private JLabel lblError;
+	private JButton btnRegistroAtleta;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Main frame = new Main();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public MainWindow() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 892, 639);
 		contentPane = new JPanel();
@@ -83,7 +70,7 @@ public class Main extends JFrame {
 		contentPane.add(getPanel_soy(), BorderLayout.NORTH);
 		contentPane.add(getPanel_card(), BorderLayout.CENTER);
 	}
-	private JPanel getPanel_soy() {
+	public JPanel getPanel_soy() {
 		if (panel_soy == null) {
 			panel_soy = new JPanel();
 			panel_soy.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -92,21 +79,21 @@ public class Main extends JFrame {
 		}
 		return panel_soy;
 	}
-	private JButton getBtnAtleta() {
+	public JButton getBtnAtleta() {
 		if (btnAtleta == null) {
 			btnAtleta = new JButton("Soy un Atleta");
 			btnAtleta.setEnabled(false);
 		}
 		return btnAtleta;
 	}
-	private JButton getBtnOrganizador() {
+	public JButton getBtnOrganizador() {
 		if (btnOrganizador == null) {
 			btnOrganizador = new JButton("Soy un Organizador");
 			btnOrganizador.setEnabled(false);
 		}
 		return btnOrganizador;
 	}
-	private JPanel getPanel_card() {
+	public JPanel getPanel_card() {
 		if (panel_card == null) {
 			panel_card = new JPanel();
 			panel_card.setLayout(new CardLayout(0, 0));
@@ -116,7 +103,7 @@ public class Main extends JFrame {
 		}
 		return panel_card;
 	}
-	private JPanel getPanel_atleta() {
+	public JPanel getPanel_atleta() {
 		if (panel_atleta == null) {
 			panel_atleta = new JPanel();
 			panel_atleta.setLayout(null);
@@ -130,16 +117,17 @@ public class Main extends JFrame {
 			panel_atleta.add(getTxtFIDAtleta());
 			panel_atleta.add(getBtnInscribirse());
 			panel_atleta.add(getLblError());
+			panel_atleta.add(getBtnRegistroAtleta());
 		}
 		return panel_atleta;
 	}
-	private JPanel getPanel_organizador() {
+	public JPanel getPanel_organizador() {
 		if (panel_organizador == null) {
 			panel_organizador = new JPanel();
 		}
 		return panel_organizador;
 	}
-	private JTextPane getTxtPCompeticiones() {
+	public JTextPane getTxtPCompeticiones() {
 		if (txtPCompeticiones == null) {
 			txtPCompeticiones = new JTextPane();
 			txtPCompeticiones.setEditable(false);
@@ -147,40 +135,17 @@ public class Main extends JFrame {
 		}
 		return txtPCompeticiones;
 	}
-	private JButton getBtnListarCompeticionesAbiertas() {
+	public JButton getBtnListarCompeticionesAbiertas() {
 		if (btnListarCompeticionesAbiertas == null) {
 			btnListarCompeticionesAbiertas = new JButton("Listar Competiciones");
-			btnListarCompeticionesAbiertas.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-					List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
-					String allComp = "";
-					
-					try {
-						competiciones = BusinessFactory.forCompeticionCrudService().ListarCompeticionesInscripcionesAbiertas();
-						
-					} catch (BusinessException e1) {
-						lblError.setText("Problemas al listar las carreras");
-					}
-					
-					for(CompeticionDto c : competiciones) {
-						allComp += c.toString() + "\n\n";
-					}
-					
-					txtPCompeticiones.setEditable(true);
-					
-					txtPCompeticiones.setText(allComp);
-					
-					txtPCompeticiones.setEditable(false);
-				}
-			});
+			
 			
 			btnListarCompeticionesAbiertas.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnListarCompeticionesAbiertas.setBounds(10, 10, 205, 34);
 		}
 		return btnListarCompeticionesAbiertas;
 	}
-	private JTextField getTxtFIDCompeticion() {
+	public JTextField getTxtFIDCompeticion() {
 		if (txtFIDCompeticion == null) {
 			txtFIDCompeticion = new JTextField();
 			txtFIDCompeticion.setHorizontalAlignment(SwingConstants.CENTER);
@@ -190,7 +155,7 @@ public class Main extends JFrame {
 		}
 		return txtFIDCompeticion;
 	}
-	private JLabel getLblInscribirse() {
+	public JLabel getLblInscribirse() {
 		if (lblInscribirse == null) {
 			lblInscribirse = new JLabel("ID Competicion en la que te quieres inscribir:");
 			lblInscribirse.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -198,7 +163,7 @@ public class Main extends JFrame {
 		}
 		return lblInscribirse;
 	}
-	private JPanel getPanel_default() {
+	public JPanel getPanel_default() {
 		if (panel_default == null) {
 			panel_default = new JPanel();
 			panel_default.setLayout(null);
@@ -209,7 +174,7 @@ public class Main extends JFrame {
 		}
 		return panel_default;
 	}
-	private JLabel getLblBienvenida() {
+	public JLabel getLblBienvenida() {
 		if (lblBienvenida == null) {
 			lblBienvenida = new JLabel("Bienvenido a su gestor de carreras");
 			lblBienvenida.setFont(new Font("Dialog", Font.PLAIN, 40));
@@ -218,7 +183,7 @@ public class Main extends JFrame {
 		}
 		return lblBienvenida;
 	}
-	private JLabel getLblSeleccion() {
+	public JLabel getLblSeleccion() {
 		if (lblSeleccion == null) {
 			lblSeleccion = new JLabel("Por favor, seleccione su rol:");
 			lblSeleccion.setHorizontalAlignment(SwingConstants.CENTER);
@@ -227,7 +192,7 @@ public class Main extends JFrame {
 		}
 		return lblSeleccion;
 	}
-	private JButton getBtnAtletaBienvenida() {
+	public JButton getBtnAtletaBienvenida() {
 		if (btnAtletaBienvenida == null) {
 			btnAtletaBienvenida = new JButton("Atleta");
 			
@@ -236,7 +201,7 @@ public class Main extends JFrame {
 		}
 		return btnAtletaBienvenida;
 	}
-	private JButton getBtnOrganizadorBienvenida() {
+	public JButton getBtnOrganizadorBienvenida() {
 		if (btnOrganizadorBienvenida == null) {
 			btnOrganizadorBienvenida = new JButton("Organizador");
 			btnOrganizadorBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -244,7 +209,7 @@ public class Main extends JFrame {
 		}
 		return btnOrganizadorBienvenida;
 	}
-	private JLabel getLblIDAtleta() {
+	public JLabel getLblIDAtleta() {
 		if (lblIDAtleta == null) {
 			lblIDAtleta = new JLabel("Introduzca su ID de Atleta:");
 			lblIDAtleta.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -252,7 +217,7 @@ public class Main extends JFrame {
 		}
 		return lblIDAtleta;
 	}
-	private JLabel getLblEmailAtleta() {
+	public JLabel getLblEmailAtleta() {
 		if (lblEmailAtleta == null) {
 			lblEmailAtleta = new JLabel("Introduzca el email con el que se registr\u00F3:");
 			lblEmailAtleta.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -260,7 +225,7 @@ public class Main extends JFrame {
 		}
 		return lblEmailAtleta;
 	}
-	private JTextField getTxtFEmail() {
+	public JTextField getTxtFEmail() {
 		if (txtFEmail == null) {
 			txtFEmail = new JTextField();
 			txtFEmail.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -270,7 +235,7 @@ public class Main extends JFrame {
 		}
 		return txtFEmail;
 	}
-	private JTextField getTxtFIDAtleta() {
+	public JTextField getTxtFIDAtleta() {
 		if (txtFIDAtleta == null) {
 			txtFIDAtleta = new JTextField();
 			txtFIDAtleta.setFont(new Font("Dialog", Font.PLAIN, 15));
@@ -280,7 +245,7 @@ public class Main extends JFrame {
 		}
 		return txtFIDAtleta;
 	}
-	private JButton getBtnInscribirse() {
+	public JButton getBtnInscribirse() {
 		if (btnInscribirse == null) {
 			btnInscribirse = new JButton("Inscribirse");
 			btnInscribirse.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -288,7 +253,7 @@ public class Main extends JFrame {
 		}
 		return btnInscribirse;
 	}
-	private JLabel getLblError() {
+	public JLabel getLblError() {
 		if (lblError == null) {
 			lblError = new JLabel("Error: Ya estabas inscrito en dicha competicion");
 			lblError.setVisible(false);
@@ -297,5 +262,13 @@ public class Main extends JFrame {
 			lblError.setBounds(10, 517, 558, 34);
 		}
 		return lblError;
+	}
+	public JButton getBtnRegistroAtleta() {
+		if (btnRegistroAtleta == null) {
+			btnRegistroAtleta = new JButton("Registrarse");
+			btnRegistroAtleta.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnRegistroAtleta.setBounds(653, 10, 205, 34);
+		}
+		return btnRegistroAtleta;
 	}
 }
