@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class PagoDto {
 
-	public LocalDate fechaPago;	
+	public String fechaPago;	
 	public int importe;
 	public String pagoId;
 
