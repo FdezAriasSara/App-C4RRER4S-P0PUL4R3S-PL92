@@ -24,6 +24,8 @@ public class InscribirAtleta {
 	PreparedStatement pst = null;
 
 	public InscribirAtleta(int idCompeticion, int idAtleta, int idCategoria) {
+		
+		
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
 		this.idCategoria = idCategoria;
@@ -51,7 +53,7 @@ public class InscribirAtleta {
 			pst.setDate(5, new Date(System.currentTimeMillis()));
 			pst.setInt(6, idCategoria);
 			pst.setInt(7, -1);
-			pst.setInt(8, -1);
+			pst.setString(8, "00:00:00");
 
 			pst.executeUpdate();
 

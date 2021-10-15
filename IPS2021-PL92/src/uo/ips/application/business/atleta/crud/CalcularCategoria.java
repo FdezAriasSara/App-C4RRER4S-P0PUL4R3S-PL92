@@ -93,8 +93,9 @@ public class CalcularCategoria {
 	 * @param edad
 	 * @param sexo
 	 * @return
+	 * @throws BusinessException 
 	 */
-	private int getIdCategoria(int edad, String sexo) {
+	private int getIdCategoria(int edad, String sexo) throws BusinessException {
 		// Process
 				Connection c = null;
 				PreparedStatement pst = null;
@@ -114,6 +115,10 @@ public class CalcularCategoria {
 					rs = pst.executeQuery();
 					if(rs.next()) {
 						id = rs.getInt(1);						
+					}
+					
+					if(id <= 0) {
+						throw new BusinessException("No existe categoría para atleta " + idAtleta + " en competicion " + idCompeticon);
 					}
 					
 
