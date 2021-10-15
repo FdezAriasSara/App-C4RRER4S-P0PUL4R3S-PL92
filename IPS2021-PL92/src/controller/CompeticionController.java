@@ -19,12 +19,25 @@ public class CompeticionController {
 	public CompeticionController(MainWindow main, CompeticionCrudService comMod) {
 		this.mainW = main;
 		this.competicionModel = comMod;
+		this.initActions();
+	}
+	
+	
+	private void initActions() {
+		
+		mainW.getBtnListarCompeticionesAbiertas().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				initBotonListarComp();
+			}
+			
+		});
 		
 	}
 	
 	
-	public void initActions() {
+	private void initBotonListarComp() {
 		
+<<<<<<< HEAD
 		mainW.getBtnListarCompeticionesAbiertas().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -52,6 +65,28 @@ public class CompeticionController {
 		
 		
 		
+=======
+		List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
+		String allComp = "";
+		
+		try {
+			competiciones = competicionModel.ListarCompeticionesInscripcionesAbiertas();
+			
+		} catch (BusinessException e1) {
+			mainW.getLblError().setText("Problemas al listar las carreras");
+		}
+		
+		for(CompeticionDto c : competiciones) {
+			allComp += c.toString() + "\n\n";
+		}
+		
+		mainW.getTxtPCompeticiones().setEditable(true);
+		
+		mainW.getTxtPCompeticiones().setText(allComp);
+		
+		mainW.getTxtPCompeticiones().setEditable(false);
+	
+>>>>>>> refs/remotes/origin/master
 	}
 	
 	

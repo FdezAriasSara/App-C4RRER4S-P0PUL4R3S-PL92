@@ -12,6 +12,9 @@ import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.JTextPane;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -25,8 +28,7 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panel_soy;
-	private JButton btnAtleta;
-	private JButton btnOrganizador;
+	private JButton btnVolverBienvenida;
 	private JPanel panel_card;
 	private JPanel panel_atleta;
 	private JPanel panel_organizador;
@@ -64,32 +66,34 @@ public class MainWindow extends JFrame {
 		if (panel_soy == null) {
 			panel_soy = new JPanel();
 			panel_soy.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-			panel_soy.add(getBtnAtleta());
-			panel_soy.add(getBtnOrganizador());
+			panel_soy.add(getBtnVolverBienvenida());
 		}
 		return panel_soy;
 	}
-	public JButton getBtnAtleta() {
-		if (btnAtleta == null) {
-			btnAtleta = new JButton("Soy un Atleta");
-			btnAtleta.setEnabled(false);
+	public JButton getBtnVolverBienvenida() {
+		if (btnVolverBienvenida == null) {
+			btnVolverBienvenida = new JButton("Volver a pagina de bienvenida");
+			btnVolverBienvenida.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					
+					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg1");
+					getTxtPCompeticiones().setText("");
+					btnVolverBienvenida.setEnabled(false);
+				}
+			});
+			btnVolverBienvenida.setEnabled(false);
 		}
-		return btnAtleta;
-	}
-	public JButton getBtnOrganizador() {
-		if (btnOrganizador == null) {
-			btnOrganizador = new JButton("Soy un Organizador");
-			btnOrganizador.setEnabled(false);
-		}
-		return btnOrganizador;
+		return btnVolverBienvenida;
 	}
 	public JPanel getPanel_card() {
 		if (panel_card == null) {
 			panel_card = new JPanel();
 			panel_card.setLayout(new CardLayout(0, 0));
-			panel_card.add(getPanel_atleta(), "name_2076409144306400");
-			panel_card.add(getPanel_organizador(), "name_2076409154311600");
-			panel_card.add(getPanel_default(), "name_2077158837437300");
+			panel_card.add(getPanel_default(), "Pg1");
+			panel_card.add(getPanel_atleta(), "Pg2");
+			panel_card.add(getPanel_organizador(), "Pg3");
+			
 		}
 		return panel_card;
 	}
@@ -196,6 +200,14 @@ public class MainWindow extends JFrame {
 	public JButton getBtnAtletaBienvenida() {
 		if (btnAtletaBienvenida == null) {
 			btnAtletaBienvenida = new JButton("Atleta");
+			btnAtletaBienvenida.addActionListener(new ActionListener() {
+				
+				public void actionPerformed(ActionEvent e) {
+					btnVolverBienvenida.setEnabled(true);
+					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg2");
+					
+				}
+			});
 			
 			btnAtletaBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnAtletaBienvenida.setBounds(219, 354, 183, 47);
@@ -205,6 +217,13 @@ public class MainWindow extends JFrame {
 	public JButton getBtnOrganizadorBienvenida() {
 		if (btnOrganizadorBienvenida == null) {
 			btnOrganizadorBienvenida = new JButton("Organizador");
+			btnOrganizadorBienvenida.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					btnVolverBienvenida.setEnabled(true);
+					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg3");
+					
+				}
+			});
 			btnOrganizadorBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnOrganizadorBienvenida.setBounds(433, 354, 183, 47);
 		}
@@ -212,7 +231,7 @@ public class MainWindow extends JFrame {
 	}
 	public JLabel getLblEmailAtleta() {
 		if (lblEmailAtleta == null) {
-			lblEmailAtleta = new JLabel("Introduzca el email con el que se registr\u00F3:");
+			lblEmailAtleta = new JLabel("Introduzca el email con el que se registro:");
 			lblEmailAtleta.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			lblEmailAtleta.setBounds(10, 418, 307, 34);
 		}
@@ -281,4 +300,6 @@ public class MainWindow extends JFrame {
 		}
 		return btnRegistroAtleta;
 	}
+	
+			
 }

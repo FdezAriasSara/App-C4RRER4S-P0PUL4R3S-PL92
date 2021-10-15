@@ -1,13 +1,14 @@
 package uo.ips.application.business.pago.crud;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
 import alb.util.assertion.Argument;
-import alb.util.file.FileUtil;
+
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.pago.PagoDto;
@@ -50,7 +51,7 @@ public class PagarConTarjeta {
 			pago.pagoId = UUID.randomUUID().toString();
 			pagoPst.setString(1, pago.idAtleta);
 			pagoPst.setString(2, pago.pagoId);
-			pagoPst.setDate(3, pago.fechaPago);
+			pagoPst.setDate(3, Date.valueOf(pago.fechaPago));
 			pagoPst.setLong(4, pago.importe);//el importe sale de la cuota de la inscripición
 			
 			pagoPst.executeQuery(REALIZAR_PAGO);
@@ -75,7 +76,9 @@ public class PagarConTarjeta {
 			// Cambio de 'Pre-inscrito' a 'Inscrito'
 			cambiarEstadoPst = c.prepareStatement(CAMBIAR_ESTADO_INSCRIPCION);
 			cambiarEstadoPst.setString(1, pago.idAtleta);
-			cambiarEstadoPst.setString(2, pago.idCompeticion);
+
+			cambiarEstadoPst.setString(2, this.idInscripcion);
+
 			cambiarEstadoPst.executeQuery(CAMBIAR_ESTADO_INSCRIPCION);
 
 			emitirJustificante(pago);

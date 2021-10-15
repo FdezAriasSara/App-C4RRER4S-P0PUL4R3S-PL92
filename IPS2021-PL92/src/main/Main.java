@@ -2,7 +2,7 @@ package main;
 
 import java.awt.EventQueue;
 
-import controller.CompeticionController;
+import controller.*;
 import gui.MainWindow;
 import uo.ips.application.business.BusinessFactory;
 
@@ -17,7 +17,7 @@ public class Main {
 				try {
 					MainWindow frame = new MainWindow();
 					CompeticionController cc = new CompeticionController(frame, BusinessFactory.forCompeticionCrudService() );
-					cc.initActions();
+					InscripcionController ii = new InscripcionController(frame, BusinessFactory.forInscripcionCrudService());
 					
 					frame.setVisible(true);
 				} catch (Exception e) {
