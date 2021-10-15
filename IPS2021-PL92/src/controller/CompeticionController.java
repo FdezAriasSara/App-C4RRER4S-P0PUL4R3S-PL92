@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 
 import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
@@ -28,29 +27,36 @@ public class CompeticionController {
 		
 		mainW.getBtnListarCompeticionesAbiertas().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
-				String allComp = "";
-				
-				try {
-					competiciones = competicionModel.ListarCompeticionesInscripcionesAbiertas();
-					
-				} catch (BusinessException e1) {
-					mainW.getLblError().setText("Problemas al listar las carreras");
-				}
-				
-				for(CompeticionDto c : competiciones) {
-					allComp += c.toString() + "\n\n";
-				}
-				
-				mainW.getTxtPCompeticiones().setEditable(true);
-				
-				mainW.getTxtPCompeticiones().setText(allComp);
-				
-				mainW.getTxtPCompeticiones().setEditable(false);
+				initBotonListarComp();
 			}
+			
 		});
 		
+	}
+	
+	
+	private void initBotonListarComp() {
+		
+		List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
+		String allComp = "";
+		
+		try {
+			competiciones = competicionModel.ListarCompeticionesInscripcionesAbiertas();
+			
+		} catch (BusinessException e1) {
+			mainW.getLblError().setText("Problemas al listar las carreras");
+		}
+		
+		for(CompeticionDto c : competiciones) {
+			allComp += c.toString() + "\n\n";
+		}
+		
+		mainW.getTxtPCompeticiones().setEditable(true);
+		
+		mainW.getTxtPCompeticiones().setText(allComp);
+		
+		mainW.getTxtPCompeticiones().setEditable(false);
+	
 	}
 	
 	

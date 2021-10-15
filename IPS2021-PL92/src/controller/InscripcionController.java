@@ -8,8 +8,6 @@ import javax.swing.JOptionPane;
 import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
-import uo.ips.application.business.competicion.CompeticionCrudService;
-
 public class InscripcionController {
 	
 	private MainWindow mainW;
