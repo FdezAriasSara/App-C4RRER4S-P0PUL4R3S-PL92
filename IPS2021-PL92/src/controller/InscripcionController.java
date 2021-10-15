@@ -42,8 +42,6 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 				
 			
-				
-				
 				obtenerClasificacion(mainW.getTxtIDCompOrg().getText(), mainW.getCbCategoria().getSelectedItem().toString());
 			}
 		});
@@ -52,6 +50,10 @@ public class InscripcionController {
 	
 	private void obtenerClasificacion(String idCompeticion, String sexo) {
 		
+		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
+			mainW.getLblErrorOrg().setVisible(true);
+			mainW.getLblErrorOrg().setText("Error: ID vacío");
+		}
 		
 		int id = -1;
 		
