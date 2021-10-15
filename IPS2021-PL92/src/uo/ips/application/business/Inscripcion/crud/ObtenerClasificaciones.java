@@ -15,7 +15,10 @@ public class ObtenerClasificaciones {
 	
 
 
-	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE i.estado = 'TERMINADA' and idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+
+	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+	private String SQL_Existe_Comp = "SELECT * FROM Competicion WHERE idCompeticion = ?";
+
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
@@ -30,9 +33,9 @@ public class ObtenerClasificaciones {
 	
 	
 
-	public ObtenerClasificaciones(int idCompeticion, String sexo) {
+	public ObtenerClasificaciones(int idCompeticion, String sexo) throws BusinessException {
 		if(!sexo.equals("masculino") && !sexo.equals("femenino")) {
-			throw new RuntimeException("Sexo invalido introducido al obtener clasificaciones.");
+			throw new BusinessException("Sexo invalido introducido al obtener clasificaciones.");
 		}
 		
 		this.sexo = sexo;
@@ -48,9 +51,15 @@ public class ObtenerClasificaciones {
 			
 			c = Jdbc.getConnection();
 			
+
+			if(!competicionExiste()) {
+				throw new BusinessException("La competicion no existe");
+			}
 			if(!competicionHaTerminado()) {
 				throw new BusinessException("La competicion aun no terminó, por lo que no podemos crear la clasificacion.");
 			}
+			
+			
 			
 	
 			pst = c.prepareStatement(SQL);
@@ -81,6 +90,22 @@ public class ObtenerClasificaciones {
 		
 		
 		return inscripciones;
+	}
+	
+	
+	
+	private boolean competicionExiste() throws SQLException {
+		
+
+		pst = c.prepareStatement(SQL_Existe_Comp);
+		
+		pst.setInt(1,idCompeticion);
+		
+		rs = pst.executeQuery();
+		
+		return rs.next();
+		
+		
 	}
 	
 	private boolean competicionHaTerminado() throws SQLException {
