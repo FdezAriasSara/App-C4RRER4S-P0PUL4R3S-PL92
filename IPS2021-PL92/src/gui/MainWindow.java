@@ -1,15 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import uo.ips.application.business.BusinessException;
-import uo.ips.application.business.BusinessFactory;
-import uo.ips.application.business.competicion.CompeticionDto;
 
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -20,10 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
 
