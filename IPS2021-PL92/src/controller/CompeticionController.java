@@ -20,11 +20,11 @@ public class CompeticionController {
 	public CompeticionController(MainWindow main, CompeticionCrudService comMod) {
 		this.mainW = main;
 		this.competicionModel = comMod;
-		
+		this.initActions();
 	}
 	
 	
-	public void initActions() {
+	private void initActions() {
 		
 		mainW.getBtnListarCompeticionesAbiertas().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -50,27 +50,6 @@ public class CompeticionController {
 				mainW.getTxtPCompeticiones().setEditable(false);
 			}
 		});
-		
-		
-		mainW.getBtnInscribirse().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				inscribirse(mainW.getTxtFEmail().getText(),mainW.getTxtFIDCompeticion().getText());				
-			}
-		});
-	}
-	
-	protected void inscribirse(String emailAtleta, String idCompeticionString) {
-		try {
-			int idCompeticion = Integer.parseInt(idCompeticionString);
-			competicionModel.inscribirAtleta(emailAtleta, idCompeticion);
-			JOptionPane.showMessageDialog(null, "Atleta Inscrito");
-			mainW.getLblError().setVisible(false);
-		} catch (BusinessException e) {
-			mainW.getLblError().setText("Error: " + e.getMessage());
-			mainW.getLblError().setVisible(true);
-		}
 		
 	}
 	

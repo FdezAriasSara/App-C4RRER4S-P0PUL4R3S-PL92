@@ -1,4 +1,4 @@
-package uo.ips.application.business.competicion.crud;
+package uo.ips.application.business.Inscripcion.crud;
 
 import java.sql.Connection;
 import java.sql.Date;
