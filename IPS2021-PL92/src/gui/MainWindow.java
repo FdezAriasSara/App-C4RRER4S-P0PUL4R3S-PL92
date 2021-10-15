@@ -18,7 +18,6 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
 import javax.swing.JComboBox;
 
 public class MainWindow extends JFrame {
