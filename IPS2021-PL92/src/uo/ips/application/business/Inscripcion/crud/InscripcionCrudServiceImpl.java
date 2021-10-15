@@ -1,5 +1,7 @@
 package uo.ips.application.business.Inscripcion.crud;
 
+import java.util.List;
+
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
@@ -22,8 +24,13 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService{
 
 	@Override
 	public InscripcionDto anadirInscripción(InscripcionDto solicitud) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public List<InscripcionDto> obtenerClasificaciones(int idCompeticion, String sexo) throws BusinessException {
+		return new ObtenerClasificaciones(idCompeticion, sexo).execute();
 	}
 	
 	

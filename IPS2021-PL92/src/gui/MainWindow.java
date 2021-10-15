@@ -18,6 +18,8 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
+import javax.swing.JComboBox;
 
 public class MainWindow extends JFrame {
 
@@ -45,6 +47,13 @@ public class MainWindow extends JFrame {
 	private JButton btnInscribirse;
 	private JLabel lblError;
 	private JButton btnRegistroAtleta;
+	private JLabel lblIDCompeticionOrg;
+	private JTextField txtIDCompOrg;
+	private JLabel lblNewLabel;
+	private JComboBox<String> cbCategoria;
+	private JButton btnGenerarClasificacion;
+	private JLabel lblErrorOrg;
+	private JTextPane txtPClasificacion;
 
 	
 	/**
@@ -115,6 +124,14 @@ public class MainWindow extends JFrame {
 	public JPanel getPanel_organizador() {
 		if (panel_organizador == null) {
 			panel_organizador = new JPanel();
+			panel_organizador.setLayout(null);
+			panel_organizador.add(getLblIDCompeticionOrg());
+			panel_organizador.add(getTxtIDCompOrg());
+			panel_organizador.add(getLblNewLabel());
+			panel_organizador.add(getCbCategoria());
+			panel_organizador.add(getBtnGenerarClasificacion());
+			panel_organizador.add(getLblErrorOrg());
+			panel_organizador.add(getTxtPClasificacion());
 		}
 		return panel_organizador;
 	}
@@ -259,6 +276,69 @@ public class MainWindow extends JFrame {
 		}
 		return btnRegistroAtleta;
 	}
-	
+	public JLabel getLblIDCompeticionOrg() {
+		if (lblIDCompeticionOrg == null) {
+			lblIDCompeticionOrg = new JLabel("Introduzca el ID de la competicion:");
+			lblIDCompeticionOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			lblIDCompeticionOrg.setBounds(10, 314, 246, 35);
+		}
+		return lblIDCompeticionOrg;
+	}
+	public JTextField getTxtIDCompOrg() {
+		if (txtIDCompOrg == null) {
+			txtIDCompOrg = new JTextField();
+			txtIDCompOrg.setHorizontalAlignment(SwingConstants.CENTER);
+			txtIDCompOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			txtIDCompOrg.setBounds(254, 314, 50, 29);
+			txtIDCompOrg.setColumns(10);
+		}
+		return txtIDCompOrg;
+	}
+	public JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("Categor\u00EDa (sexo):");
+			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			lblNewLabel.setBounds(10, 359, 140, 35);
+		}
+		return lblNewLabel;
+	}
+	public JComboBox<String> getCbCategoria() {
+		if (cbCategoria == null) {
+			cbCategoria = new JComboBox<String>();
+			cbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			cbCategoria.setBounds(147, 364, 157, 29);
 			
+			cbCategoria.addItem("masculino");
+			cbCategoria.addItem("femenino");
+		}
+		return cbCategoria;
+	}
+	public JButton getBtnGenerarClasificacion() {
+		if (btnGenerarClasificacion == null) {
+			btnGenerarClasificacion = new JButton("Generar clasificacion");
+			
+			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnGenerarClasificacion.setBounds(10, 404, 294, 35);
+		}
+		return btnGenerarClasificacion;
+	}
+	public JLabel getLblErrorOrg() {
+		if (lblErrorOrg == null) {
+			lblErrorOrg = new JLabel("Error:");
+			lblErrorOrg.setVisible(false);
+			lblErrorOrg.setForeground(Color.RED);
+			lblErrorOrg.setFont(new Font("Tahoma", Font.BOLD, 15));
+			lblErrorOrg.setBounds(10, 449, 858, 35);
+		}
+		return lblErrorOrg;
+	}
+	public JTextPane getTxtPClasificacion() {
+		if (txtPClasificacion == null) {
+			txtPClasificacion = new JTextPane();
+			txtPClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			txtPClasificacion.setEditable(false);
+			txtPClasificacion.setBounds(10, 10, 858, 294);
+		}
+		return txtPClasificacion;
+	}
 }

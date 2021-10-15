@@ -32,6 +32,8 @@ public class CompeticionController {
 			
 		});
 		
+		
+		
 	}
 	
 	
@@ -53,6 +55,7 @@ public class CompeticionController {
 		
 		mainW.getTxtPCompeticiones().setEditable(true);
 		
+		mainW.getTxtPCompeticiones().setText("");
 		mainW.getTxtPCompeticiones().setText(allComp);
 		
 		mainW.getTxtPCompeticiones().setEditable(false);
