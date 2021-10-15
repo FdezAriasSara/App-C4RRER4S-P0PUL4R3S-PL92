@@ -76,7 +76,8 @@ public class MainWindow extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					
 					
-					((CardLayout)getPanel_card().getLayout()).show(panel_card, "pg_bnv");
+					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg1");
+					getTxtPCompeticiones().setText("");
 					btnVolverBienvenida.setEnabled(false);
 				}
 			});
@@ -88,9 +89,9 @@ public class MainWindow extends JFrame {
 		if (panel_card == null) {
 			panel_card = new JPanel();
 			panel_card.setLayout(new CardLayout(0, 0));
-			panel_card.add(getPanel_default(), "Pg_bnv");
-			panel_card.add(getPanel_atleta(), "Pg_atl");
-			panel_card.add(getPanel_organizador(), "Pg_org");
+			panel_card.add(getPanel_default(), "Pg1");
+			panel_card.add(getPanel_atleta(), "Pg2");
+			panel_card.add(getPanel_organizador(), "Pg3");
 			
 		}
 		return panel_card;
@@ -189,7 +190,8 @@ public class MainWindow extends JFrame {
 				
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
-					((CardLayout)getPanel_card().getLayout()).show(panel_card, "pg_atl");
+					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg2");
+					
 				}
 			});
 			
@@ -204,7 +206,8 @@ public class MainWindow extends JFrame {
 			btnOrganizadorBienvenida.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
-					((CardLayout)getPanel_card().getLayout()).show(panel_card, "pg_org");
+					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg3");
+					
 				}
 			});
 			btnOrganizadorBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -214,7 +217,7 @@ public class MainWindow extends JFrame {
 	}
 	public JLabel getLblEmailAtleta() {
 		if (lblEmailAtleta == null) {
-			lblEmailAtleta = new JLabel("Introduzca el email con el que se registr\u00F3:");
+			lblEmailAtleta = new JLabel("Introduzca el email con el que se registro:");
 			lblEmailAtleta.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			lblEmailAtleta.setBounds(10, 418, 307, 34);
 		}
