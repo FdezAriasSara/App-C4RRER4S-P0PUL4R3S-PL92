@@ -52,7 +52,7 @@ public class InscribirAtletaPorEmail {
 		}
 		
 		
-		int idCategoria = BusinessFactory.forAtletaCrudService().CalcularCategoria(idAtleta, idCompeticion);
+		this.idCategoria = BusinessFactory.forAtletaCrudService().CalcularCategoria(idAtleta, idCompeticion);
 		
 		
 		new InscribirAtleta(idCompeticion,idAtleta,idCategoria).execute();

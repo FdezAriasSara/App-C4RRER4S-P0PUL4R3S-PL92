@@ -14,7 +14,7 @@ public class InscribirAtleta {
 	private String SQL = "INSERT INTO Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria,posicionFinal,tiempoQueTarda) VALUES (?,?,?,?,?,?,?,?)";
 	private String SQLGetInscripcion = "SELECT * FROM Inscripcion WHERE idCompeticion = ? AND idAtleta = ?";
 	private String SQLGetNumeroPlazas = "SELECT plazasDisponibles FROM Competicion WHERE idCompeticion = ?";
-	private String SQLGetNumeroInscritos = "SELECT Count(*) FROM Inscritos WhERE idCompeticion = ?";
+	//private String SQLGetNumeroInscritos = "SELECT Count(*) FROM Inscritos WhERE idCompeticion = ?";
 	private int  idCompeticion;
 	private int idAtleta;
 	private int idCategoria;
