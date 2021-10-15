@@ -68,7 +68,7 @@ public class CompeticionController {
 			JOptionPane.showMessageDialog(null, "Atleta Inscrito");
 			mainW.getLblError().setVisible(false);
 		} catch (BusinessException e) {
-			mainW.getLblError().setText(e.getMessage());
+			mainW.getLblError().setText("Error: " + e.getMessage());
 			mainW.getLblError().setVisible(true);
 		}
 		
