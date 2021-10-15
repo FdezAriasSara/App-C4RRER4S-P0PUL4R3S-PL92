@@ -12,7 +12,6 @@ import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
 
 public class CompeticionController {
-	
 	private MainWindow mainW;
 	private CompeticionCrudService competicionModel ;
 	
@@ -32,40 +31,13 @@ public class CompeticionController {
 			
 		});
 		
+		
+		
 	}
 	
 	
 	private void initBotonListarComp() {
 		
-<<<<<<< HEAD
-		mainW.getBtnListarCompeticionesAbiertas().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
-				String allComp = "";
-				
-				try {
-					competiciones = competicionModel.ListarCompeticionesInscripcionesAbiertas();
-					
-				} catch (BusinessException e1) {
-					mainW.setErrorAlListarCompeticiones();
-				}
-				
-				for(CompeticionDto c : competiciones) {
-					allComp += c.toString() + "\n\n";
-				}
-				mainW.presentarCompeticiones(allComp);
-			}
-		});
-		
-		
-		///////////////////////////////////////////////////////////////
-		
-		
-		
-		
-		
-=======
 		List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
 		String allComp = "";
 		
@@ -82,13 +54,15 @@ public class CompeticionController {
 		
 		mainW.getTxtPCompeticiones().setEditable(true);
 		
+		mainW.getTxtPCompeticiones().setText("");
 		mainW.getTxtPCompeticiones().setText(allComp);
 		
 		mainW.getTxtPCompeticiones().setEditable(false);
 	
->>>>>>> refs/remotes/origin/master
 	}
 	
+	
+
 	
 
 }
