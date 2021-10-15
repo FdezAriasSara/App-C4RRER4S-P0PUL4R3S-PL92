@@ -21,6 +21,7 @@ CREATE TABLE `Competicion` (
 	`plazasDisponibles` INT NOT NULL,
     `estado` ENUM('PENDIENTE','TERMINADA') NOT NULL,
     `cuentaBanacaria` VARCHAR(255) NOT NULL,
+    `precio_inscripcion` INT NOT NULL,
 	PRIMARY KEY (`idCompeticion`)
 );
 
