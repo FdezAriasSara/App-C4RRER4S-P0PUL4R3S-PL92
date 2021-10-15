@@ -3,7 +3,6 @@ package uo.ips.application.business.competicion.crud;
 import java.util.List;
 
 import uo.ips.application.business.BusinessException;
-import uo.ips.application.business.Inscripcion.crud.InscribirAtletaPorEmail;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
 
