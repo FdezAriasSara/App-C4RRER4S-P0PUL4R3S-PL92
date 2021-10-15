@@ -15,7 +15,7 @@ public class ObtenerClasificaciones {
 	
 
 
-	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE i.estado = 'TERMINADA' and idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
