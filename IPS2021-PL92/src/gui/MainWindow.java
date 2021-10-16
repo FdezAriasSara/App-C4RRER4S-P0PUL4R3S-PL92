@@ -53,6 +53,7 @@ public class MainWindow extends JFrame {
 	private JButton btnGenerarClasificacion;
 	private JLabel lblErrorOrg;
 	private JTextPane txtPClasificacion;
+	private JButton btnObtenerAtletas;
 
 	
 	/**
@@ -131,6 +132,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnGenerarClasificacion());
 			panel_organizador.add(getLblErrorOrg());
 			panel_organizador.add(getTxtPClasificacion());
+			panel_organizador.add(getBtnObtenerAtletas());
 		}
 		return panel_organizador;
 	}
@@ -339,5 +341,13 @@ public class MainWindow extends JFrame {
 			txtPClasificacion.setBounds(10, 10, 858, 294);
 		}
 		return txtPClasificacion;
+	}
+	public JButton getBtnObtenerAtletas() {
+		if (btnObtenerAtletas == null) {
+			btnObtenerAtletas = new JButton("Obtener Atletas");
+			btnObtenerAtletas.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnObtenerAtletas.setBounds(458, 404, 294, 35);
+		}
+		return btnObtenerAtletas;
 	}
 }
