@@ -67,22 +67,22 @@ public class PagarConTarjeta {
 			// Realización del pago una vez sabemos que existe la inscripción
 			pagoPst = c.prepareStatement(REALIZAR_PAGO);
 			pago.pagoId = UUID.randomUUID().toString();
-			pagoPst.setString(1, pago.idAtleta);
+			pagoPst.setInt(1, pago.idAtleta);
 			pagoPst.setString(2, pago.pagoId);
 			pago.fechaPago = LocalDate.now();
 			Date fechaPago = Date.valueOf(pago.fechaPago);
 			pagoPst.setDate(3, fechaPago);
 			pagoPst.setLong(4, pago.importe);// el importe sale de la cuota de la inscripición
-			pagoPst.setString(5, pago.idCompeticion);
+			pagoPst.setInt(5, pago.idCompeticion);
 			pagoPst.executeUpdate();
 
 			simularPago();
 
 			// Cambio de 'Pre-inscrito' a 'Inscrito'
 			cambiarEstadoPst = c.prepareStatement(CAMBIAR_ESTADO_INSCRIPCION);
-			cambiarEstadoPst.setString(1, pago.idAtleta);
+			cambiarEstadoPst.setInt(1, pago.idAtleta);
 
-			cambiarEstadoPst.setString(2, pago.idCompeticion);
+			cambiarEstadoPst.setInt(2, pago.idCompeticion);
 
 			cambiarEstadoPst.executeUpdate();
 
@@ -97,7 +97,7 @@ public class PagarConTarjeta {
 			Jdbc.close(c);
 
 		}
-		return new PagoDto();
+		return this.pago;
 	}
 /**
  * Comprueba el estado de la inscripción.
@@ -108,8 +108,8 @@ public class PagarConTarjeta {
 		ResultSet rsInscripcion = null;
 		try {
 			encontrarIdPst = c.prepareStatement(ESTADO_ACTUAL_INSCRIPCION);
-			encontrarIdPst.setString(1, pago.idAtleta);
-			encontrarIdPst.setString(2, pago.idCompeticion);
+			encontrarIdPst.setInt(1, pago.idAtleta);
+			encontrarIdPst.setInt(2, pago.idCompeticion);
 			rsInscripcion = encontrarIdPst.executeQuery();
 			if (rsInscripcion.next()) {
 				if (rsInscripcion.getString(1).equals("PRE-INSCRITO"))
@@ -131,8 +131,8 @@ public class PagarConTarjeta {
 		ResultSet rsInscripcion = null;
 		try {
 			encontrarIdPst = c.prepareStatement(EXISTE_INSCRIPCION);
-			encontrarIdPst.setString(1, pago.idAtleta);
-			encontrarIdPst.setString(2, pago.idCompeticion);
+			encontrarIdPst.setInt(1, pago.idAtleta);
+			encontrarIdPst.setInt(2, pago.idCompeticion);
 			rsInscripcion = encontrarIdPst.executeQuery();
 			if (rsInscripcion.next()) {
 				return true;
