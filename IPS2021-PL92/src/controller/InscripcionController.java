@@ -124,14 +124,21 @@ public class InscripcionController {
 	
 
 	private void inscribirse(String emailAtleta, String idCompeticionString) {
-		try {
-			int idCompeticion = Integer.parseInt(idCompeticionString);
-			incCrud.inscribirAtleta(emailAtleta, idCompeticion);
-			JOptionPane.showMessageDialog(null, "Atleta Inscrito");
-			mainW.getLblError().setVisible(false);
-		} catch (BusinessException e) {
-			mainW.getLblError().setText("Error: " + e.getMessage());
+		if(emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank() || idCompeticionString.isEmpty()) {
 			mainW.getLblError().setVisible(true);
+			mainW.getLblError().setText("Error: Algún campo está vacio");
+		}
+		else {
+			try {
+				int idCompeticion = Integer.parseInt(idCompeticionString);
+				incCrud.inscribirAtleta(emailAtleta, idCompeticion);
+				JOptionPane.showMessageDialog(null, "Atleta Inscrito");
+				mainW.getLblError().setVisible(false);
+			} catch (BusinessException e) {
+				mainW.getLblError().setText("Error: " + e.getMessage());
+				mainW.getLblError().setVisible(true);
+			}
+			
 		}
 		
 	}

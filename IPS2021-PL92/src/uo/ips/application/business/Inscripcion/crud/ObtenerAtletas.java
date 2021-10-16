@@ -44,12 +44,12 @@ public class ObtenerAtletas {
 			pst.setInt(1, idCompeticion);
 
 			rs = pst.executeQuery();
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				res += "dni: " + rs.getString("dni");
 				res += " - nombre: " + rs.getString("name");
 				res += " - categoria: " + rs.getString("idCategoria");
-				res+= " - fecha de inscripcion: " + rs.getString("fechaInscripcion");
+				res += " - fecha de inscripcion: " + rs.getString("fechaInscripcion");
 				res += " - estado: " + rs.getString("estado") + "\n";
 			}
 
@@ -60,7 +60,6 @@ public class ObtenerAtletas {
 		} finally {
 			Jdbc.close(rs, pst, c);
 		}
-
 
 		return res;
 	}
