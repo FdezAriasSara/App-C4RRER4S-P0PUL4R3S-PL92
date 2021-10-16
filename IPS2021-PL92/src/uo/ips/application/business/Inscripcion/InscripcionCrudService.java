@@ -3,6 +3,7 @@ package uo.ips.application.business.Inscripcion;
 import java.util.List;
 
 import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.atleta.AtletaDto;
 
 public interface InscripcionCrudService {
 	/**
@@ -18,5 +19,5 @@ public interface InscripcionCrudService {
 	
 	List<InscripcionDto> obtenerClasificaciones(int idCompeticion, String sexo) throws BusinessException;
 
-	
+	String obtenerAtletas(int idCompeticion)throws BusinessException;
 }
