@@ -23,7 +23,7 @@ public class PagarConTransferencia {
 		this.idCompeticon = idCompeticion;
 	}
 	
-	public CompeticionDto execute() throws SQLException, BusinessException {
+	public CompeticionDto execute() throws BusinessException {
 		cambiarEstadoInscripcion();
 		return datos_Transferencia();
 	}

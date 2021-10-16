@@ -1,6 +1,7 @@
 package uo.ips.application.business.pago;
 
 import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.competicion.CompeticionDto;
 
 public interface PagoCrudService {
 	/**
@@ -16,5 +17,5 @@ public interface PagoCrudService {
 	 * @return DTO del pago realizado
 	 * @throws BusinessException 
 	 */
-	PagoDto pagarConTransferencia(PagoDto pago,TransferenciaDto transferencia) throws BusinessException;
+	CompeticionDto pagarConTransferencia(int idAtleta, int idCompeticion) throws BusinessException;
 }
