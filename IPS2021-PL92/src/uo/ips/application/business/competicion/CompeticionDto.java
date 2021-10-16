@@ -44,8 +44,8 @@ public class CompeticionDto {
 				" - Tipo de competicion: " + tipoCompeticion + 
 				" - Distancia en KM: " + distanciaKm +
 				" - Plazas disponibles: " + plazasDisponibles + 
-				" - Inicio periodo de inscripci�n: " + plazoInicioInscripcion + 
-				" - Fin periodo de inscripci�n: " + plazoFinInscripcion +
+				" - Inicio periodo de inscripcion: " + plazoInicioInscripcion + 
+				" - Fin periodo de inscripcion: " + plazoFinInscripcion +
 				" - Cuota: "+ cuota
 				;
 		
