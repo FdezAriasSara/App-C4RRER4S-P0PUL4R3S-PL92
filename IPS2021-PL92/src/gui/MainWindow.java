@@ -90,6 +90,7 @@ public class MainWindow extends JFrame {
 					
 					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg1");
 					getTxtPCompeticiones().setText("");
+					getTxtPClasificacion().setText("");
 					btnVolverBienvenida.setEnabled(false);
 				}
 			});
