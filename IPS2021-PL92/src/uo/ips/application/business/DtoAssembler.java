@@ -29,7 +29,7 @@ public class DtoAssembler {
 		
 		CompeticionDto dto = new CompeticionDto();
 		if(m.next()) {		
-			dto.idCompeticion = m.getString("idCompeticion");
+			dto.idCompeticion = m.getInt("idCompeticion");
 			dto.nombre =  m.getString("nombre");
 			dto.fechaCompeticion = m.getDate("fechaCompeticion");
 			dto.organizador = m.getString("organizador");

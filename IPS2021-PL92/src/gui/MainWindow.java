@@ -53,6 +53,9 @@ public class MainWindow extends JFrame {
 	private JButton btnGenerarClasificacion;
 	private JLabel lblErrorOrg;
 	private JTextPane txtPClasificacion;
+	private JPanel panel_pago;
+	private JButton btTarjeta;
+	private JButton btTransferencia;
 
 	
 	/**
@@ -100,6 +103,7 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_default(), "Pg1");
 			panel_card.add(getPanel_atleta(), "Pg2");
 			panel_card.add(getPanel_organizador(), "Pg3");
+			panel_card.add(getPanel_pago(), "Pg4");
 			
 		}
 		return panel_card;
@@ -339,5 +343,36 @@ public class MainWindow extends JFrame {
 			txtPClasificacion.setBounds(10, 10, 858, 294);
 		}
 		return txtPClasificacion;
+	}
+	private JPanel getPanel_pago() {
+		if (panel_pago == null) {
+			panel_pago = new JPanel();
+			panel_pago.setLayout(null);
+			
+			JLabel lbEligeTipoPago = new JLabel("Elija tipo de pago");
+			lbEligeTipoPago.setFont(new Font("Tahoma", Font.BOLD, 20));
+			lbEligeTipoPago.setHorizontalAlignment(SwingConstants.CENTER);
+			lbEligeTipoPago.setBounds(253, 11, 336, 56);
+			panel_pago.add(lbEligeTipoPago);
+			panel_pago.add(getBtTarjeta());
+			panel_pago.add(getBtTransferencia());
+		}
+		return panel_pago;
+	}
+	public JButton getBtTarjeta() {
+		if (btTarjeta == null) {
+			btTarjeta = new JButton("Tarjeta");
+			btTarjeta.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btTarjeta.setBounds(191, 427, 124, 37);
+		}
+		return btTarjeta;
+	}
+	public JButton getBtTransferencia() {
+		if (btTransferencia == null) {
+			btTransferencia = new JButton("Transferencia");
+			btTransferencia.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btTransferencia.setBounds(476, 427, 124, 37);
+		}
+		return btTransferencia;
 	}
 }

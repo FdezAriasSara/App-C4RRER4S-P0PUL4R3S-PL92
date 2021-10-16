@@ -3,7 +3,7 @@ package uo.ips.application.business.competicion;
 import java.sql.Date;
 
 public class CompeticionDto {
-	public String idCompeticion;
+	public int idCompeticion;
 	public String nombre;
 	public Date fechaCompeticion;
 	public String organizador;
@@ -17,7 +17,7 @@ public class CompeticionDto {
 	
 	
 	
-	public CompeticionDto(String idCompeticion, String nombre, Date fechaCompeticion, 
+	public CompeticionDto(int idCompeticion, String nombre, Date fechaCompeticion, 
 			String organizador,Date plazoInicioInscripcion, Date plazoFinInscripcion ,
 			String tipoCompeticion,int distanciaKm,int plazasDisponibles,double cuota
 			 ) {
@@ -54,7 +54,8 @@ public class CompeticionDto {
 
 	
 	public CompeticionDto() {
-		idCompeticion=null;
+		idCompeticion=0
+				;
 		nombre=null;
 		fechaCompeticion=null;
 		organizador = null;

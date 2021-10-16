@@ -7,6 +7,8 @@ import uo.ips.application.business.atleta.crud.AtletaCrudServiceImpl;
 import uo.ips.application.business.atleta.crud.CalcularCategoria;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.crud.CompeticionCrudServiceImpl;
+import uo.ips.application.business.pago.PagoCrudService;
+import uo.ips.application.business.pago.crud.PagoCrudServiceImpl;
 
 public class BusinessFactory {
 	
@@ -24,5 +26,9 @@ public class BusinessFactory {
 	
 	public static InscripcionCrudService forInscripcionCrudService() {
 		return new InscripcionCrudServiceImpl();
+	}
+	
+	public static PagoCrudService forPagoCrudService() {
+		return new PagoCrudServiceImpl();
 	}
 }
