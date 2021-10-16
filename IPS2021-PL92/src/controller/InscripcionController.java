@@ -50,7 +50,7 @@ public class InscripcionController {
 	
 	private void obtenerClasificacion(String idCompeticion, String sexo) {
 		
-		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
+		if(idCompeticion.isEmpty() || idCompeticion.isEmpty()) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID vacío");
 		}
