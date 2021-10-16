@@ -56,6 +56,7 @@ public class MainWindow extends JFrame {
 	private JPanel panel_pago;
 	private JButton btTarjeta;
 	private JButton btTransferencia;
+	private JButton btnObtenerAtletas;
 
 	
 	/**
@@ -135,6 +136,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnGenerarClasificacion());
 			panel_organizador.add(getLblErrorOrg());
 			panel_organizador.add(getTxtPClasificacion());
+			panel_organizador.add(getBtnObtenerAtletas());
 		}
 		return panel_organizador;
 	}
@@ -344,6 +346,7 @@ public class MainWindow extends JFrame {
 		}
 		return txtPClasificacion;
 	}
+
 	private JPanel getPanel_pago() {
 		if (panel_pago == null) {
 			panel_pago = new JPanel();
@@ -374,5 +377,14 @@ public class MainWindow extends JFrame {
 			btTransferencia.setBounds(476, 427, 124, 37);
 		}
 		return btTransferencia;
+	}
+
+	public JButton getBtnObtenerAtletas() {
+		if (btnObtenerAtletas == null) {
+			btnObtenerAtletas = new JButton("Obtener Atletas");
+			btnObtenerAtletas.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnObtenerAtletas.setBounds(458, 404, 294, 35);
+		}
+		return btnObtenerAtletas;
 	}
 }

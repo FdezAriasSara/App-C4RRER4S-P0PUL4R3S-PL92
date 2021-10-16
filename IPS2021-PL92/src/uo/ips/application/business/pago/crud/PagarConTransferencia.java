@@ -12,9 +12,8 @@ import uo.ips.application.business.competicion.CompeticionDto;
 
 public class PagarConTransferencia {
 	//private String REALIZAR_PAGO = "INSERT INTO Pago (idAtleta,idPago,fechaPago,importe) VALUES (?,?,?,?)";
-	private String SQL_CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripción WHERE idAtleta=? and idInscripcion=? SET estado='PENDIENTE DE PAGO'";
-	private String  SQL_ENCONTRAR_ID_INSCRIPCION = "SELECT idInscripcion WHERE idAtleta=? and idCompetición=?";
-	private String  SQL_BUSCAR_DATOS_TRANSFERENCIA = "SELECT cuentaBancaria, cuota from Competicion where idCompeticion = ?";
+	private String SQL_CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripcion SET estado='PENDIENTE DE PAGO' WHERE idAtleta=? and idCompeticion=?";
+	private String  SQL_BUSCAR_DATOS_TRANSFERENCIA = "SELECT * from Competicion where idCompeticion = ?";
 	private int idAtleta;
 	private int idCompeticon;
 	
@@ -55,36 +54,23 @@ public class PagarConTransferencia {
 	private void cambiarEstadoInscripcion() throws BusinessException {
 		Connection c = null;
 		PreparedStatement pst = null;
-		PreparedStatement pst2 = null;
 		ResultSet rs = null;
 		
 		try {
 			c = Jdbc.getConnection();
 
-			pst = c.prepareStatement( SQL_ENCONTRAR_ID_INSCRIPCION);
-			pst2 = c.prepareStatement( SQL_CAMBIAR_ESTADO_INSCRIPCION);
+			pst = c.prepareStatement( SQL_CAMBIAR_ESTADO_INSCRIPCION);
 			
-			pst.setInt(1, idCompeticon);
-			pst.setInt(2, idAtleta);
-			pst.setInt(3, idCompeticon);
+			pst.setInt(2, idCompeticon);
 			
-			rs = pst.executeQuery();
-			
-			pst2.setInt(1, idCompeticon);
-			
-			if(rs.next()) {
-				pst2.setInt(2, rs.getInt(1));		
-				pst2.executeUpdate();
-			} else {
-				throw new BusinessException("Todavía no estás inscrito");
-			}
+			pst.setInt(1, idAtleta);		
+			pst.executeUpdate();
 			
 				
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
 			Jdbc.close(rs, pst, c);
-			Jdbc.close(pst2);
 		}
 	}
 }

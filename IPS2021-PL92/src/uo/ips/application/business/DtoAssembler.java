@@ -2,6 +2,8 @@ package uo.ips.application.business;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
@@ -24,6 +26,24 @@ public class DtoAssembler {
 		
 		return dto;
 	    }
+	
+	public static List<AtletaDto> toAtletaDtoList(ResultSet rs) throws SQLException{
+		List<AtletaDto> atletas = new ArrayList<AtletaDto>();
+		
+		while(rs.next()) {
+			AtletaDto dto = new AtletaDto();
+			dto.idAtleta = rs.getInt("idAtleta");
+			dto.dni = rs.getString("DNI");
+			dto.nombre = rs.getString("Name");
+			dto.apellido = rs.getString("Surname");
+			dto.email = rs.getString("Email");
+			dto.fechaNacimiento = rs.getDate("fechaNacimiento");
+			dto.sexo = rs.getString("sexo");
+			atletas.add(dto);
+		}
+		return atletas;
+		
+	}
 	
 	public static CompeticionDto toCompeticionDto(ResultSet m) throws SQLException, BusinessException {
 		
