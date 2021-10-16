@@ -12,6 +12,7 @@ import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
+import uo.ips.application.business.atleta.AtletaDto;
 public class InscripcionController {
 	
 	private MainWindow mainW;
@@ -46,6 +47,40 @@ public class InscripcionController {
 			}
 		});
 		
+		mainW.getBtnObtenerAtletas().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				obtenerAtletas(mainW.getTxtIDCompOrg().getText());
+				
+			}
+
+		});
+		
+	}
+	private void obtenerAtletas(String idCompeticion) {
+		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
+			mainW.getLblErrorOrg().setVisible(true);
+			mainW.getLblErrorOrg().setText("Error: ID vacío");
+		}else {
+			int id = -1;
+			try {
+				id = Integer.parseUnsignedInt(idCompeticion);
+				
+				String res  = incCrud.obtenerAtletas(id);
+				mainW.getTxtPClasificacion().setEditable(true);
+				mainW.getTxtPClasificacion().setText("");
+				mainW.getTxtPClasificacion().setText(res);
+				mainW.getTxtPClasificacion().setEditable(false);
+				
+			}catch (BusinessException e) {
+				mainW.getLblErrorOrg().setVisible(true);
+				mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
+			}catch(NumberFormatException e1) {
+				mainW.getLblErrorOrg().setVisible(true);
+				mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
+			}
+		}
 	}
 	
 	private void obtenerClasificacion(String idCompeticion, String sexo) {
