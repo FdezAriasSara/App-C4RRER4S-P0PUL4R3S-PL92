@@ -367,7 +367,7 @@ public class MainWindow extends JFrame {
 		if (btTarjeta == null) {
 			btTarjeta = new JButton("Tarjeta");
 			btTarjeta.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btTarjeta.setBounds(191, 427, 124, 37);
+			btTarjeta.setBounds(191, 427, 134, 37);
 		}
 		return btTarjeta;
 	}
@@ -375,7 +375,7 @@ public class MainWindow extends JFrame {
 		if (btTransferencia == null) {
 			btTransferencia = new JButton("Transferencia");
 			btTransferencia.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btTransferencia.setBounds(476, 427, 124, 37);
+			btTransferencia.setBounds(476, 427, 134, 37);
 		}
 		return btTransferencia;
 	}
