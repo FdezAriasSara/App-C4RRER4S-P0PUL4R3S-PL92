@@ -3,6 +3,7 @@ package controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -14,6 +15,7 @@ import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
+import uo.ips.application.business.pago.PagoDto;
 
 public class InscripcionController {
 
@@ -56,6 +58,38 @@ public class InscripcionController {
 			}
 
 		});
+		/*
+		 * Metodo para cambiar al panel de pago con tarjeta.
+		 */
+		mainW.getBtTarjeta().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+			
+				((CardLayout)mainW.getPnEscogerPago().getLayout()).show(mainW.getPnEscogerPago(), "pnTarj");
+			}
+		
+		});
+		/*
+		 * Método para EFECTUAR el pago tras meter datos de tarjeta bancaria.
+		 */
+		mainW.getBtnPagarTarjeta2().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PagoDto pagoDto =new PagoDto(LocalDate.now(), sesion.getIdAtleta(), sesion.getIdCompeticion());					
+					pagoDto=pagCrud.pagarConTarjeta(pagoDto);
+					JOptionPane.showMessageDialog(mainW,"Se ha realizado un pago.\n"+
+							pagoDto.toString());
+					((CardLayout)mainW.getPnEscogerPago().getLayout()).show(mainW.getPnEscogerPago(), "PnEscogerPag"); // restauramos el panel.
+					((CardLayout)mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1"); // Volvemos al panel principal.
+					
+				} catch (BusinessException ex) {
+					JOptionPane.showMessageDialog(null,ex.getMessage());
+				}
+			}
+		});
 
 		mainW.getBtTransferencia().addActionListener(new ActionListener() {
 
@@ -74,7 +108,7 @@ public class InscripcionController {
 	}
 
 	private void obtenerAtletas(String idCompeticion) {
-		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
+		if(idCompeticion.isEmpty() || idCompeticion.isEmpty()) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID vacío");
 		}else {
@@ -136,7 +170,7 @@ public class InscripcionController {
 	}
 
 	private void inscribirse(String emailAtleta, String idCompeticionString) {
-		if(emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank() || idCompeticionString.isEmpty()) {
+		if(emailAtleta.isEmpty() || emailAtleta.isEmpty() || idCompeticionString.isEmpty() || idCompeticionString.isEmpty()) {
 			mainW.getLblError().setVisible(true);
 			mainW.getLblError().setText("Error: Algún campo está vacio");
 		}

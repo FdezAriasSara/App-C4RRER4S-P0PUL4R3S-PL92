@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.InscripcionController;
 
 import java.awt.FlowLayout;
 import javax.swing.JButton;
@@ -54,10 +55,16 @@ public class MainWindow extends JFrame {
 	private JLabel lblErrorOrg;
 	private JTextPane txtPClasificacion;
 	private JPanel panel_pago;
+	private JButton btnObtenerAtletas;
+	private JPanel pnEscogerPago;
+	private JLabel lbEligeTipoPago;
 	private JButton btTarjeta;
 	private JButton btTransferencia;
-	private JButton btnObtenerAtletas;
-
+	private JPanel pnTarjeta;
+	private JTextField textFieldNumTarj;
+	private JTextField textFieldCaducidad;
+	private JTextField textFieldCVC;
+	private JButton btnPagarTarjeta2;
 	
 	/**
 	 * Create the frame.
@@ -351,33 +358,11 @@ public class MainWindow extends JFrame {
 	private JPanel getPanel_pago() {
 		if (panel_pago == null) {
 			panel_pago = new JPanel();
-			panel_pago.setLayout(null);
-			
-			JLabel lbEligeTipoPago = new JLabel("Elija tipo de pago");
-			lbEligeTipoPago.setFont(new Font("Tahoma", Font.BOLD, 20));
-			lbEligeTipoPago.setHorizontalAlignment(SwingConstants.CENTER);
-			lbEligeTipoPago.setBounds(253, 11, 336, 56);
-			panel_pago.add(lbEligeTipoPago);
-			panel_pago.add(getBtTarjeta());
-			panel_pago.add(getBtTransferencia());
+			panel_pago.setLayout(new CardLayout(0, 0));
+			panel_pago.add(getPnEscogerPago(), "PnEscogerPag");
+			panel_pago.add(getPnTarjeta(), "pnTarj");
 		}
 		return panel_pago;
-	}
-	public JButton getBtTarjeta() {
-		if (btTarjeta == null) {
-			btTarjeta = new JButton("Tarjeta");
-			btTarjeta.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btTarjeta.setBounds(191, 427, 124, 37);
-		}
-		return btTarjeta;
-	}
-	public JButton getBtTransferencia() {
-		if (btTransferencia == null) {
-			btTransferencia = new JButton("Transferencia");
-			btTransferencia.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btTransferencia.setBounds(476, 427, 124, 37);
-		}
-		return btTransferencia;
 	}
 
 	public JButton getBtnObtenerAtletas() {
@@ -387,5 +372,97 @@ public class MainWindow extends JFrame {
 			btnObtenerAtletas.setBounds(458, 404, 294, 35);
 		}
 		return btnObtenerAtletas;
+	}
+	public JPanel getPnEscogerPago() {
+		if (pnEscogerPago == null) {
+			pnEscogerPago = new JPanel();
+			pnEscogerPago.setLayout(new CardLayout(0, 0));
+			pnEscogerPago.add(getLbEligeTipoPago());
+			pnEscogerPago.add(getBtTarjeta());
+			pnEscogerPago.add(getBtTransferencia());
+		}
+		return pnEscogerPago;
+	}
+	private JLabel getLbEligeTipoPago() {
+		if (lbEligeTipoPago == null) {
+			lbEligeTipoPago = new JLabel("Elija tipo de pago");
+			lbEligeTipoPago.setBounds(345, 192, 175, 25);
+			lbEligeTipoPago.setHorizontalAlignment(SwingConstants.CENTER);
+			lbEligeTipoPago.setFont(new Font("Tahoma", Font.BOLD, 20));
+		}
+		return lbEligeTipoPago;
+	}
+	public JButton getBtTarjeta() {
+		if (btTarjeta == null) {
+			btTarjeta = new JButton("Tarjeta");
+			btTarjeta.setBounds(274, 338, 81, 27);
+			btTarjeta.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		}
+		return btTarjeta;
+	}
+	public JButton getBtTransferencia() {
+		if (btTransferencia == null) {
+			btTransferencia = new JButton("Transferencia");
+			btTransferencia.setBounds(492, 338, 121, 27);
+			btTransferencia.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		}
+		return btTransferencia;
+	}
+	public JPanel getPnTarjeta() {
+		if (pnTarjeta == null) {
+			pnTarjeta = new JPanel();
+			pnTarjeta.setLayout(null);
+			
+			JLabel lblNumeroTarj = new JLabel("N\u00FAmero de tarjeta:");
+			lblNumeroTarj.setFont(new Font("Tahoma", Font.PLAIN, 24));
+			lblNumeroTarj.setBounds(99, 152, 231, 40);
+			pnTarjeta.add(lblNumeroTarj);
+			
+			JLabel lblCVC = new JLabel("CVC:");
+			lblCVC.setFont(new Font("Tahoma", Font.PLAIN, 24));
+			lblCVC.setBounds(99, 321, 89, 53);
+			pnTarjeta.add(lblCVC);
+			
+			JLabel lblCaducidad = new JLabel("Fecha de caducidad:");
+			lblCaducidad.setFont(new Font("Tahoma", Font.PLAIN, 24));
+			lblCaducidad.setBounds(99, 234, 220, 40);
+			pnTarjeta.add(lblCaducidad);
+			
+			textFieldNumTarj = new JTextField();
+			lblNumeroTarj.setLabelFor(textFieldNumTarj);
+			textFieldNumTarj.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			textFieldNumTarj.setBounds(340, 149, 404, 51);
+			pnTarjeta.add(textFieldNumTarj);
+			textFieldNumTarj.setColumns(10);
+			
+			textFieldCaducidad = new JTextField();
+			lblCaducidad.setLabelFor(textFieldCaducidad);
+			textFieldCaducidad.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			textFieldCaducidad.setColumns(10);
+			textFieldCaducidad.setBounds(340, 231, 404, 51);
+			pnTarjeta.add(textFieldCaducidad);
+			
+			textFieldCVC = new JTextField();
+			lblCVC.setLabelFor(textFieldCVC);
+			textFieldCVC.setBounds(340, 323, 404, 51);
+			pnTarjeta.add(textFieldCVC);
+			textFieldCVC.setColumns(10);
+			
+			
+			pnTarjeta.add(getBtnPagarTarjeta2());
+		}
+		return pnTarjeta;
+	}
+	public JButton getBtnPagarTarjeta2()
+	{
+		if(btnPagarTarjeta2==null) {
+			btnPagarTarjeta2 = new JButton("Pagar");
+			btnPagarTarjeta2.setFont(new Font("Tahoma", Font.PLAIN, 30));
+			btnPagarTarjeta2.setBounds(687, 490, 165, 51);
+			pnTarjeta.add(btnPagarTarjeta2);
+			return btnPagarTarjeta2;
+		}else {
+			return btnPagarTarjeta2;
+		}
 	}
 }

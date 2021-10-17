@@ -21,7 +21,8 @@ public class PagarConTarjeta {
 
 	private static String CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripcion  SET estado='INSCRITO'  WHERE idAtleta=? and idCompeticion=?";
 	private static String ESTADO_ACTUAL_INSCRIPCION = "SELECT estado FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
-	private static String EXISTE_INSCRIPCION = "SELECT * FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
+	private static String EXISTE_INSCRIPCION = "SELECT importe FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
+	private static String IMPORTE_PAGO = "SELECT cuota  FROM Competicion WHERE  idCompeticion=?";
 	private static String REALIZAR_PAGO = "INSERT INTO Pago (idAtleta,idPago,fechaPago,importe,idCompeticion) VALUES (?,?,?,?,?) ";
 
 	private Connection c;
@@ -31,6 +32,14 @@ public class PagarConTarjeta {
 		Argument.isNotNull(pago, "El pago no puede ser null");
 		this.pago = pago;
 		this.tarjeta = tarjeta;
+		// paso el dto de tarjeta por si mas adelante el pago deja de ser una simulacion
+	}
+
+	public PagarConTarjeta(PagoDto pago) {
+
+		Argument.isNotNull(pago, "El pago no puede ser null");
+		this.pago = pago;
+
 	}
 
 	public PagarConTarjeta() {
@@ -44,6 +53,8 @@ public class PagarConTarjeta {
 		PreparedStatement pagoPst = null;
 
 		PreparedStatement cambiarEstadoPst = null;
+		PreparedStatement pstCuota = null;
+		ResultSet rsCuota = null;
 
 		try {
 			c = Jdbc.getConnection();
@@ -55,14 +66,18 @@ public class PagarConTarjeta {
 						+ " para la competición con id: " + pago.idCompeticion + " no existe.");
 
 			}
-			//Si la inscripción ya ha sido marcada como pagada , tenemos que evitar el pago
-			//la inscripción que no tiene pago es aquella que esta en estado pre-inscrito
+			// Si la inscripción ya ha sido marcada como pagada , tenemos que evitar el pago
+			// la inscripción que no tiene pago es aquella que esta en estado pre-inscrito
 			if (!estadoPreInscrito()) {
 
 				throw new BusinessException("La inscripción del atleta con id :" + pago.idAtleta
 						+ " para la competición con id: " + pago.idCompeticion + " ya está pagada.");
 
 			}
+			pstCuota = c.prepareStatement(IMPORTE_PAGO);
+			pstCuota.setInt(1, pago.idCompeticion);
+			rsCuota = pstCuota.executeQuery();
+			this.pago.importe = rsCuota.getDouble(1);
 
 			// Realización del pago una vez sabemos que existe la inscripción
 			pagoPst = c.prepareStatement(REALIZAR_PAGO);
@@ -72,7 +87,7 @@ public class PagarConTarjeta {
 			pago.fechaPago = LocalDate.now();
 			Date fechaPago = Date.valueOf(pago.fechaPago);
 			pagoPst.setDate(3, fechaPago);
-			pagoPst.setLong(4, pago.importe);// el importe sale de la cuota de la inscripición
+			pagoPst.setDouble(4, pago.importe);// el importe sale de la cuota de la inscripición
 			pagoPst.setInt(5, pago.idCompeticion);
 			pagoPst.executeUpdate();
 
@@ -99,10 +114,12 @@ public class PagarConTarjeta {
 		}
 		return this.pago;
 	}
-/**
- * Comprueba el estado de la inscripción.
- * @return true si el estado es "pre-inscrito". Falso si no.
- */
+
+	/**
+	 * Comprueba el estado de la inscripción.
+	 * 
+	 * @return true si el estado es "pre-inscrito". Falso si no.
+	 */
 	private boolean estadoPreInscrito() {
 		PreparedStatement encontrarIdPst = null;
 		ResultSet rsInscripcion = null;
@@ -122,8 +139,10 @@ public class PagarConTarjeta {
 		}
 		return false;
 	}
+
 	/**
 	 * Comprueba la existencia de la inscripción.
+	 * 
 	 * @return true si existe una inscripción. Falso si no.
 	 */
 	private boolean existeInscripcion() {
@@ -135,6 +154,7 @@ public class PagarConTarjeta {
 			encontrarIdPst.setInt(2, pago.idCompeticion);
 			rsInscripcion = encontrarIdPst.executeQuery();
 			if (rsInscripcion.next()) {
+
 				return true;
 			}
 		} catch (SQLException e) {
@@ -151,7 +171,7 @@ public class PagarConTarjeta {
 	}
 
 	private void simularPago() {
-		System.out.println("Se ha realizado un pago con la tarjeta " + tarjeta.numeroTarjeta);
+		System.out.println("**********Se ha realizado un pago con la tarjeta " + tarjeta.numeroTarjeta + "*******");
 
 	}
 
