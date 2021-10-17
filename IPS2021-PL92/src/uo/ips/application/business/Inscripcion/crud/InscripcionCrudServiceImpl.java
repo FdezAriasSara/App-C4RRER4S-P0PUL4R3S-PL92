@@ -35,5 +35,11 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	public String obtenerAtletas(int idCompeticion) throws BusinessException {
 		return new ObtenerAtletas(idCompeticion).execute();
 	}
+	@Override
+	public List<String> listarInscripcionesDelAtleta(int idAtleta) throws BusinessException {
+		
+		return new ListarInscripcionesAtleta(idAtleta).execute();
+	}
 
+	
 }

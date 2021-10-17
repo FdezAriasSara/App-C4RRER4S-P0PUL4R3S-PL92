@@ -20,4 +20,7 @@ public interface InscripcionCrudService {
 	List<InscripcionDto> obtenerClasificaciones(int idCompeticion, String sexo) throws BusinessException;
 
 	String obtenerAtletas(int idCompeticion)throws BusinessException;
+
+
+	List<String> listarInscripcionesDelAtleta(int idAtleta) throws BusinessException;
 }
