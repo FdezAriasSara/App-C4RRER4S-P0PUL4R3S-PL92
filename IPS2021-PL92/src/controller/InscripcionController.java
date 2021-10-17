@@ -108,7 +108,7 @@ public class InscripcionController {
 	}
 
 	private void obtenerAtletas(String idCompeticion) {
-		if(idCompeticion.isEmpty() || idCompeticion.isEmpty()) {
+		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID vacío");
 		}else {
@@ -132,7 +132,6 @@ public class InscripcionController {
 		}
 
 	}
-
 	private void obtenerClasificacion(String idCompeticion, String sexo) {
 
 		if (idCompeticion.isEmpty() || idCompeticion.isEmpty()) {
@@ -170,7 +169,7 @@ public class InscripcionController {
 	}
 
 	private void inscribirse(String emailAtleta, String idCompeticionString) {
-		if(emailAtleta.isEmpty() || emailAtleta.isEmpty() || idCompeticionString.isEmpty() || idCompeticionString.isEmpty()) {
+		if(emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank() || idCompeticionString.isEmpty()) {
 			mainW.getLblError().setVisible(true);
 			mainW.getLblError().setText("Error: Algún campo está vacio");
 		}
