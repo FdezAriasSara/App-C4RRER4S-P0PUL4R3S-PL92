@@ -39,6 +39,26 @@ public class InscripcionController {
 	}
 
 	private void initActions() {
+		
+		
+		
+		mainW.getBtnVolverBienvenida().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				iniciarSesion(null);
+				mainW.getBtnListarInscripciones().setEnabled(false);// una vez haya iniciado sesión , el atleta puede
+																	// acceder a sus inscripciones.
+				mainW.vaciarCampoIniciarSesion();
+				
+				((CardLayout)mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
+				mainW.getTxtPCompeticiones().setText("");
+				mainW.getTxtPClasificacion().setText("");
+				mainW.getBtnVolverBienvenida().setEnabled(false);
+			}
+		});
+		
+		
 
 		mainW.getBtnInscribirse().addActionListener(new ActionListener() {
 

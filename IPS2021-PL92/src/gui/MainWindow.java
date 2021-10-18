@@ -109,16 +109,7 @@ public class MainWindow extends JFrame {
 	public JButton getBtnVolverBienvenida() {
 		if (btnVolverBienvenida == null) {
 			btnVolverBienvenida = new JButton("Volver a pagina de bienvenida");
-			btnVolverBienvenida.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-					
-					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg1");
-					getTxtPCompeticiones().setText("");
-					getTxtPClasificacion().setText("");
-					btnVolverBienvenida.setEnabled(false);
-				}
-			});
+			
 			btnVolverBienvenida.setEnabled(false);
 		}
 		return btnVolverBienvenida;
