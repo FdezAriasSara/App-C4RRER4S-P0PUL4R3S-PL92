@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import alb.util.assertion.Argument;
-
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.pago.PagoDto;
@@ -17,11 +16,11 @@ import uo.ips.application.business.pago.TarjetaDto;
 
 public class PagarConTarjeta {
 	private PagoDto pago;
-	private TarjetaDto tarjeta;
+	//private TarjetaDto tarjeta;
 
 	private static String CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripcion  SET estado='INSCRITO'  WHERE idAtleta=? and idCompeticion=?";
 	private static String ESTADO_ACTUAL_INSCRIPCION = "SELECT estado FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
-	private static String EXISTE_INSCRIPCION = "SELECT importe FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
+	private static String EXISTE_INSCRIPCION = "SELECT * FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
 	private static String IMPORTE_PAGO = "SELECT cuota  FROM Competicion WHERE  idCompeticion=?";
 	private static String REALIZAR_PAGO = "INSERT INTO Pago (idAtleta,idPago,fechaPago,importe,idCompeticion) VALUES (?,?,?,?,?) ";
 
@@ -31,7 +30,7 @@ public class PagarConTarjeta {
 		Argument.isNotNull(tarjeta, "La tarjeta no puede ser null");
 		Argument.isNotNull(pago, "El pago no puede ser null");
 		this.pago = pago;
-		this.tarjeta = tarjeta;
+		//this.tarjeta = tarjeta;
 		// paso el dto de tarjeta por si mas adelante el pago deja de ser una simulacion
 	}
 
@@ -77,7 +76,10 @@ public class PagarConTarjeta {
 			pstCuota = c.prepareStatement(IMPORTE_PAGO);
 			pstCuota.setInt(1, pago.idCompeticion);
 			rsCuota = pstCuota.executeQuery();
-			this.pago.importe = rsCuota.getDouble(1);
+			if(rsCuota.next()) {
+				this.pago.importe = rsCuota.getDouble(1);
+			}
+			
 
 			// Realización del pago una vez sabemos que existe la inscripción
 			pagoPst = c.prepareStatement(REALIZAR_PAGO);
@@ -91,7 +93,7 @@ public class PagarConTarjeta {
 			pagoPst.setInt(5, pago.idCompeticion);
 			pagoPst.executeUpdate();
 
-			simularPago();
+
 
 			// Cambio de 'Pre-inscrito' a 'Inscrito'
 			cambiarEstadoPst = c.prepareStatement(CAMBIAR_ESTADO_INSCRIPCION);
@@ -129,7 +131,7 @@ public class PagarConTarjeta {
 			encontrarIdPst.setInt(2, pago.idCompeticion);
 			rsInscripcion = encontrarIdPst.executeQuery();
 			if (rsInscripcion.next()) {
-				if (rsInscripcion.getString(1).equals("PRE-INSCRITO"))
+				if (rsInscripcion.getString(1).equals("PRE_INSCRITO"))
 					return true;
 			}
 		} catch (SQLException e) {
@@ -170,9 +172,6 @@ public class PagarConTarjeta {
 
 	}
 
-	private void simularPago() {
-		System.out.println("**********Se ha realizado un pago con la tarjeta " + tarjeta.numeroTarjeta + "*******");
-
-	}
+	
 
 }
