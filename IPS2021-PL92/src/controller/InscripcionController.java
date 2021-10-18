@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 
 import gui.MainWindow;
-import main.Main;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Sesion;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
