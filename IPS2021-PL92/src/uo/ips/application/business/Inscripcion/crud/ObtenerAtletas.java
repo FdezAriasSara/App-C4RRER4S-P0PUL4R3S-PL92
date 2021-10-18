@@ -50,7 +50,7 @@ public class ObtenerAtletas {
 				res += " - nombre: " + rs.getString("name");
 				res += " - categoria: " + rs.getString("idCategoria");
 				res += " - fecha de inscripcion: " + rs.getString("fechaInscripcion");
-				res += " - estado: " + rs.getString("estado") + "\n";
+				res += " - estado: " + rs.getString("estado") + "\n\n";
 			}
 
 			atletas = DtoAssembler.toAtletaDtoList(rs);
