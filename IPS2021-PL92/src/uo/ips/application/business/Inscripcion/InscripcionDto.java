@@ -49,10 +49,16 @@ public class InscripcionDto {
 	
 	
 	public String toStringParaClasificacion() {
-		return "ID Atleta: " + idAtleta + 
-				" - ID Competicion: " + idCompeticion + 
-				" - Posicion: " + posicionFinal + 
-				" - Tiempo de carrera: " + tiempoQueTarda;
+		String res =  "ID Atleta: " + idAtleta + 
+				" - ID Competicion: " + idCompeticion;
+		
+		String pos = (posicionFinal < 0) ? " - Posicion: No terminada " : (" - Posicion: " + posicionFinal);
+		String time = (tiempoQueTardaEnSegundos > 0) ? 	(" - Tiempo de carrera: " + tiempoQueTarda) : " - Tiempo de carrera: --"	;
+		
+		
+		return res + pos + time;
+		
+				
 	}
 
 
