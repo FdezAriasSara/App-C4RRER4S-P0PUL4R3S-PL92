@@ -6,13 +6,13 @@ import java.time.LocalDate;
 
 public class PagoDto {
 
-	public String fechaPago;	
+	public LocalDate fechaPago;	
 	public int importe;
 	public String pagoId;
 
 	//public String dniAtleta;
-	public String idAtleta;
-	public String idCompeticion;
+	public int idAtleta;
+	public int idCompeticion;
 	/**
 	 * Para emitir justificantes de pago
 	 */

@@ -34,7 +34,7 @@ public class AnadirCompeticion {
 		c = Jdbc.getConnection();
 		
 		pst = c.prepareStatement(SQLGetCompeticion);
-		pst.setString(1, competicion.idCompeticion);
+		pst.setInt(1, competicion.idCompeticion);
 		
 		rs = pst.executeQuery();
 		
@@ -43,7 +43,7 @@ public class AnadirCompeticion {
 		}
 		pst.close();
 		pst = c.prepareStatement(SQL);
-		pst.setString(1, competicion.idCompeticion);
+		pst.setInt(1, competicion.idCompeticion);
 		pst.setString(2, competicion.nombre);
 		pst.setDate(3, competicion.fechaCompeticion);
 		pst.setString(4, competicion.organizador);

@@ -20,7 +20,7 @@ CREATE TABLE `Competicion` (
 	`distanciaKm` INT NOT NULL,
 	`plazasDisponibles` INT NOT NULL,
     `estado` ENUM('PENDIENTE','TERMINADA') NOT NULL,
-    `cuentaBanacaria` VARCHAR(255) NOT NULL,
+    `cuentaBancaria` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`idCompeticion`)
 );
 
