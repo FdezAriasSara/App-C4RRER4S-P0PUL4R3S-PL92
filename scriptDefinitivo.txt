@@ -118,6 +118,52 @@ CREATE INDEX Pago_fk1 ON Pago(idCompeticion)
 ;
 
 
+//Triggers
+
+drop trigger añadirInscripcion;
+
+create TRIGGER añadirInscripcion
+BEFORE INSERT ON Inscripcion FOR EACH ROW
+BEGIN
+   
+   
+   
+   declare plazasLibres int;
+   Select c.plazasDisponibles into @plazasLibres FROM Competicion c where c.idCompeticion = new.idCompeticion ;
+    
+    
+        if(@plazasLibres <= 0) then
+           signal sqlstate '45000' set message_text = 'No hay plazas disponibles para realizar esta inscripcion.';
+        else
+            update Competicion set plazasDisponibles = plazasDisponibles - 1 where new.idCompeticion = idCompeticion;
+        end if;
+  
+    
+     
+END;
+
+
+create TRIGGER eliminarInscripcion
+AFTER DELETE ON Inscripcion FOR EACH ROW
+BEGIN
+   
+   
+   UPDATE Competicion c set c.plazasDisponibles = c.plazasDisponibles + 1 where old.idCompeticion = c.idCompeticion;
+    
+    
+     
+END;
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO Atleta (idAtleta,DNI,Email,Name,Surname,fechaNacimiento,sexo) VALUES (1,'1','daniel@gmail.com','Daniel','Alvarez',{d '2001-01-01'},'masculino');
 INSERT INTO Atleta (idAtleta,DNI,Email,Name,Surname,fechaNacimiento,sexo) VALUES (2,'2','sara@gmail.com','Sara','Fernandez',{d '2000-12-06'},'femenino');
 INSERT INTO Atleta (idAtleta,DNI,Email,Name,Surname,fechaNacimiento,sexo) VALUES (3,'3','lais@gmail.com','Lais','Nomeselapellido',{d '2001-05-23'},'masculino');
