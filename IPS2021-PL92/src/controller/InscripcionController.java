@@ -36,13 +36,15 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				mainW.getLblError().setVisible(false);
 				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTxtFIDCompeticion().getText());
 			}
 		});
 
 		mainW.getBtnGenerarClasificacion().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				mainW.getLblError().setVisible(false);
 				obtenerClasificacion(mainW.getTxtIDCompOrg().getText(),
 						mainW.getCbCategoria().getSelectedItem().toString());
 			}
@@ -52,6 +54,7 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mainW.getLblError().setVisible(false);
 				obtenerAtletas(mainW.getTxtIDCompOrg().getText());
 
 			}
@@ -62,6 +65,7 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mainW.getLblError().setVisible(false);
 				try {
 					CompeticionDto dto = pagCrud.pagarConTransferencia(sesion.getIdAtleta(), sesion.getIdCompeticion());
 					JOptionPane.showMessageDialog(mainW,
@@ -88,6 +92,9 @@ public class InscripcionController {
 				mainW.getTxtPClasificacion().setText("");
 				mainW.getTxtPClasificacion().setText(res);
 				mainW.getTxtPClasificacion().setEditable(false);
+				
+				mainW.getLblErrorOrg().setVisible(false);
+				mainW.getLblErrorOrg().setText("Error: ");
 				
 			}catch (BusinessException e) {
 				mainW.getLblErrorOrg().setVisible(true);
