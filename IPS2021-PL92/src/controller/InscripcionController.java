@@ -3,18 +3,22 @@ package controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
 
 import gui.MainWindow;
+import main.Main;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Sesion;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
+import uo.ips.application.business.pago.PagoDto;
 
 public class InscripcionController {
 
@@ -28,6 +32,10 @@ public class InscripcionController {
 		this.incCrud = incCrud;
 		this.initActions();
 		this.pagCrud = pagCrud;
+	}
+
+	private void iniciarSesion(Sesion sesion) {
+		this.sesion = sesion;
 	}
 
 	private void initActions() {
@@ -60,8 +68,108 @@ public class InscripcionController {
 			}
 
 		});
+		/*
+		 * Botón para que el atleta acceda a sus inscripciones.
+		 */
+		mainW.getBtnIniciarSesion().addActionListener(new ActionListener() {
 
-		mainW.getBtTransferencia().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg5");
+
+			}
+		});
+		/**
+		 * Implementa la funcionalidad de inicio de sesión necesaria para listar las
+		 * inscripciones.
+		 */
+		mainW.getBtnSesion().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String email = mainW.getTextFieldIniciarSesion().getText();
+				if (email.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Debes rellenar tu email para iniciar sesion.");
+				} else {
+					iniciarSesion(new Sesion(email));
+					mainW.getBtnListarInscripciones().setEnabled(true);// una vez haya iniciado sesión , el atleta puede
+																		// acceder a sus inscripciones.
+					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg2");
+
+					mainW.vaciarCampoIniciarSesion();
+				}
+
+			}
+		});
+
+		/*
+		 * Boton que despliega las inscripciones que corresponden al atleta.
+		 */
+		mainW.getBtnListarInscripciones().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String aux = "";
+
+				try {
+
+					List<String> inscripciones = new ArrayList<String>(
+							incCrud.listarInscripcionesDelAtleta(sesion.getIdAtleta()));
+					if (inscripciones.isEmpty()) {
+						mainW.getTxtPCompeticiones().setText("No te has inscrito a ninguna competición.");
+					}
+
+					mainW.getTxtPCompeticiones().setText("");
+					for (String info : inscripciones) {
+						aux += info + "\n";
+
+						mainW.getTxtPCompeticiones().setText(aux);
+					}
+				} catch (BusinessException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
+			}
+
+		});
+		/*
+		 * Metodo para cambiar al panel de pago con tarjeta.
+		 */
+		mainW.getBtTarjeta_1().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "tarjeta");
+			}
+
+		});
+		/*
+		 * Método para EFECTUAR el pago tras meter datos de tarjeta bancaria.
+		 */
+		mainW.getBtnPagarTarjeta2().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					PagoDto pagoDto = new PagoDto(LocalDate.now(), sesion.getIdAtleta(), sesion.getIdCompeticion());
+					pagoDto = pagCrud.pagarConTarjeta(pagoDto);
+					JOptionPane.showMessageDialog(mainW, "Se ha realizado un pago.\n" + pagoDto.toString());
+					((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "escogerPago"); // restauramos
+																													// el
+																													// panel.
+					mainW.vaciarCamposPago();
+					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1"); // Volvemos al
+																											// panel
+																											// principal.
+
+				} catch (BusinessException ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}
+			}
+		});
+
+		mainW.getBtTransferencia_1().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -78,7 +186,8 @@ public class InscripcionController {
 
 	}
 
-	private void obtenerAtletas(String idCompeticion) {
+
+private void obtenerAtletas(String idCompeticion) {
 		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID vacío");
@@ -106,6 +215,7 @@ public class InscripcionController {
 		}
 
 	}
+
 
 	private void obtenerClasificacion(String idCompeticion, String sexo) {
 
@@ -143,7 +253,8 @@ public class InscripcionController {
 		}
 	}
 
-	private void inscribirse(String emailAtleta, String idCompeticionString) {
+
+private void inscribirse(String emailAtleta, String idCompeticionString) {
 		if(emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank() || idCompeticionString.isEmpty()) {
 			mainW.getLblError().setVisible(true);
 			mainW.getLblError().setText("Error: Algún campo está vacio");
@@ -164,6 +275,4 @@ public class InscripcionController {
 		}
 		
 	}
-	
-
 }

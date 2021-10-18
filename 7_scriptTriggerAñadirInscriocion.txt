@@ -1,0 +1,21 @@
+drop trigger añadirInscripcion;
+
+create TRIGGER añadirInscripcion
+BEFORE INSERT ON Inscripcion FOR EACH ROW
+BEGIN
+   
+   
+   
+   declare plazasLibres int;
+   Select c.plazasDisponibles into @plazasLibres FROM Competicion c where c.idCompeticion = new.idCompeticion ;
+    
+    
+        if(@plazasLibres <= 0) then
+           signal sqlstate '45000' set message_text = 'No hay plazas disponibles para realizar esta inscripcion.';
+        else
+            update Competicion set plazasDisponibles = plazasDisponibles - 1 where new.idCompeticion = idCompeticion;
+        end if;
+  
+    
+     
+END;

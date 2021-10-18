@@ -1,0 +1,11 @@
+
+create TRIGGER eliminarInscripcion
+AFTER DELETE ON Inscripcion FOR EACH ROW
+BEGIN
+   
+   
+   UPDATE Competicion c set c.plazasDisponibles = c.plazasDisponibles + 1 where old.idCompeticion = c.idCompeticion;
+    
+    
+     
+END;
