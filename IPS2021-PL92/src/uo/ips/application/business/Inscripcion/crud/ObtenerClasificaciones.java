@@ -15,8 +15,12 @@ public class ObtenerClasificaciones {
 	
 
 
-	private String SQL = "SELECT i.* FROM Inscripcion i, Atleta a WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+
+	private String SQL_Select_Terminadas = "SELECT i.* FROM Inscripcion i, Atleta a WHERE i.estado = 'TERMINADA' AND idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+	private String SQL_Select_NOTerminadas = "SELECT i.* FROM Inscripcion i, Atleta a WHERE i.estado <> 'TERMINADA' AND idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+	
 	private String SQL_Existe_Comp = "SELECT * FROM Competicion WHERE idCompeticion = ?";
+
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
@@ -60,7 +64,7 @@ public class ObtenerClasificaciones {
 			
 			
 	
-			pst = c.prepareStatement(SQL);
+			pst = c.prepareStatement(SQL_Select_Terminadas);
 			
 			pst.setInt(1,idCompeticion);
 			pst.setString(2,sexo);
@@ -77,6 +81,22 @@ public class ObtenerClasificaciones {
 			
 			ordenarClasificacion();
 			otorgarPuestos();
+			
+			
+			pst = c.prepareStatement(SQL_Select_NOTerminadas);
+			
+			pst.setInt(1,idCompeticion);
+			pst.setString(2,sexo);
+			
+			rs = pst.executeQuery();
+			
+			while(rs.next()) {
+				
+				inscripciones.add(new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
+						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8)));
+				
+			}
+			
 			
 			
 		} catch (SQLException e) {

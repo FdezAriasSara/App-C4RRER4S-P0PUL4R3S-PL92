@@ -1,0 +1,35 @@
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,1,'TERMINADA',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),1,'00:20:12',-1);
+
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,3,'TERMINADA',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),1,'00:19:56',-1);
+
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,4,'TERMINADA',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),1,'00:03:12',-1);
+
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,2,'TERMINADA',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),7,'00:20:12',-1);
+
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,5,'TERMINADA',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),7,'00:19:56',-1);
+
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,7,'TERMINADA',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),2,'00:03:12',-1);
+
+
+
+insert into Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,
+idCategoria,tiempoQueTarda, posicionFinal) values 
+(9,16,'INSCRITO',STR_TO_DATE('7-4-2021', '%d-%m-%Y'),STR_TO_DATE('7-4-2021', '%d-%m-%Y'),2,'00:00:00',-1);

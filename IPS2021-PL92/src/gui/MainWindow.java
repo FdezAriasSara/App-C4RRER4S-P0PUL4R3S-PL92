@@ -13,14 +13,16 @@ import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.JTextPane;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
 
+
+import javax.swing.JComboBox;
 public class MainWindow extends JFrame {
 
 	/**
@@ -156,6 +158,19 @@ public class MainWindow extends JFrame {
 		}
 		return txtPCompeticiones;
 	}
+	
+	
+	/**
+	 * Para mostrar en el txt Pane las competiciones
+	 * @param competiciones
+	 */
+	public void presentarCompeticiones(String competiciones) {
+		txtPCompeticiones.setEditable(true);
+		txtPCompeticiones.setText(competiciones);
+		txtPCompeticiones.setEditable(false);
+	}
+	
+	
 	public JButton getBtnListarCompeticionesAbiertas() {
 		if (btnListarCompeticionesAbiertas == null) {
 			btnListarCompeticionesAbiertas = new JButton("Listar Competiciones");
@@ -273,7 +288,7 @@ public class MainWindow extends JFrame {
 	}
 	public JLabel getLblError() {
 		if (lblError == null) {
-			lblError = new JLabel("Error: Ya estabas inscrito en dicha competicion");
+			lblError = new JLabel("Error:");
 			lblError.setVisible(false);
 			lblError.setForeground(Color.RED);
 			lblError.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -281,6 +296,33 @@ public class MainWindow extends JFrame {
 		}
 		return lblError;
 	}
+	
+	
+	public void setErrorAlListarCompeticiones() {
+		lblError.setText("Error: Error al listar competiciones.");
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(true);
+	}
+	
+	public void setErrorYaEstabaInscrito() {
+		lblError.setText("Error: Ya estabas inscrito en dicha competicion.");
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(true);
+	}
+	
+	public void setErrorAtletaNoRegistrado() {
+		lblError.setText("Error: Atleta no registrado.");
+		lblError.setForeground(Color.RED);
+		lblError.setVisible(true);
+	}
+	
+	public void setConfirmadaInscripcion() {
+		lblError.setText("Error: Atleta inscrito correctamente.");
+		lblError.setVisible(true);
+		lblError.setForeground(Color.GREEN);
+	}
+	
+	
 	public JButton getBtnRegistroAtleta() {
 		if (btnRegistroAtleta == null) {
 			btnRegistroAtleta = new JButton("Registrarse");
@@ -364,6 +406,7 @@ public class MainWindow extends JFrame {
 		}
 		return panel_pago;
 	}
+
 
 	public JButton getBtnObtenerAtletas() {
 		if (btnObtenerAtletas == null) {

@@ -12,7 +12,6 @@ import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
 
 public class CompeticionController {
-	
 	private MainWindow mainW;
 	private CompeticionCrudService competicionModel ;
 	
@@ -62,6 +61,8 @@ public class CompeticionController {
 	
 	}
 	
+	
+
 	
 
 }
