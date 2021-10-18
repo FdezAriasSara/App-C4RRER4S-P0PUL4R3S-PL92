@@ -21,8 +21,16 @@ public class Sesion {
 		this.idAtleta = getIdAtleta(email);
 		this.idCompeticion = idCompeticion;
 	}
+	/*
+	 * Constructor creado para funcionalidad de registrarse con email.
+	 */
+	public Sesion(String email) {
+		this.idAtleta = getIdAtleta(email);
+		
+	}
 
 	public int getIdAtleta() {
+		
 		return idAtleta;
 	}
 

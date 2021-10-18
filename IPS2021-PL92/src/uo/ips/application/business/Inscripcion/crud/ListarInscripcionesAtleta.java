@@ -17,13 +17,14 @@ public class ListarInscripcionesAtleta {
 	// tabla competición, no en Inscripción. Por ello:
 	private final String NOMBRE_COMPETICION = "SELECT nombre FROM Competicion WHERE idCompeticion=?";
 	private final String EXISTE_COMPETICION = "SELECT * FROM Competicion WHERE idCompeticion=?";
+	private final String EXISTE_ATLETA = "SELECT * FROM Atleta WHERE idAtleta=?";
 	private int idAtleta;
 	private Connection c;
 	private List<String> inscripciones;
 
 	public ListarInscripcionesAtleta(int idAtleta) {
 		this.idAtleta = idAtleta;
-
+		
 	}
 
 	public List<String> execute() throws BusinessException {
@@ -54,15 +55,23 @@ public class ListarInscripcionesAtleta {
 
 				if (!competicionExiste(idCompeticion)) {
 					throw new BusinessException(String.format("No existe competición con  id (%d). ", idCompeticion));
-				} else {// por cada inscripción , necesitamos encontrar también el nombre de la
+				} else if(!atletaExiste(idAtleta)){
+					throw new BusinessException(String.format("No existe el atleta con  id (%d). ", idAtleta));
+				}else {// por cada inscripción , necesitamos encontrar también el nombre de la
+				
 						// competición.
 					pstNombresComp.setInt(1, idCompeticion);
 					rsNombres = pstNombresComp.executeQuery();
-					nombreCompeticion = rsNombres.getString(1);
+					if(rsNombres.next()) {
+						nombreCompeticion=	rsNombres.getString(1);
+						actual = String.format(FORMATO_INFORMACION, nombreCompeticion, estado, fechaCambios);// Creamos la
+						// string
+						this.inscripciones.add(actual);// la añadimos a la lista de datos.
+					}
+						
 				}
-				actual = String.format(FORMATO_INFORMACION, nombreCompeticion, estado, fechaCambios);// Creamos la
-																										// string
-				this.inscripciones.add(actual);// la añadimos a la lista de datos.
+				
+				
 			}
 
 		} catch (SQLException e) {
@@ -81,7 +90,7 @@ public class ListarInscripcionesAtleta {
 		ResultSet rsComp = null;
 		PreparedStatement pstComp = null;
 		try {
-
+			
 			pstComp = c.prepareStatement(EXISTE_COMPETICION);
 			pstComp.setInt(1, idCompeticion);
 			rsComp = pstComp.executeQuery();
@@ -91,7 +100,27 @@ public class ListarInscripcionesAtleta {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rsComp, pstComp, c);
+			Jdbc.close(rsComp, pstComp);
+		}
+		return false;
+	}
+	private boolean atletaExiste(int idAtleta) {
+		ResultSet rsComp = null;
+		PreparedStatement pstComp = null;
+		try {
+
+			pstComp = c.prepareStatement(EXISTE_ATLETA);
+			pstComp.setInt(1, idAtleta);
+			rsComp = pstComp.executeQuery();
+			if (rsComp.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Jdbc.close(rsComp, pstComp);
+		
+			
 		}
 		return false;
 	}
