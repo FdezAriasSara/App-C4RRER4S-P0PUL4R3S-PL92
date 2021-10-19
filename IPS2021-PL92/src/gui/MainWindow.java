@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.JTextPane;
 import java.awt.Font;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,6 +22,7 @@ import java.awt.Color;
 
 import javax.swing.JComboBox;
 import java.awt.Button;
+import javax.swing.JScrollPane;
 
 
 
@@ -78,6 +80,8 @@ public class MainWindow extends JFrame {
 	private JLabel lblSesTitulo;
 	private Button btnSesion;
 	private Button btnCancelar;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
 
 	
 	/**
@@ -128,6 +132,7 @@ public class MainWindow extends JFrame {
 			panel_atleta = new JPanel();
 			panel_atleta.setLayout(null);
 			panel_atleta.add(getTxtPCompeticiones());
+			panel_atleta.add(getScrollPane_1());
 			panel_atleta.add(getBtnListarCompeticionesAbiertas());
 			panel_atleta.add(getTxtFIDCompeticion());
 			panel_atleta.add(getLblInscribirse());
@@ -151,6 +156,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnGenerarClasificacion());
 			panel_organizador.add(getLblErrorOrg());
 			panel_organizador.add(getTxtPClasificacion());
+			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 		}
 		return panel_organizador;
@@ -637,5 +643,22 @@ public class MainWindow extends JFrame {
 			btnCancelar.setBounds(737, 480, 111, 50);
 		}
 		return btnCancelar;
+	}
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane(getTxtPClasificacion());
+			
+			
+			scrollPane.setBounds(10, 10, 858, 294);
+			
+		}
+		return scrollPane;
+	}
+	private JScrollPane getScrollPane_1() {
+		if (scrollPane_1 == null) {
+			scrollPane_1 = new JScrollPane(getTxtPCompeticiones());
+			scrollPane_1.setBounds(10, 54, 848, 307);
+		}
+		return scrollPane_1;
 	}
 }
