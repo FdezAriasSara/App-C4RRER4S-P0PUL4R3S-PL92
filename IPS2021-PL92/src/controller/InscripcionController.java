@@ -250,6 +250,7 @@ private void obtenerAtletas(String idCompeticion) {
 		} catch (NumberFormatException e1) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
+			mainW.getTxtPClasificacion().setText("");
 		}
 
 		try {
@@ -265,10 +266,12 @@ private void obtenerAtletas(String idCompeticion) {
 			mainW.getTxtPClasificacion().setText("");
 			mainW.getTxtPClasificacion().setText(res);
 			mainW.getTxtPClasificacion().setEditable(false);
+			mainW.getLblErrorOrg().setVisible(false);
 
 		} catch (BusinessException e) {
 			mainW.getLblErrorOrg().setVisible(true);
-			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
+			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());			mainW.getTxtPClasificacion().setText("");
+			mainW.getTxtPClasificacion().setText("");
 		}
 	}
 
