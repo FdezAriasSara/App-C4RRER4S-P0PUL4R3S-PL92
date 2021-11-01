@@ -57,7 +57,7 @@ public class InscripcionController {
 				mainW.vaciarCampoIniciarSesion();
 				
 				((CardLayout)mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
-				mainW.getTxtPCompeticiones().setText("");
+				mainW.getTableCompeticion().removeAll();
 				mainW.getTablaClasificacion().removeAll();
 				mainW.getBtnVolverBienvenida().setEnabled(false);
 			}
@@ -137,16 +137,20 @@ public class InscripcionController {
 				String aux = "";
 
 				try {
-
+					
+					//Esta lista mejor de inscripciones
 					List<String> inscripciones = new ArrayList<String>(
 							incCrud.listarInscripcionesDelAtleta(sesion.getIdAtleta()));
 					
+					//Esta es la lista del nombre de las columnas
 					String[] columnNames = { "ID", "Nombre", "Fecha Competicion", "Organizador", "Tipo" , "KM" , "Plazas disponibles" ,
 							"Inicio inscripcion","Fin inscripcion", "Cuota" };
 					
+					//Esta es la array que contiene los elementos a listar, el primer [es el numero de fila]
+					//el segundo [el numero de la columna de acuerdo a los datos de arriba]
 					String[][] valuesToTable = new String[competiciones.size()][columnNames.length];
 					
-					TableModel model = new DefaultTableModel(valuesToTable,columnNames);
+					
 
 					mainW.getTxtPCompeticiones().setText("");
 					for (String info : inscripciones) {
@@ -154,12 +158,16 @@ public class InscripcionController {
 
 						mainW.getTxtPCompeticiones().setText(aux);
 					}
+					
+					TableModel model = new DefaultTableModel(valuesToTable,columnNames);
+					
+					mainW.getTableCompeticion().setModel(model);
+					
 				} catch (BusinessException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 				
 				
-				mainW.getTableCompeticion().setModel(model);
 
 			}
 

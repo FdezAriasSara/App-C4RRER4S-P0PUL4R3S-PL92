@@ -17,11 +17,10 @@ public class ListarCompeticionesInscripcionesAbiertas {
 
 
 	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador,plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles,cuota"+
-	" FROM Competicion WHERE plazoInicioInscripcion < ? and plazoFinInscripcion > ?";
+	" FROM Competicion WHERE plazoInicioInscripcion < curdate() and plazoFinInscripcion > curdate()";
 	
 	private List<CompeticionDto> competiciones;
 	
-	Date sqlDate = new Date(new java.util.Date().getTime());
 	
 	
 
@@ -41,10 +40,6 @@ public class ListarCompeticionesInscripcionesAbiertas {
 		c = Jdbc.getConnection();
 		
 		pst = c.prepareStatement(SQL);
-		
-		pst.setDate(1,sqlDate);
-		pst.setDate(2,sqlDate);
-		
 		
 		rs = pst.executeQuery();
 		

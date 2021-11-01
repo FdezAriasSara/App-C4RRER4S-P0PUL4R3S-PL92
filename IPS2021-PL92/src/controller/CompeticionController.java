@@ -44,14 +44,6 @@ public class CompeticionController {
 	private void initBotonListarComp() {
 		
 		List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
-		String allComp = "";
-		
-		String[] columnNames = { "ID", "Nombre", "Fecha Competicion", "Organizador", "Tipo" , "KM" , "Plazas disponibles" ,
-				"Inicio inscripcion","Fin inscripcion", "Cuota" };
-		
-		String[][] valuesToTable = new String[competiciones.size()][columnNames.length];
-		
-		TableModel model = new DefaultTableModel(valuesToTable,columnNames);
 		
 		try {
 			competiciones = competicionModel.ListarCompeticionesInscripcionesAbiertas();
@@ -60,22 +52,32 @@ public class CompeticionController {
 			mainW.getLblError().setText("Problemas al listar las carreras");
 		}
 		
+		String[] columnNames = { "ID", "Nombre", "Fecha Competicion", "Organizador", "Tipo" , "KM" , "Plazas disponibles" ,
+				"Inicio inscripcion","Fin inscripcion", "Cuota" };
+		
+		String[][] valuesToTable = new String[competiciones.size()][columnNames.length];
+		
+		
+		
+		
 		int counter = 0;
-		int col = 0;
+		
 		for(CompeticionDto c : competiciones) {
-			
-			valuesToTable[counter++][col++] = ""+c.idCompeticion;
-			valuesToTable[counter++][col++] = ""+c.nombre;
-			valuesToTable[counter++][col++] = ""+c.fechaCompeticion;
-			valuesToTable[counter++][col++] = ""+c.organizador;
-			valuesToTable[counter++][col++] = ""+c.tipoCompeticion;
-			valuesToTable[counter++][col++] = ""+c.distanciaKm;
-			valuesToTable[counter++][col++] = ""+c.plazasDisponibles;
-			valuesToTable[counter++][col++] = ""+c.plazoInicioInscripcion;
-			valuesToTable[counter++][col++] = ""+c.plazoFinInscripcion;
-			valuesToTable[counter++][col++] = ""+c.cuota;
-			
+			int col = 0;
+			valuesToTable[counter][col++] = ""+c.idCompeticion;
+			valuesToTable[counter][col++] = ""+c.nombre;
+			valuesToTable[counter][col++] = ""+c.fechaCompeticion;
+			valuesToTable[counter][col++] = ""+c.organizador;
+			valuesToTable[counter][col++] = ""+c.tipoCompeticion;
+			valuesToTable[counter][col++] = ""+c.distanciaKm;
+			valuesToTable[counter][col++] = ""+c.plazasDisponibles;
+			valuesToTable[counter][col++] = ""+c.plazoInicioInscripcion;
+			valuesToTable[counter][col++] = ""+c.plazoFinInscripcion;
+			valuesToTable[counter][col++] = ""+c.cuota;
+			counter++;
 		}
+		
+		TableModel model = new DefaultTableModel(valuesToTable,columnNames);
 		
 		mainW.getTableCompeticion().setModel(model);
 		
