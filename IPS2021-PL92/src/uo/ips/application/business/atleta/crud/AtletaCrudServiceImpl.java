@@ -16,5 +16,10 @@ public class AtletaCrudServiceImpl implements AtletaCrudService{
 		// TODO Auto-generated method stub
 		return new CalcularCategoria(idAtleta, idCompeticion).excute();
 	}
+	
+	@Override 
+	public AtletaDto encontrarPorId(int idAtleta) throws BusinessException{
+		return new EncontrarAtletaPorId(idAtleta).execute();
+	}
 
 }

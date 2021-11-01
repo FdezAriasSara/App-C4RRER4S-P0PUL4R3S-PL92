@@ -23,6 +23,7 @@ import java.awt.Color;
 import javax.swing.JComboBox;
 import java.awt.Button;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 
 
@@ -38,7 +39,6 @@ public class MainWindow extends JFrame {
 	private JPanel panel_card;
 	private JPanel panel_atleta;
 	private JPanel panel_organizador;
-	private JTextPane txtPCompeticiones;
 	private JButton btnListarCompeticionesAbiertas;
 	private JTextField txtFIDCompeticion;
 	private JLabel lblInscribirse;
@@ -58,7 +58,6 @@ public class MainWindow extends JFrame {
 	private JComboBox<String> cbCategoria;
 	private JButton btnGenerarClasificacion;
 	private JLabel lblErrorOrg;
-	private JTextPane txtPClasificacion;
 	private JPanel panel_pago;
 	private JButton btnObtenerAtletas;
 	private JPanel pnPagoTarjeta;
@@ -82,6 +81,8 @@ public class MainWindow extends JFrame {
 	private Button btnCancelar;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
+	private JTable tablaClasificacion;
+	private JTable tableCompeticion;
 
 	
 	/**
@@ -131,7 +132,6 @@ public class MainWindow extends JFrame {
 		if (panel_atleta == null) {
 			panel_atleta = new JPanel();
 			panel_atleta.setLayout(null);
-			panel_atleta.add(getTxtPCompeticiones());
 			panel_atleta.add(getScrollPane_1());
 			panel_atleta.add(getBtnListarCompeticionesAbiertas());
 			panel_atleta.add(getTxtFIDCompeticion());
@@ -155,32 +155,12 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getCbCategoria());
 			panel_organizador.add(getBtnGenerarClasificacion());
 			panel_organizador.add(getLblErrorOrg());
-			panel_organizador.add(getTxtPClasificacion());
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 		}
 		return panel_organizador;
 	}
-	public JTextPane getTxtPCompeticiones() {
-		if (txtPCompeticiones == null) {
-			txtPCompeticiones = new JTextPane();
-			txtPCompeticiones.setEditable(false);
-			txtPCompeticiones.setBounds(10, 54, 848, 307);
-		}
-		return txtPCompeticiones;
-	}
-	
-	
-	/**
-	 * Para mostrar en el txt Pane las competiciones
-	 * @param competiciones
-	 */
-	public void presentarCompeticiones(String competiciones) {
-		txtPCompeticiones.setEditable(true);
-		txtPCompeticiones.setText(competiciones);
-		txtPCompeticiones.setEditable(false);
-	}
-	
+
 	
 	public JButton getBtnListarCompeticionesAbiertas() {
 		if (btnListarCompeticionesAbiertas == null) {
@@ -405,16 +385,6 @@ public class MainWindow extends JFrame {
 			lblErrorOrg.setBounds(10, 449, 858, 35);
 		}
 		return lblErrorOrg;
-	}
-
-	public JTextPane getTxtPClasificacion() {
-		if (txtPClasificacion == null) {
-			txtPClasificacion = new JTextPane();
-			txtPClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			txtPClasificacion.setEditable(false);
-			txtPClasificacion.setBounds(10, 10, 858, 294);
-		}
-		return txtPClasificacion;
 	}
 
 	public JPanel getPanel_pago() {
@@ -644,9 +614,9 @@ public class MainWindow extends JFrame {
 		}
 		return btnCancelar;
 	}
-	private JScrollPane getScrollPane() {
+	public JScrollPane getScrollPane() {
 		if (scrollPane == null) {
-			scrollPane = new JScrollPane(getTxtPClasificacion());
+			scrollPane = new JScrollPane(getTablaClasificacion());
 			
 			
 			scrollPane.setBounds(10, 10, 858, 294);
@@ -654,11 +624,27 @@ public class MainWindow extends JFrame {
 		}
 		return scrollPane;
 	}
-	private JScrollPane getScrollPane_1() {
+	public JScrollPane getScrollPane_1() {
 		if (scrollPane_1 == null) {
-			scrollPane_1 = new JScrollPane(getTxtPCompeticiones());
+			scrollPane_1 = new JScrollPane(getTableCompeticion());
 			scrollPane_1.setBounds(10, 54, 848, 307);
 		}
 		return scrollPane_1;
+	}
+	
+	
+	public JTable getTablaClasificacion() {
+		if (tablaClasificacion == null) {
+			tablaClasificacion = new JTable();
+			tablaClasificacion.setBounds(10, 10, 858, 294);
+		}
+		return tablaClasificacion;
+	}
+	public JTable getTableCompeticion() {
+		if (tableCompeticion == null) {
+			tableCompeticion = new JTable();
+			tableCompeticion.setBounds(10, 54, 848, 307);
+		}
+		return tableCompeticion;
 	}
 }

@@ -8,14 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import gui.MainWindow;
 import main.Main;
 import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.BusinessFactory;
 import uo.ips.application.business.Sesion;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
+import uo.ips.application.business.atleta.AtletaCrudService;
+import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.PagoDto;
@@ -23,15 +27,16 @@ import uo.ips.application.business.pago.PagoDto;
 public class InscripcionController {
 
 	private MainWindow mainW;
-	private InscripcionCrudService incCrud;
+	private InscripcionCrudService incCrud = BusinessFactory.forInscripcionCrudService();
 	private Sesion sesion;
-	private PagoCrudService pagCrud;
+	private PagoCrudService pagCrud =  BusinessFactory.forPagoCrudService();
+	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 
-	public InscripcionController(MainWindow main, InscripcionCrudService incCrud, PagoCrudService pagCrud) {
+	public InscripcionController(MainWindow main) {
 		this.mainW = main;
-		this.incCrud = incCrud;
+		
 		this.initActions();
-		this.pagCrud = pagCrud;
+		
 	}
 
 	private void iniciarSesion(Sesion sesion) {
@@ -53,7 +58,7 @@ public class InscripcionController {
 				
 				((CardLayout)mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
 				mainW.getTxtPCompeticiones().setText("");
-				mainW.getTxtPClasificacion().setText("");
+				mainW.getTablaClasificacion().removeAll();
 				mainW.getBtnVolverBienvenida().setEnabled(false);
 			}
 		});
@@ -135,9 +140,13 @@ public class InscripcionController {
 
 					List<String> inscripciones = new ArrayList<String>(
 							incCrud.listarInscripcionesDelAtleta(sesion.getIdAtleta()));
-					if (inscripciones.isEmpty()) {
-						mainW.getTxtPCompeticiones().setText("No te has inscrito a ninguna competición.");
-					}
+					
+					String[] columnNames = { "ID", "Nombre", "Fecha Competicion", "Organizador", "Tipo" , "KM" , "Plazas disponibles" ,
+							"Inicio inscripcion","Fin inscripcion", "Cuota" };
+					
+					String[][] valuesToTable = new String[competiciones.size()][columnNames.length];
+					
+					TableModel model = new DefaultTableModel(valuesToTable,columnNames);
 
 					mainW.getTxtPCompeticiones().setText("");
 					for (String info : inscripciones) {
@@ -148,6 +157,9 @@ public class InscripcionController {
 				} catch (BusinessException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
+				
+				
+				mainW.getTableCompeticion().setModel(model);
 
 			}
 
@@ -217,11 +229,11 @@ private void obtenerAtletas(String idCompeticion) {
 				id = Integer.parseUnsignedInt(idCompeticion);
 				
 				String res  = incCrud.obtenerAtletas(id);
-				mainW.getTxtPClasificacion().setEditable(true);
-				mainW.getTxtPClasificacion().setText("");
-				mainW.getTxtPClasificacion().setText(res);
-				mainW.getTxtPClasificacion().setEditable(false);
-				
+//				mainW.getTxtPClasificacion().setEditable(true);
+//				mainW.getTxtPClasificacion().setText("");
+//				mainW.getTxtPClasificacion().setText(res);
+//				mainW.getTxtPClasificacion().setEditable(false);
+//				
 				mainW.getLblErrorOrg().setVisible(false);
 				mainW.getLblErrorOrg().setText("Error: ");
 				
@@ -255,17 +267,44 @@ private void obtenerAtletas(String idCompeticion) {
 
 		try {
 			List<InscripcionDto> clas = incCrud.obtenerClasificaciones(id, sexo);
-
-			String res = "";
-
-			for (InscripcionDto d : clas) {
-				res += d.toStringParaClasificacion() + " \n\n";
+			String[] columnNames = { "Nombre", "Apellidos", "Posicion", "Tiempo" };
+			
+			String[][] valuesToTable = new String[clas.size()][columnNames.length];
+			
+			int count = 0;
+			AtletaDto atleta;
+			for(InscripcionDto dto : clas) {
+				atleta = atlCrud.encontrarPorId(dto.idAtleta);
+				int col = 0;
+				valuesToTable[count][col++] = atleta.nombre;
+				valuesToTable[count][col++] = atleta.apellido;
+				
+				if(dto.posicionFinal <= 0) {
+					valuesToTable[count][col++] = "-";
+				}else {
+					valuesToTable[count][col++] = ""+dto.posicionFinal;
+				}
+				
+				if(dto.tiempoQueTardaEnSegundos <= 0 ) {
+					valuesToTable[count][col++] = "--:--:--";
+				}else {
+					valuesToTable[count][col++] = ""+dto.tiempoQueTarda;
+				}
+				
+				
+				
+				count++;
 			}
-
-			mainW.getTxtPClasificacion().setEditable(true);
-			mainW.getTxtPClasificacion().setText("");
-			mainW.getTxtPClasificacion().setText(res);
-			mainW.getTxtPClasificacion().setEditable(false);
+//			
+//			String res = "";
+//
+//			for (InscripcionDto d : clas) {
+//				res += d.toStringParaClasificacion() + " \n\n";
+//			}
+			
+			
+			TableModel mode = new DefaultTableModel(valuesToTable,columnNames);
+			mainW.getTablaClasificacion().setModel(mode);
 
 		} catch (BusinessException e) {
 			mainW.getLblErrorOrg().setVisible(true);

@@ -16,8 +16,8 @@ public class Main {
 			public void run() {
 				try {
 					MainWindow frame = new MainWindow();
-					new CompeticionController(frame, BusinessFactory.forCompeticionCrudService() );
-					new InscripcionController(frame, BusinessFactory.forInscripcionCrudService(), BusinessFactory.forPagoCrudService());
+					new CompeticionController(frame );
+					new InscripcionController(frame);
 					
 					frame.setVisible(true);
 				} catch (Exception e) {
