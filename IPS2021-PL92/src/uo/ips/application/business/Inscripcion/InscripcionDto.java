@@ -62,9 +62,6 @@ public class InscripcionDto {
 	}
 
 
-
-
-
 	public InscripcionDto() {
 		this.fechaInscripcion = null;
 		this.fechaUltimoCambio = null;
