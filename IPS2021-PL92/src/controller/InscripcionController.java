@@ -254,8 +254,19 @@ private void obtenerAtletas(String idCompeticion) {
 					count++;
 				}
 				
+				TableModel model = new DefaultTableModel(valuesToTable,columnNames) {
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+	
+					@Override
+					public boolean isCellEditable(int row, int column) {
+						return false;
+					}
+				};
 				
-				mainW.getTablaClasificacion().setModel(new DefaultTableModel(valuesToTable,columnNames));
+				mainW.getTablaClasificacion().setModel(model);
 				
 				mainW.getLblErrorOrg().setVisible(false);
 				mainW.getLblErrorOrg().setText("Error: ");
@@ -320,8 +331,18 @@ private void obtenerAtletas(String idCompeticion) {
 			}
 		
 			
-			TableModel mode = new DefaultTableModel(valuesToTable,columnNames);
-			mainW.getTablaClasificacion().setModel(mode);
+			TableModel model = new DefaultTableModel(valuesToTable,columnNames) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			mainW.getTablaClasificacion().setModel(model);
 
 		} catch (BusinessException e) {
 			mainW.getLblErrorOrg().setVisible(true);

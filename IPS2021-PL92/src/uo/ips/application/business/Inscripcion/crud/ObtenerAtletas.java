@@ -18,7 +18,7 @@ import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
 
 public class ObtenerAtletas {
-	private String SQL = "SELECT * FROM Inscripcion i, Atleta a WHERE idCompeticion = ? and i.idAtleta = a.idAtleta ORDER BY i.fechaInscripcion,i.estado;";
+	private String SQL = "SELECT * FROM Inscripcion i, Atleta a, Categoria c WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and i.idCategoria = c.idCategoria ORDER BY i.fechaInscripcion,i.estado;";
 	private String SQL_Existe_Comp = "SELECT * FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Nombre_Cat = "SELECT * FROM Categoria as c WHERE idCategoria = ?";
 
@@ -57,7 +57,7 @@ public class ObtenerAtletas {
 				atleta.dni = rs.getString("dni");
 				atleta.nombre = rs.getString("name");
 				atleta.apellido = rs.getString("surname");
-				atleta.categoria = nombreCat(rs.getInt("idCategoria"));
+				atleta.categoria = rs.getString("nombreCategoria");
 				atleta.fechaInscripcion = rs.getDate("fechaInscripcion");
 				atleta.estado = Estado.valueOf(rs.getString("estado").toUpperCase());
 				atletas.add(atleta);
@@ -85,28 +85,5 @@ public class ObtenerAtletas {
 
 	}
 	
-	
-	private String nombreCat(int idCategoria) throws BusinessException  {
-		
-		
-		try {
-			Connection cs = Jdbc.getConnection();
-	
-			
-	
-			PreparedStatement pst2 = cs.prepareStatement(SQL_Nombre_Cat);
-	
-			pst2.setInt(1, idCategoria);
-	
-			ResultSet rs2 = pst2.executeQuery();
-		
-			return rs2.getString("nombreCategoria");
-		}
-		catch(SQLException w) {
-			
-		}
-		
-		return null;
-		
-	}
+
 }

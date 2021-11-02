@@ -1,7 +1,6 @@
 package uo.ips.application.business.Inscripcion.crud;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.sql.SQLException;
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.BusinessFactory;
-import uo.ips.application.business.atleta.crud.CalcularCategoria;
 
 public class InscribirAtletaPorEmail {
 
