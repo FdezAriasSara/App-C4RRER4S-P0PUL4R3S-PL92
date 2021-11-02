@@ -16,6 +16,7 @@ import main.Main;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.BusinessFactory;
 import uo.ips.application.business.Sesion;
+import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.atleta.AtletaCrudService;
@@ -236,12 +237,26 @@ private void obtenerAtletas(String idCompeticion) {
 			try {
 				id = Integer.parseUnsignedInt(idCompeticion);
 				
-				String res  = incCrud.obtenerAtletas(id);
-//				mainW.getTxtPClasificacion().setEditable(true);
-//				mainW.getTxtPClasificacion().setText("");
-//				mainW.getTxtPClasificacion().setText(res);
-//				mainW.getTxtPClasificacion().setEditable(false);
-//				
+				List<AtletaInscritoDto> res  = incCrud.obtenerAtletasParaCompeticion(id);
+				
+				String[] columnNames = { "Nombre", "Apellidos", "Categoría", "Fecha de Inscripcion" , "Estado"};
+				
+				String[][] valuesToTable = new String[res.size()][columnNames.length];
+				
+				int count = 0;
+				for(AtletaInscritoDto dto : res) {
+					int col = 0;
+					valuesToTable[count][col++] = dto.nombre;
+					valuesToTable[count][col++] = dto.apellido;
+					valuesToTable[count][col++] = dto.categoria;
+					valuesToTable[count][col++] = dto.fechaInscripcion.toString();
+					valuesToTable[count][col++] = dto.estado.toString();
+					count++;
+				}
+				
+				
+				mainW.getTablaClasificacion().setModel(new DefaultTableModel(valuesToTable,columnNames));
+				
 				mainW.getLblErrorOrg().setVisible(false);
 				mainW.getLblErrorOrg().setText("Error: ");
 				
@@ -303,13 +318,7 @@ private void obtenerAtletas(String idCompeticion) {
 				
 				count++;
 			}
-//			
-//			String res = "";
-//
-//			for (InscripcionDto d : clas) {
-//				res += d.toStringParaClasificacion() + " \n\n";
-//			}
-			
+		
 			
 			TableModel mode = new DefaultTableModel(valuesToTable,columnNames);
 			mainW.getTablaClasificacion().setModel(mode);

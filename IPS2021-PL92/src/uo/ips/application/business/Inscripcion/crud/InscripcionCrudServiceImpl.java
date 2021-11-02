@@ -3,6 +3,7 @@ package uo.ips.application.business.Inscripcion.crud;
 import java.util.List;
 
 import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.atleta.AtletaDto;
@@ -32,7 +33,7 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	}
 
 	@Override
-	public String obtenerAtletas(int idCompeticion) throws BusinessException {
+	public List<AtletaInscritoDto> obtenerAtletasParaCompeticion(int idCompeticion) throws BusinessException {
 		return new ObtenerAtletas(idCompeticion).execute();
 	}
 	@Override

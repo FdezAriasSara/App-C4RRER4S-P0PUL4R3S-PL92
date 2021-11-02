@@ -77,7 +77,17 @@ public class CompeticionController {
 			counter++;
 		}
 		
-		TableModel model = new DefaultTableModel(valuesToTable,columnNames);
+		TableModel model = new DefaultTableModel(valuesToTable,columnNames) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		
 		mainW.getTableCompeticion().setModel(model);
 		
