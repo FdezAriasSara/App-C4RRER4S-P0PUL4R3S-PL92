@@ -33,7 +33,7 @@ public class InscripcionController {
 	private PagoCrudService pagCrud =  BusinessFactory.forPagoCrudService();
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 
-	public InscripcionController(MainWindow main,Sesion sesion) {
+	public InscripcionController(MainWindow main) {
 		this.mainW = main;
 		iniciarSesion(sesion);
 		this.initActions();
