@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import controller.*;
 import gui.MainWindow;
 import uo.ips.application.business.BusinessFactory;
+import uo.ips.application.business.Sesion;
 
 public class Main {
 

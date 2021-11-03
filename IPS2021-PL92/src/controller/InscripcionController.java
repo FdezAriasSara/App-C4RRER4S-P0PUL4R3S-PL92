@@ -33,9 +33,9 @@ public class InscripcionController {
 	private PagoCrudService pagCrud =  BusinessFactory.forPagoCrudService();
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 
-	public InscripcionController(MainWindow main) {
+	public InscripcionController(MainWindow main,Sesion sesion) {
 		this.mainW = main;
-		
+		iniciarSesion(sesion);
 		this.initActions();
 		
 	}
