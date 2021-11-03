@@ -16,10 +16,7 @@ public class InscripcionDto {
 	public int tiempoQueTardaEnSegundos;
 	public Estado estado;
 
-	public enum Estado {
-		PRE_INSCRITO, INSCRITO, TERMINADA
-
-	};
+	
 
 	
 

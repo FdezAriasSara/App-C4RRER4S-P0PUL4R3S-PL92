@@ -23,4 +23,6 @@ public interface InscripcionCrudService {
 
 	List<String> listarInscripcionesDelAtleta(int idAtleta) throws BusinessException;
 	
+	List<AtletaInscritoDto> listarInscripcionesAtletaConDto(int idAtleta) throws BusinessException;
+	
 }

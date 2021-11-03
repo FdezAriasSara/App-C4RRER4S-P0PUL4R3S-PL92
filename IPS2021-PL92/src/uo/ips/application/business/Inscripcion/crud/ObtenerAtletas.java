@@ -5,17 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
-import uo.ips.application.business.DtoAssembler;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
-import uo.ips.application.business.Inscripcion.InscripcionDto;
-import uo.ips.application.business.Inscripcion.InscripcionDto.Estado;
-import uo.ips.application.business.atleta.AtletaCrudService;
-import uo.ips.application.business.atleta.AtletaDto;
+import uo.ips.application.business.Inscripcion.Estado;
 
 public class ObtenerAtletas {
 	private String SQL = "SELECT * FROM Inscripcion i, Atleta a, Categoria c WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and i.idCategoria = c.idCategoria ORDER BY i.fechaInscripcion,i.estado;";

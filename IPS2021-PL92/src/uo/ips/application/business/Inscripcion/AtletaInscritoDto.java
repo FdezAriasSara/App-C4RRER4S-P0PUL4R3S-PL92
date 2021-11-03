@@ -2,8 +2,6 @@ package uo.ips.application.business.Inscripcion;
 
 import java.sql.Date;
 
-import uo.ips.application.business.Inscripcion.InscripcionDto.Estado;
-
 public class AtletaInscritoDto {
 
 	public int idAtleta;
@@ -17,6 +15,7 @@ public class AtletaInscritoDto {
 	public String categoria;
 	
 	public int idCompeticion;
+	public String nombreCompeticion;
 	public Date fechaInscripcion;
 	public Date fechaUltimoCambio;
 	public int idCategoria;

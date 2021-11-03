@@ -140,24 +140,24 @@ public class InscripcionController {
 				try {
 					
 					//Esta lista mejor de inscripciones
-					List<String> inscripciones = new ArrayList<String>(
-							incCrud.listarInscripcionesDelAtleta(sesion.getIdAtleta()));
+				
+					
+					List<AtletaInscritoDto> inscripciones = incCrud.listarInscripcionesAtletaConDto(sesion.getIdAtleta());
 					
 					//Esta es la lista del nombre de las columnas
-					String[] columnNames = { "ID", "Nombre", "Fecha Competicion", "Organizador", "Tipo" , "KM" , "Plazas disponibles" ,
-							"Inicio inscripcion","Fin inscripcion", "Cuota" };
+					String[] columnNames = { "Competición", "Estado Inscripcion", "Ultimo Cambio"};
 					
 					//Esta es la array que contiene los elementos a listar, el primer [es el numero de fila]
 					//el segundo [el numero de la columna de acuerdo a los datos de arriba]
-					String[][] valuesToTable = new String[competiciones.size()][columnNames.length];
+					String[][] valuesToTable = new String[inscripciones.size()][columnNames.length];
 					
-					
-
-					mainW.getTxtPCompeticiones().setText("");
-					for (String info : inscripciones) {
-						aux += info + "\n";
-
-						mainW.getTxtPCompeticiones().setText(aux);
+					int count = 0;
+					for(AtletaInscritoDto dto : inscripciones) {
+						int col = 0;
+						valuesToTable[count][col++] = dto.nombreCompeticion;
+						valuesToTable[count][col++] = dto.estado.toString();
+						valuesToTable[count][col++] = dto.fechaUltimoCambio.toString();
+						count++;
 					}
 					
 					TableModel model = new DefaultTableModel(valuesToTable,columnNames);

@@ -41,6 +41,11 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 		
 		return new ListarInscripcionesAtleta(idAtleta).execute();
 	}
+	
+	@Override
+	public List<AtletaInscritoDto> listarInscripcionesAtletaConDto(int idAtleta) throws BusinessException{
+		return new ListarInscripcionesAtletaConDto(idAtleta).execute();
+	}
 
 	
 }
