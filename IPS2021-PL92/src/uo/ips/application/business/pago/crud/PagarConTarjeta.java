@@ -16,7 +16,7 @@ import uo.ips.application.business.pago.TarjetaDto;
 
 public class PagarConTarjeta {
 	private PagoDto pago;
-	//private TarjetaDto tarjeta;
+	private TarjetaDto tarjeta;
 
 	private static String CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripcion  SET estado='INSCRITO'  WHERE idAtleta=? and idCompeticion=?";
 	private static String ESTADO_ACTUAL_INSCRIPCION = "SELECT estado FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
@@ -26,14 +26,18 @@ public class PagarConTarjeta {
 
 	private Connection c;
 
+
+
 	public PagarConTarjeta(PagoDto pago, TarjetaDto tarjeta) {
 		Argument.isNotNull(tarjeta, "La tarjeta no puede ser null");
 		Argument.isNotNull(pago, "El pago no puede ser null");
+		
 		this.pago = pago;
-		//this.tarjeta = tarjeta;
-		// paso el dto de tarjeta por si mas adelante el pago deja de ser una simulacion
+		this.tarjeta = tarjeta;
+		
 	}
 
+	
 	public PagarConTarjeta(PagoDto pago) {
 
 		Argument.isNotNull(pago, "El pago no puede ser null");
@@ -44,7 +48,12 @@ public class PagarConTarjeta {
 	public PagarConTarjeta() {
 
 	}
-
+	private void comprobarTarjeta(TarjetaDto tarjeta) throws BusinessException {
+		if(tarjeta.fechaCaducidad.isBefore(LocalDate.now())) {
+			throw new BusinessException("La tarjeta está caducada.");
+		}
+		
+	}
 	public PagoDto execute() throws BusinessException {
 
 		c = null;
@@ -59,6 +68,7 @@ public class PagarConTarjeta {
 			c = Jdbc.getConnection();
 			// Para realizar el pago primero debo comprobar que existe la inscripción, al
 			// igual que para cambiar el estado de la misma.
+			comprobarTarjeta(tarjeta);
 			if (!existeInscripcion()) {
 
 				throw new BusinessException("La inscripción del atleta con id :" + pago.idAtleta

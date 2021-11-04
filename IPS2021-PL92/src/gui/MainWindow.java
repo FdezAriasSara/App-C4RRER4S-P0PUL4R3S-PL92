@@ -19,6 +19,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import com.toedter.calendar.JMonthChooser;
+import com.toedter.calendar.JYearChooser;
+import java.awt.Dimension;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 
 
@@ -61,7 +66,6 @@ public class MainWindow extends JFrame {
 	private JButton btTarjeta;
 	private JButton btTransferencia;
 	private JTextField txtNum;
-	private JTextField txtFecha;
 	private JTextField txtCVC;
 	private JLabel lblNumero;
 	private JLabel lblFechaDeCaducidad;
@@ -78,6 +82,9 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JTable tablaClasificacion;
 	private JTable tableCompeticion;
+	private JMonthChooser monthChooser;
+	private JYearChooser yearChooser;
+	private JTextArea ErrorTextArea;
 
 	
 	/**
@@ -407,12 +414,14 @@ public class MainWindow extends JFrame {
 			pnPagoTarjeta = new JPanel();
 			pnPagoTarjeta.setLayout(null);
 			pnPagoTarjeta.add(getTxtNum());
-			pnPagoTarjeta.add(getTxtFecha());
 			pnPagoTarjeta.add(getTxtCVC());
 			pnPagoTarjeta.add(getLblNumero());
 			pnPagoTarjeta.add(getLblFechaDeCaducidad());
 			pnPagoTarjeta.add(getLblCvc());
 			pnPagoTarjeta.add(getBtnPagarTarjeta2());
+			pnPagoTarjeta.add(getMonthChooser());
+			pnPagoTarjeta.add(getYearChooser());
+			pnPagoTarjeta.add(getErrorTextArea());
 		}
 		return pnPagoTarjeta;
 	}
@@ -456,7 +465,7 @@ public class MainWindow extends JFrame {
 		return btTransferencia;
 	}
 
-	private JTextField getTxtNum() {
+	public JTextField getTxtNum() {
 		if (txtNum == null) {
 			txtNum = new JTextField();
 			txtNum.setBounds(417, 141, 384, 53);
@@ -465,16 +474,7 @@ public class MainWindow extends JFrame {
 		return txtNum;
 	}
 
-	private JTextField getTxtFecha() {
-		if (txtFecha == null) {
-			txtFecha = new JTextField();
-			txtFecha.setColumns(10);
-			txtFecha.setBounds(417, 252, 384, 53);
-		}
-		return txtFecha;
-	}
-
-	private JTextField getTxtCVC() {
+	public JTextField getTxtCVC() {
 		if (txtCVC == null) {
 			txtCVC = new JTextField();
 			txtCVC.setColumns(10);
@@ -496,9 +496,8 @@ public class MainWindow extends JFrame {
 	private JLabel getLblFechaDeCaducidad() {
 		if (lblFechaDeCaducidad == null) {
 			lblFechaDeCaducidad = new JLabel("Fecha de caducidad:");
-			lblFechaDeCaducidad.setLabelFor(getTxtFecha());
 			lblFechaDeCaducidad.setFont(new Font("Tahoma", Font.PLAIN, 24));
-			lblFechaDeCaducidad.setBounds(45, 252, 291, 49);
+			lblFechaDeCaducidad.setBounds(45, 263, 291, 49);
 		}
 		return lblFechaDeCaducidad;
 	}
@@ -533,8 +532,7 @@ public class MainWindow extends JFrame {
 	}
 
 	public void vaciarCamposPago() {
-		getTxtNum().setText("");
-		getTxtFecha().setText("");
+		getTxtNum().setText("");		
 		getTxtCVC().setText("");
 
 	}
@@ -641,5 +639,34 @@ public class MainWindow extends JFrame {
 			tableCompeticion.setBounds(10, 54, 848, 307);
 		}
 		return tableCompeticion;
+	}
+	public JMonthChooser getMonthChooser() {
+		if (monthChooser == null) {
+			monthChooser = new JMonthChooser();
+			monthChooser.getComboBox().setFont(new Font("Tahoma", Font.PLAIN, 24));
+			monthChooser.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 18));
+			monthChooser.setBounds(417, 271, 180, 41);
+		}
+		return monthChooser;
+	}
+	public JYearChooser getYearChooser() {
+		if (yearChooser == null) {
+			yearChooser = new JYearChooser();
+			yearChooser.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 42));
+			yearChooser.setBounds(635, 271, 134, 41);
+		}
+		return yearChooser;
+	}
+	private JTextArea getErrorTextArea() {
+		if (ErrorTextArea == null) {
+			ErrorTextArea = new JTextArea();
+			ErrorTextArea.setBackground(new Color(240, 240, 240));
+			ErrorTextArea.setForeground(Color.RED);
+			ErrorTextArea.setVisible(false);
+			ErrorTextArea.setEnabled(false);
+			ErrorTextArea.setEditable(false);
+			ErrorTextArea.setBounds(29, 476, 338, 70);
+		}
+		return ErrorTextArea;
 	}
 }

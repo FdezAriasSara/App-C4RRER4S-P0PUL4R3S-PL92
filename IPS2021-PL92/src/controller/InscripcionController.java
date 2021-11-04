@@ -22,6 +22,7 @@ import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.PagoDto;
+import uo.ips.application.business.pago.TarjetaDto;
 
 public class InscripcionController {
 
@@ -203,15 +204,18 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					PagoDto pagoDto = new PagoDto(LocalDate.now(), sesion.getIdAtleta(), sesion.getIdCompeticion());
-					pagoDto = pagCrud.pagarConTarjeta(pagoDto);
+					int cvc=Integer.valueOf(mainW.getTxtCVC().getText());
+					String numeroTarjeta=mainW.getTxtNum().getText();
+					LocalDate fechaCaducidad=LocalDate.of(mainW.getYearChooser().getYear(),mainW.getMonthChooser().getMonth(),1);	
+					TarjetaDto tarjeta=new TarjetaDto(numeroTarjeta,fechaCaducidad,cvc,sesion.getIdAtleta());
+					pagoDto = pagCrud.pagarConTarjeta(pagoDto,tarjeta);
 					JOptionPane.showMessageDialog(mainW, "Se ha realizado un pago.\n" + pagoDto.toString());
-					((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "escogerPago"); // restauramos
-																													// el
-																													// panel.
+					((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "escogerPago");
+					// restauramos el panel
+																								
 					mainW.vaciarCamposPago();
-					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1"); // Volvemos al
-																											// panel
-																											// principal.
+					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1"); 
+					// Volvemos al panel principal.
 
 				} catch (BusinessException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
