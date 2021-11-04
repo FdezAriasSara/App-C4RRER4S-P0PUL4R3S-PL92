@@ -642,4 +642,5 @@ public class MainWindow extends JFrame {
 		}
 		return tableCompeticion;
 	}
+	
 }

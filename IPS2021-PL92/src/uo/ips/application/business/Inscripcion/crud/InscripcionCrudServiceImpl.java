@@ -46,5 +46,11 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 		return new ListarInscripcionesAtletaConDto(idAtleta).execute();
 	}
 
+	@Override
+	public void registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException {
+		new RegistrarTiempos(inscripciones).execute();
+		
+	}
+
 	
 }

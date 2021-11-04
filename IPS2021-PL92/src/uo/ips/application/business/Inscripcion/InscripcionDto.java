@@ -15,7 +15,7 @@ public class InscripcionDto {
 	public Time tiempoQueTarda;
 	public int tiempoQueTardaEnSegundos;
 	public Estado estado;
-
+	public int dorsal;
 	
 
 	

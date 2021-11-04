@@ -25,4 +25,6 @@ public interface InscripcionCrudService {
 	
 	List<AtletaInscritoDto> listarInscripcionesAtletaConDto(int idAtleta) throws BusinessException;
 	
+	void registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException;
+	
 }
