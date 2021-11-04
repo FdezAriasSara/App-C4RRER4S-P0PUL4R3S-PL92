@@ -25,6 +25,12 @@ public interface InscripcionCrudService {
 	
 	List<AtletaInscritoDto> listarInscripcionesAtletaConDto(int idAtleta) throws BusinessException;
 	
-	void registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException;
+	/**
+	 * Devuelve el numero de inscripciones NO actualizadas, es decir, que tenian algun error
+	 * @param inscripciones
+	 * @return
+	 * @throws BusinessException
+	 */
+	int registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException;
 	
 }

@@ -47,8 +47,8 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	}
 
 	@Override
-	public void registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException {
-		new RegistrarTiempos(inscripciones).execute();
+	public int registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException {
+		return new RegistrarTiempos(inscripciones).execute();
 		
 	}
 
