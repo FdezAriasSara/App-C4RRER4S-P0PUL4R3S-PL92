@@ -15,8 +15,10 @@ public class ListarCompeticionesInscripcionesAbiertas {
 	
 
 
-	private String SQL = "SELECT idCompeticion,nombre,fechaCompeticion,organizador,plazoInicioInscripcion, plazoFinInscripcion, tipoCompeticion, distanciaKm, plazasDisponibles,cuota"+
-	" FROM Competicion WHERE plazoInicioInscripcion < curdate() and plazoFinInscripcion > curdate()";
+	private String SQL = "SELECT c.*, p.fechaInicio, p.fechaFin, p.cuota"+
+	" FROM Competicion as c, Plazos as p WHERE p.fechaInicio <= curdate() and p.fechaFin >= curdate() and p.idCompeticion = c.idCompeticion";
+	
+
 	
 	private List<CompeticionDto> competiciones;
 	
@@ -44,8 +46,10 @@ public class ListarCompeticionesInscripcionesAbiertas {
 		
 		while(rs.next()) {
 			
-			competiciones.add(new CompeticionDto(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getString(4),
-					rs.getDate(5), rs.getDate(6), rs.getString(7), rs.getInt(8), rs.getInt(9),rs.getDouble(10)));
+			competiciones.add(new CompeticionDto(rs.getInt("idCompeticion"), rs.getString("nombre"),
+					rs.getDate("fechaCompeticion"), rs.getString("organizador"),
+					rs.getDate("fechaInicio"), rs.getDate("fechaFin"), 
+					rs.getString("tipoCompeticion"), rs.getInt("distanciaKm"), rs.getInt("plazasDisponibles"),rs.getDouble("cuota")));
 			
 		}
 		

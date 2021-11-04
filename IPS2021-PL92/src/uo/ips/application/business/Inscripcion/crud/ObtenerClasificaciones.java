@@ -24,7 +24,7 @@ public class ObtenerClasificaciones {
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
-	private String sexo;
+	private String categoria;
 	
 
 	private Connection c = null;
@@ -35,12 +35,10 @@ public class ObtenerClasificaciones {
 	
 	
 
-	public ObtenerClasificaciones(int idCompeticion, String sexo) throws BusinessException {
-		if(!sexo.equals("masculino") && !sexo.equals("femenino")) {
-			throw new BusinessException("Sexo invalido introducido al obtener clasificaciones.");
-		}
+	public ObtenerClasificaciones(int idCompeticion, String categoria) throws BusinessException {
 		
-		this.sexo = sexo;
+		
+		this.categoria = categoria;
 		
 		this.inscripciones = new ArrayList<InscripcionDto>();
 		this.idCompeticion = idCompeticion;
@@ -67,7 +65,7 @@ public class ObtenerClasificaciones {
 			pst = c.prepareStatement(SQL_Select_Terminadas);
 			
 			pst.setInt(1,idCompeticion);
-			pst.setString(2,sexo);
+			pst.setString(2,categoria);
 			
 			rs = pst.executeQuery();
 			
@@ -86,7 +84,7 @@ public class ObtenerClasificaciones {
 			pst = c.prepareStatement(SQL_Select_NOTerminadas);
 			
 			pst.setInt(1,idCompeticion);
-			pst.setString(2,sexo);
+			pst.setString(2,categoria);
 			
 			rs = pst.executeQuery();
 			
