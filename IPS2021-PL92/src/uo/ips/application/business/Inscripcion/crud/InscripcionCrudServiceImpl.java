@@ -6,7 +6,6 @@ import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
-import uo.ips.application.business.atleta.AtletaDto;
 
 public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 

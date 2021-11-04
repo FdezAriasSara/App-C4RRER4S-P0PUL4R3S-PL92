@@ -1,6 +1,5 @@
 package uo.ips.application.business.pago;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 

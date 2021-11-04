@@ -15,7 +15,6 @@ import uo.ips.application.business.Inscripcion.Estado;
 public class ObtenerAtletas {
 	private String SQL = "SELECT * FROM Inscripcion i, Atleta a, Categoria c WHERE idCompeticion = ? and i.idAtleta = a.idAtleta and i.idCategoria = c.idCategoria ORDER BY i.fechaInscripcion,i.estado;";
 	private String SQL_Existe_Comp = "SELECT * FROM Competicion WHERE idCompeticion = ?";
-	private String SQL_Nombre_Cat = "SELECT * FROM Categoria as c WHERE idCategoria = ?";
 
 	private int idCompeticion;
 	private List<AtletaInscritoDto> atletas = new ArrayList<AtletaInscritoDto>();
@@ -30,7 +29,7 @@ public class ObtenerAtletas {
 	}
 
 	public List<AtletaInscritoDto> execute() throws BusinessException {
-		String res = "";
+		
 		try {
 
 			c = Jdbc.getConnection();

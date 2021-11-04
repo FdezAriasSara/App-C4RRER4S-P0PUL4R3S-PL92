@@ -2,10 +2,9 @@ package main;
 
 import java.awt.EventQueue;
 
-import controller.*;
+import controller.CompeticionController;
+import controller.InscripcionController;
 import gui.MainWindow;
-import uo.ips.application.business.BusinessFactory;
-import uo.ips.application.business.Sesion;
 
 public class Main {
 

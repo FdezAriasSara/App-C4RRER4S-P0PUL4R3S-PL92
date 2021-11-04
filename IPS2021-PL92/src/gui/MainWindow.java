@@ -1,29 +1,24 @@
 package gui;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.FlowLayout;
-import javax.swing.JButton;
+import java.awt.Button;
 import java.awt.CardLayout;
-import javax.swing.JTextPane;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import java.awt.Button;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 
 
