@@ -295,6 +295,7 @@ private void obtenerAtletas(String idCompeticion) {
 		} catch (NumberFormatException e1) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
+			
 		}
 
 		try {
@@ -335,6 +336,7 @@ private void obtenerAtletas(String idCompeticion) {
 				 */
 				private static final long serialVersionUID = 1L;
 
+
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;
@@ -342,9 +344,10 @@ private void obtenerAtletas(String idCompeticion) {
 			};
 			mainW.getTablaClasificacion().setModel(model);
 
+
 		} catch (BusinessException e) {
 			mainW.getLblErrorOrg().setVisible(true);
-			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
+			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());	
 		}
 	}
 
