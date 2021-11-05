@@ -16,16 +16,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
-import java.awt.Dimension;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
-
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class MainWindow extends JFrame {
 
@@ -84,9 +85,10 @@ public class MainWindow extends JFrame {
 	private JTable tableCompeticion;
 	private JMonthChooser monthChooser;
 	private JYearChooser yearChooser;
-	private JTextArea ErrorTextArea;
+	private JTextArea ErrorTextAreaPago;
+	private JTextArea ErrorTextAreaSesion;
 
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -101,6 +103,7 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPanel_soy(), BorderLayout.NORTH);
 		contentPane.add(getPanel_card(), BorderLayout.CENTER);
 	}
+
 	public JPanel getPanel_soy() {
 		if (panel_soy == null) {
 			panel_soy = new JPanel();
@@ -109,14 +112,16 @@ public class MainWindow extends JFrame {
 		}
 		return panel_soy;
 	}
+
 	public JButton getBtnVolverBienvenida() {
 		if (btnVolverBienvenida == null) {
 			btnVolverBienvenida = new JButton("Volver a pagina de bienvenida");
-			
+
 			btnVolverBienvenida.setEnabled(false);
 		}
 		return btnVolverBienvenida;
 	}
+
 	public JPanel getPanel_card() {
 		if (panel_card == null) {
 			panel_card = new JPanel();
@@ -126,10 +131,11 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_organizador(), "Pg3");
 			panel_card.add(getPanel_pago(), "Pg4");
 			panel_card.add(getPanel_sesion(), "Pg5");
-			
+
 		}
 		return panel_card;
 	}
+
 	public JPanel getPanel_atleta() {
 		if (panel_atleta == null) {
 			panel_atleta = new JPanel();
@@ -147,6 +153,7 @@ public class MainWindow extends JFrame {
 		}
 		return panel_atleta;
 	}
+
 	public JPanel getPanel_organizador() {
 		if (panel_organizador == null) {
 			panel_organizador = new JPanel();
@@ -163,17 +170,16 @@ public class MainWindow extends JFrame {
 		return panel_organizador;
 	}
 
-	
 	public JButton getBtnListarCompeticionesAbiertas() {
 		if (btnListarCompeticionesAbiertas == null) {
 			btnListarCompeticionesAbiertas = new JButton("Listar Competiciones");
-			
-			
+
 			btnListarCompeticionesAbiertas.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnListarCompeticionesAbiertas.setBounds(10, 10, 205, 34);
 		}
 		return btnListarCompeticionesAbiertas;
 	}
+
 	public JTextField getTxtFIDCompeticion() {
 		if (txtFIDCompeticion == null) {
 			txtFIDCompeticion = new JTextField();
@@ -184,6 +190,7 @@ public class MainWindow extends JFrame {
 		}
 		return txtFIDCompeticion;
 	}
+
 	public JLabel getLblInscribirse() {
 		if (lblInscribirse == null) {
 			lblInscribirse = new JLabel("ID Competicion en la que te quieres inscribir:");
@@ -192,6 +199,7 @@ public class MainWindow extends JFrame {
 		}
 		return lblInscribirse;
 	}
+
 	public JPanel getPanel_default() {
 		if (panel_default == null) {
 			panel_default = new JPanel();
@@ -203,6 +211,7 @@ public class MainWindow extends JFrame {
 		}
 		return panel_default;
 	}
+
 	public JLabel getLblBienvenida() {
 		if (lblBienvenida == null) {
 			lblBienvenida = new JLabel("Bienvenido a su gestor de carreras");
@@ -212,6 +221,7 @@ public class MainWindow extends JFrame {
 		}
 		return lblBienvenida;
 	}
+
 	public JLabel getLblSeleccion() {
 		if (lblSeleccion == null) {
 			lblSeleccion = new JLabel("Por favor, seleccione su rol:");
@@ -221,31 +231,33 @@ public class MainWindow extends JFrame {
 		}
 		return lblSeleccion;
 	}
+
 	public JButton getBtnAtletaBienvenida() {
 		if (btnAtletaBienvenida == null) {
 			btnAtletaBienvenida = new JButton("Atleta");
 			btnAtletaBienvenida.addActionListener(new ActionListener() {
-				
+
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
-					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg2");
-					
+					((CardLayout) getPanel_card().getLayout()).show(getPanel_card(), "Pg2");
+
 				}
 			});
-			
+
 			btnAtletaBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnAtletaBienvenida.setBounds(219, 354, 183, 47);
 		}
 		return btnAtletaBienvenida;
 	}
+
 	public JButton getBtnOrganizadorBienvenida() {
 		if (btnOrganizadorBienvenida == null) {
 			btnOrganizadorBienvenida = new JButton("Organizador");
 			btnOrganizadorBienvenida.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
-					((CardLayout)getPanel_card().getLayout()).show(getPanel_card(), "Pg3");
-					
+					((CardLayout) getPanel_card().getLayout()).show(getPanel_card(), "Pg3");
+
 				}
 			});
 			btnOrganizadorBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -253,6 +265,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnOrganizadorBienvenida;
 	}
+
 	public JLabel getLblEmailAtleta() {
 		if (lblEmailAtleta == null) {
 			lblEmailAtleta = new JLabel("Introduzca el email con el que se registro:");
@@ -261,6 +274,7 @@ public class MainWindow extends JFrame {
 		}
 		return lblEmailAtleta;
 	}
+
 	public JTextField getTxtFEmail() {
 		if (txtFEmail == null) {
 			txtFEmail = new JTextField();
@@ -271,6 +285,7 @@ public class MainWindow extends JFrame {
 		}
 		return txtFEmail;
 	}
+
 	public JButton getBtnInscribirse() {
 		if (btnInscribirse == null) {
 			btnInscribirse = new JButton("Inscribirse");
@@ -279,6 +294,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnInscribirse;
 	}
+
 	public JLabel getLblError() {
 		if (lblError == null) {
 			lblError = new JLabel("Error:");
@@ -290,34 +306,29 @@ public class MainWindow extends JFrame {
 		return lblError;
 	}
 
-	
-	
 	public void setErrorAlListarCompeticiones() {
 		lblError.setText("Error: Error al listar competiciones.");
 		lblError.setForeground(Color.RED);
 		lblError.setVisible(true);
 	}
-	
+
 	public void setErrorYaEstabaInscrito() {
 		lblError.setText("Error: Ya estabas inscrito en dicha competicion.");
 		lblError.setForeground(Color.RED);
 		lblError.setVisible(true);
 	}
-	
+
 	public void setErrorAtletaNoRegistrado() {
 		lblError.setText("Error: Atleta no registrado.");
 		lblError.setForeground(Color.RED);
 		lblError.setVisible(true);
 	}
-	
+
 	public void setConfirmadaInscripcion() {
 		lblError.setText("Error: Atleta inscrito correctamente.");
 		lblError.setVisible(true);
 		lblError.setForeground(Color.GREEN);
 	}
-	
-	
-	
 
 	public JButton getBtnIniciarSesion() {
 		if (btnIniciarSesion == null) {
@@ -326,8 +337,10 @@ public class MainWindow extends JFrame {
 			btnIniciarSesion.setBounds(716, 10, 142, 34);
 
 		}
-		return btnIniciarSesion;}
-	 public JLabel getLblIDCompeticionOrg() {
+		return btnIniciarSesion;
+	}
+
+	public JLabel getLblIDCompeticionOrg() {
 		if (lblIDCompeticionOrg == null) {
 			lblIDCompeticionOrg = new JLabel("Introduzca el ID de la competicion:");
 			lblIDCompeticionOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -399,7 +412,6 @@ public class MainWindow extends JFrame {
 		return panel_pago;
 	}
 
-
 	public JButton getBtnObtenerAtletas() {
 		if (btnObtenerAtletas == null) {
 			btnObtenerAtletas = new JButton("Obtener Atletas");
@@ -421,7 +433,7 @@ public class MainWindow extends JFrame {
 			pnPagoTarjeta.add(getBtnPagarTarjeta2());
 			pnPagoTarjeta.add(getMonthChooser());
 			pnPagoTarjeta.add(getYearChooser());
-			pnPagoTarjeta.add(getErrorTextArea());
+			pnPagoTarjeta.add(getErrorTextAreaPago());
 		}
 		return pnPagoTarjeta;
 	}
@@ -468,6 +480,17 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtNum() {
 		if (txtNum == null) {
 			txtNum = new JTextField();
+			txtNum.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyTyped(KeyEvent e) {
+					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
+						mostrarErrorPagoTarjeta(
+								"El formato del número de tarjeta es incorrecto. \n Solo puede contener números.");
+						getTxtNum().setText("");
+					}
+				}
+			});
+		
 			txtNum.setBounds(417, 141, 384, 53);
 			txtNum.setColumns(10);
 		}
@@ -477,8 +500,20 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtCVC() {
 		if (txtCVC == null) {
 			txtCVC = new JTextField();
+			txtCVC.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyTyped(KeyEvent e) {
+					if (!compruebaCVC(getTxtCVC().getText())) {
+
+						mostrarErrorPagoTarjeta(
+								"El cvc debe ser un número de tres dígitos.\n Se encuentra en la cara trasera de tu tarjeta.");
+						getTxtCVC().setText("");
+					}
+				}
+			});
 			txtCVC.setColumns(10);
 			txtCVC.setBounds(417, 372, 384, 53);
+			
 		}
 		return txtCVC;
 	}
@@ -508,6 +543,7 @@ public class MainWindow extends JFrame {
 			lblCvc.setLabelFor(getTxtCVC());
 			lblCvc.setFont(new Font("Tahoma", Font.PLAIN, 24));
 			lblCvc.setBounds(45, 372, 291, 49);
+
 		}
 		return lblCvc;
 	}
@@ -532,7 +568,7 @@ public class MainWindow extends JFrame {
 	}
 
 	public void vaciarCamposPago() {
-		getTxtNum().setText("");		
+		getTxtNum().setText("");
 		getTxtCVC().setText("");
 
 	}
@@ -550,6 +586,7 @@ public class MainWindow extends JFrame {
 			panel_sesion.add(getLblSesTitulo());
 			panel_sesion.add(getBtnSesion());
 			panel_sesion.add(getBtnCancelar());
+			panel_sesion.add(getErrorTextAreaSesion());
 		}
 		return panel_sesion;
 	}
@@ -566,11 +603,31 @@ public class MainWindow extends JFrame {
 	public JTextField getTextFieldIniciarSesion() {
 		if (textFieldIniciarSesion == null) {
 			textFieldIniciarSesion = new JTextField();
+			textFieldIniciarSesion.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusLost(FocusEvent e) {
+					if(!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
+						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
+						getTextFieldIniciarSesion().setText("");
+					}
+				}
+			});
 			textFieldIniciarSesion.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			textFieldIniciarSesion.setBounds(321, 222, 440, 57);
 			textFieldIniciarSesion.setColumns(10);
 		}
 		return textFieldIniciarSesion;
+	}
+
+	public void mostrarErrorInicioSesion(String string) {
+		getErrorTextAreaSesion().setText(string);
+		getErrorTextAreaSesion().setVisible(true);
+		getErrorTextAreaSesion().setEnabled(true);
+	}
+
+	protected boolean checkFormatoEmail(String text) {
+		
+		return text.matches("(\\S)*@(\\S)?.(es|com)");
 	}
 
 	private JLabel getLblSesTitulo() {
@@ -594,8 +651,8 @@ public class MainWindow extends JFrame {
 
 	private Button getBtnCancelar() {
 		if (btnCancelar == null) {
-			btnCancelar=new Button("Cancelar");
-					
+			btnCancelar = new Button("Cancelar");
+
 			btnCancelar.setFont(new Font("Dialog", Font.PLAIN, 21));
 			btnCancelar.setForeground(new Color(0, 0, 0));
 			btnCancelar.addActionListener(new ActionListener() {
@@ -607,16 +664,17 @@ public class MainWindow extends JFrame {
 		}
 		return btnCancelar;
 	}
+
 	public JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane(getTablaClasificacion());
-			
-			
+
 			scrollPane.setBounds(10, 10, 858, 294);
-			
+
 		}
 		return scrollPane;
 	}
+
 	public JScrollPane getScrollPane_1() {
 		if (scrollPane_1 == null) {
 			scrollPane_1 = new JScrollPane(getTableCompeticion());
@@ -624,8 +682,7 @@ public class MainWindow extends JFrame {
 		}
 		return scrollPane_1;
 	}
-	
-	
+
 	public JTable getTablaClasificacion() {
 		if (tablaClasificacion == null) {
 			tablaClasificacion = new JTable();
@@ -633,6 +690,7 @@ public class MainWindow extends JFrame {
 		}
 		return tablaClasificacion;
 	}
+
 	public JTable getTableCompeticion() {
 		if (tableCompeticion == null) {
 			tableCompeticion = new JTable();
@@ -640,33 +698,66 @@ public class MainWindow extends JFrame {
 		}
 		return tableCompeticion;
 	}
+
 	public JMonthChooser getMonthChooser() {
 		if (monthChooser == null) {
 			monthChooser = new JMonthChooser();
-			monthChooser.getComboBox().setFont(new Font("Tahoma", Font.PLAIN, 24));
+			monthChooser.getComboBox().setFont(new Font("Tahoma", Font.PLAIN, 21));
 			monthChooser.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 18));
 			monthChooser.setBounds(417, 271, 180, 41);
+			
 		}
 		return monthChooser;
 	}
+
 	public JYearChooser getYearChooser() {
 		if (yearChooser == null) {
 			yearChooser = new JYearChooser();
 			yearChooser.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 42));
 			yearChooser.setBounds(635, 271, 134, 41);
+			yearChooser.setStartYear(2021);
+			yearChooser.setEndYear(2029);
 		}
 		return yearChooser;
 	}
-	private JTextArea getErrorTextArea() {
-		if (ErrorTextArea == null) {
-			ErrorTextArea = new JTextArea();
-			ErrorTextArea.setBackground(new Color(240, 240, 240));
-			ErrorTextArea.setForeground(Color.RED);
-			ErrorTextArea.setVisible(false);
-			ErrorTextArea.setEnabled(false);
-			ErrorTextArea.setEditable(false);
-			ErrorTextArea.setBounds(29, 476, 338, 70);
+
+	private JTextArea getErrorTextAreaPago() {
+		if (ErrorTextAreaPago == null) {
+			ErrorTextAreaPago = new JTextArea();
+			ErrorTextAreaPago.setFont(new Font("Tahoma", Font.BOLD, 19));
+			ErrorTextAreaPago.setBackground(new Color(240, 240, 240));
+			ErrorTextAreaPago.setForeground(Color.RED);
+			ErrorTextAreaPago.setVisible(false);
+			ErrorTextAreaPago.setEnabled(false);
+			ErrorTextAreaPago.setEditable(false);
+			ErrorTextAreaPago.setBounds(29, 476, 338, 70);
 		}
-		return ErrorTextArea;
+		return ErrorTextAreaPago;
+	}
+
+	private void mostrarErrorPagoTarjeta(String error) {
+		ErrorTextAreaPago.setText(error);
+		ErrorTextAreaPago.setVisible(true);
+		ErrorTextAreaPago.setEnabled(true);
+	}
+	private boolean compruebaCVC(String text) {
+
+		return text.matches("\\d\\d\\d");
+	}
+
+	private boolean compruebaNumeroTarjeta(String text) {
+		return text.matches("(\\d)+");
+	}
+	public JTextArea getErrorTextAreaSesion() {
+		if (ErrorTextAreaSesion == null) {
+			ErrorTextAreaSesion = new JTextArea();
+			ErrorTextAreaSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
+			ErrorTextAreaSesion.setForeground(Color.RED);
+			ErrorTextAreaSesion.setVisible(false);
+			ErrorTextAreaSesion.setEnabled(false);
+			ErrorTextAreaSesion.setBounds(41, 417, 472, 87);
+			ErrorTextAreaSesion.setBackground(new Color(240, 240, 240));
+		}
+		return ErrorTextAreaSesion;
 	}
 }

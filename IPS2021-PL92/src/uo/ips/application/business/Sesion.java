@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import alb.util.jdbc.Jdbc;
 
 public class Sesion {
+	public static final int NO_INICIADO = 0;
 	private int idAtleta;
 	private int idCompeticion;
 
@@ -39,7 +40,7 @@ public class Sesion {
 	}
 
 	private int getIdAtleta(String email) {
-		int idAtleta = 0;
+		int idAtleta = NO_INICIADO;
 		try {
 			c = Jdbc.getConnection();
 
