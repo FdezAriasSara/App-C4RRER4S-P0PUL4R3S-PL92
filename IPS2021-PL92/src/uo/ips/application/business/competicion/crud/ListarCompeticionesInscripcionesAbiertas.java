@@ -50,7 +50,7 @@ public class ListarCompeticionesInscripcionesAbiertas {
 		
 		while(rs.next()) {
 			
-			competiciones.add(new CompeticionDto(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getString(4),
+			competiciones.add(new CompeticionDto(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getString(4),
 					rs.getDate(5), rs.getDate(6), rs.getString(7), rs.getInt(8), rs.getInt(9),rs.getDouble(10)));
 			
 		}
