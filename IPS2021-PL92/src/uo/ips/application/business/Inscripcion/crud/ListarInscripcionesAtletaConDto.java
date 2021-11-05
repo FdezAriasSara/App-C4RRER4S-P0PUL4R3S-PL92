@@ -16,7 +16,7 @@ import uo.ips.application.business.Inscripcion.Estado;
 public class ListarInscripcionesAtletaConDto {
 	
 	private final String SQL_Select_DatosCompIns = "select c.Nombre, i.estado, i.fechaUltimoCambio from Inscripcion i, Competicion c where ? = i.idAtleta and i.idCompeticion = c.idCompeticion";
-	
+
 	private int idAtleta;
 	private Connection c;
 	
@@ -37,7 +37,7 @@ public class ListarInscripcionesAtletaConDto {
 
 		try {
 			c = Jdbc.getConnection();
-			
+
 			pstInscripciones = c.prepareStatement(SQL_Select_DatosCompIns);
 
 			// Busamos las inscripciones asociadas al id.
@@ -70,4 +70,6 @@ public class ListarInscripcionesAtletaConDto {
 		
 	}
 
+
+	
 }
