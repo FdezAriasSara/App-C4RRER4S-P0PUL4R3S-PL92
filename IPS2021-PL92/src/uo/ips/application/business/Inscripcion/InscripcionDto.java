@@ -17,6 +17,9 @@ public class InscripcionDto {
 	public Estado estado;
 	public int dorsal;
 	
+	//Esto no está en la bd pero no los borreis porfas que los uso
+	public Time tiempoInicio;
+	public Time tiempoFinal;
 
 	
 

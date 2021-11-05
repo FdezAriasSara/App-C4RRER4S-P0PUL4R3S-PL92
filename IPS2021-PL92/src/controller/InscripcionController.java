@@ -249,6 +249,11 @@ public class InscripcionController {
 					List<InscripcionDto> insc = ParseadorTiempos.parse(filename);
 					int notUpdated = incCrud.registrarTiempos(insc);
 					
+					System.out.println("Dorsales erroneos: " + notUpdated);
+					System.out.println("Dorsales repetidos: " + ParseadorTiempos.getRepeatedInLastExe());
+					System.out.println("Formato erroneo en linea: " + ParseadorTiempos.getWrongParseInLastExe());
+					JOptionPane.showMessageDialog(null, "Datos importados correctamente");
+					
 				} catch (IOException e1) {
 					mainW.getLblError().setVisible(true);
 					mainW.getLblError().setEnabled(true);

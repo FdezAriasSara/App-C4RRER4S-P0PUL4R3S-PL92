@@ -86,6 +86,8 @@ public class ParseadorTiempos {
 			    		dto.tiempoQueTarda = calcularDiferencia(endTime, initialTime);
 		    			dto.dorsal = dorsal;
 		    			dto.idCompeticion = Integer.parseInt(fileName.split("\\.")[0].split("-")[1]);
+		    			dto.tiempoInicio = initialTime;
+		    			dto.tiempoFinal = endTime;
 		    			inscripciones.add(dto);
 		    		}
 		    		
