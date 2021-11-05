@@ -78,6 +78,8 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JTable tablaClasificacion;
 	private JTable tableCompeticion;
+	private JButton btnImportarDatos;
+	private JTextField textField;
 
 	
 	/**
@@ -152,6 +154,8 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getLblErrorOrg());
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
+			panel_organizador.add(getBtnImportarDatos());
+			panel_organizador.add(getTextField());
 		}
 		return panel_organizador;
 	}
@@ -642,5 +646,20 @@ public class MainWindow extends JFrame {
 		}
 		return tableCompeticion;
 	}
-	
+	public JButton getBtnImportarDatos() {
+		if (btnImportarDatos == null) {
+			btnImportarDatos = new JButton("Importar Datos");
+			btnImportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnImportarDatos.setBounds(458, 361, 157, 35);
+		}
+		return btnImportarDatos;
+	}
+	public JTextField getTextField() {
+		if (textField == null) {
+			textField = new JTextField();
+			textField.setBounds(625, 359, 157, 35);
+			textField.setColumns(10);
+		}
+		return textField;
+	}
 }

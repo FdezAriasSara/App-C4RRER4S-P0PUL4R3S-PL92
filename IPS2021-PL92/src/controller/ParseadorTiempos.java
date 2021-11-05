@@ -67,7 +67,7 @@ public class ParseadorTiempos {
 		    			
 		    		}
 		    		
-		    		if(finalTime.toUpperCase().equals("DNF")) {
+		    		if(initTime.toUpperCase().equals("DNS") || finalTime.toUpperCase().equals("DNF")) {
 	    				endTime = null;
 	    			}
 	    			else {
@@ -77,7 +77,7 @@ public class ParseadorTiempos {
 		    		
 		    		
 		    		if(dorsales.contains(dorsal)) {
-		    			repeatedInLastExe++;
+		    			repeatedInLastExe = getRepeatedInLastExe() + 1;
 		    		}
 		    		else {
 		    			dorsales.add(dorsal);
@@ -109,18 +109,18 @@ public class ParseadorTiempos {
 	private static boolean isValid(String[] elems) {
 		
 		if(elems.length != 3) {
-   		 wrongParseInLastExe++;
+   		 wrongParseInLastExe = getWrongParseInLastExe() + 1;
    		 return false;
 	   	 }
 	   	 else if(elems[0].isBlank() || elems[1].isBlank() || elems[2].isBlank()){
-	   		 wrongParseInLastExe++;
+	   		 wrongParseInLastExe = getWrongParseInLastExe() + 1;
 	   		 return false;
 	   	 }
 	   	 
 		try {
 			Integer.parseInt(elems[0]);
 		}catch(NumberFormatException e) {
-			wrongParseInLastExe++;
+			wrongParseInLastExe = getWrongParseInLastExe() + 1;
 			return false;
 		}
 		
@@ -139,7 +139,7 @@ public class ParseadorTiempos {
 				Time.valueOf(time);
 				return true;
 			}catch(IllegalArgumentException e) {
-				wrongParseInLastExe++;
+				wrongParseInLastExe = getWrongParseInLastExe() + 1;
 				return false;
 			}
 			
@@ -150,11 +150,27 @@ public class ParseadorTiempos {
 
 	private static Time calcularDiferencia(Time endTime, Time initTime) {
 		
+		if(endTime == null || initTime == null) {
+			
+			return Time.valueOf("00:00:00");
+			
+		}
+		
 		long endMillis = endTime.getTime();
 		long initMillis = initTime.getTime();
 		
 		return new Time(endMillis - initMillis);
 		
+	}
+
+
+	public static int getRepeatedInLastExe() {
+		return repeatedInLastExe;
+	}
+
+
+	public static int getWrongParseInLastExe() {
+		return wrongParseInLastExe;
 	}
 
 }
