@@ -27,7 +27,6 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
 
-
 public class MainWindow extends JFrame {
 
 	/**
@@ -108,6 +107,7 @@ public class MainWindow extends JFrame {
 	private JTextArea textAreaRegistro;
 	private JLabel lblSexo;
 	private JComboBox<String> comboSexo;
+	private JButton btCargarPagos;
 
 	/**
 	 * Create the frame.
@@ -190,6 +190,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
 			panel_organizador.add(getTxtArchivoTiempos());
+			panel_organizador.add(getBtCargarPagos());
 		}
 		return panel_organizador;
 	}
@@ -531,7 +532,7 @@ public class MainWindow extends JFrame {
 					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
 						mostrarErrorPagoTarjeta(
 								"El formato del número de tarjeta es incorrecto. \n Deben ser 16 dígitos.");
-					
+
 					}
 				}
 
@@ -772,6 +773,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnImportarDatos;
 	}
+
 	public JTextField getTxtArchivoTiempos() {
 		if (txtArchivoTiempos == null) {
 			txtArchivoTiempos = new JTextField();
@@ -780,7 +782,6 @@ public class MainWindow extends JFrame {
 		}
 		return txtArchivoTiempos;
 	}
-
 
 	public JMonthChooser getMonthChooser() {
 		if (monthChooser == null) {
@@ -1090,5 +1091,15 @@ public class MainWindow extends JFrame {
 		getTextFieldCorreo().setText("");
 		getTextFieldDNI().setText("");
 
+	}
+
+	private JButton getBtCargarPagos() {
+		if (btCargarPagos == null) {
+			btCargarPagos = new JButton("Cargar pagos");
+			btCargarPagos.setMnemonic('C');
+			btCargarPagos.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btCargarPagos.setBounds(662, 495, 140, 35);
+		}
+		return btCargarPagos;
 	}
 }
