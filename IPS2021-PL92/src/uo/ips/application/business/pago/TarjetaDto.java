@@ -1,21 +1,24 @@
 package uo.ips.application.business.pago;
 
+import java.time.LocalDate;
+
 public class TarjetaDto {
 	public int cvc;
 	public String numeroTarjeta;
-	public String fechaCaducidad;
-	public String atletaDni;
-	public TarjetaDto(int cvc, String numeroTarjeta, String fechaCaducidad, String atletaDni) {
+	public LocalDate fechaCaducidad;
+	public int atletaId;
+	public TarjetaDto( String numeroTarjeta, LocalDate fechaCaducidad, int cvc,int atletaId) {
 
 
 		this.cvc = cvc;
 		this.numeroTarjeta = numeroTarjeta;
 		this.fechaCaducidad = fechaCaducidad;
-		this.atletaDni = atletaDni;
+		this.atletaId = atletaId;
 	}
 	public TarjetaDto() {
 
 
 	}
+	
 
 }

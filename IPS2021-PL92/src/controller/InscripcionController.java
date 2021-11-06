@@ -23,20 +23,21 @@ import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.PagoDto;
+import uo.ips.application.business.pago.TarjetaDto;
 
 public class InscripcionController {
 
 	private MainWindow mainW;
 	private InscripcionCrudService incCrud = BusinessFactory.forInscripcionCrudService();
 	private Sesion sesion;
-	private PagoCrudService pagCrud =  BusinessFactory.forPagoCrudService();
+	private PagoCrudService pagCrud = BusinessFactory.forPagoCrudService();
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 
 	public InscripcionController(MainWindow main) {
 		this.mainW = main;
 		iniciarSesion(sesion);
 		this.initActions();
-		
+
 	}
 
 	private void iniciarSesion(Sesion sesion) {
@@ -44,32 +45,27 @@ public class InscripcionController {
 	}
 
 	private void initActions() {
-		
-		
-		
+
 		mainW.getBtnVolverBienvenida().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
 				iniciarSesion(null);
 				mainW.getBtnListarInscripciones().setEnabled(false);// una vez haya iniciado sesión , el atleta puede
 																	// acceder a sus inscripciones.
 				mainW.vaciarCampoIniciarSesion();
-				
-				((CardLayout)mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
+
+				((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
 				mainW.getTableCompeticion().removeAll();
 				mainW.getTablaClasificacion().removeAll();
 				mainW.getBtnVolverBienvenida().setEnabled(false);
 			}
 		});
-		
-		
 
 		mainW.getBtnInscribirse().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				mainW.getLblError().setVisible(false);
 				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTxtFIDCompeticion().getText());
 			}
@@ -117,11 +113,19 @@ public class InscripcionController {
 					JOptionPane.showMessageDialog(null, "Debes rellenar tu email para iniciar sesion.");
 				} else {
 					iniciarSesion(new Sesion(email));
-					mainW.getBtnListarInscripciones().setEnabled(true);// una vez haya iniciado sesión , el atleta puede
-																		// acceder a sus inscripciones.
-					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg2");
+					if (sesion.getIdAtleta() == Sesion.NO_INICIADO) {
+						mainW.mostrarErrorInicioSesion(
+								"No se ha encontrado un usuario asociado al correo electrónico.\n Inténtalo de nuevo.");
+						mainW.vaciarCampoIniciarSesion();
+					} else {
+						mainW.getBtnListarInscripciones().setEnabled(true);// una vez haya iniciado sesión , el atleta
+																			// puede
+						// acceder a sus inscripciones.
+						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg2");
 
-					mainW.vaciarCampoIniciarSesion();
+						mainW.vaciarCampoIniciarSesion();
+					}
+
 				}
 
 			}
@@ -134,51 +138,48 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			
 
 				try {
-					
-					//Esta lista mejor de inscripciones
-				
-					
-					List<AtletaInscritoDto> inscripciones = incCrud.listarInscripcionesAtletaConDto(sesion.getIdAtleta());
-					
-					//Esta es la lista del nombre de las columnas
-					String[] columnNames = { "Competición", "Estado Inscripcion", "Ultimo Cambio"};
-					
-					//Esta es la array que contiene los elementos a listar, el primer [es el numero de fila]
-					//el segundo [el numero de la columna de acuerdo a los datos de arriba]
+
+					// Esta lista mejor de inscripciones
+
+					List<AtletaInscritoDto> inscripciones = incCrud
+							.listarInscripcionesAtletaConDto(sesion.getIdAtleta());
+
+					// Esta es la lista del nombre de las columnas
+					String[] columnNames = { "Competición", "Estado Inscripcion", "Ultimo Cambio" };
+
+					// Esta es la array que contiene los elementos a listar, el primer [es el numero
+					// de fila]
+					// el segundo [el numero de la columna de acuerdo a los datos de arriba]
 					String[][] valuesToTable = new String[inscripciones.size()][columnNames.length];
-					
+
 					int count = 0;
-					for(AtletaInscritoDto dto : inscripciones) {
+					for (AtletaInscritoDto dto : inscripciones) {
 						int col = 0;
 						valuesToTable[count][col++] = dto.nombreCompeticion;
 						valuesToTable[count][col++] = dto.estado.toString();
 						valuesToTable[count][col++] = dto.fechaUltimoCambio.toString();
 						count++;
 					}
-					
-					TableModel model = new DefaultTableModel(valuesToTable,columnNames){
+
+					TableModel model = new DefaultTableModel(valuesToTable, columnNames) {
 						/**
 						 * 
 						 */
 						private static final long serialVersionUID = 1L;
-
 
 						@Override
 						public boolean isCellEditable(int row, int column) {
 							return false;
 						}
 					};
-					
+
 					mainW.getTableCompeticion().setModel(model);
-					
+
 				} catch (BusinessException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
-				
-				
 
 			}
 
@@ -204,15 +205,27 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					PagoDto pagoDto = new PagoDto(LocalDate.now(), sesion.getIdAtleta(), sesion.getIdCompeticion());
-					pagoDto = pagCrud.pagarConTarjeta(pagoDto);
-					JOptionPane.showMessageDialog(mainW, "Se ha realizado un pago.\n" + pagoDto.toString());
-					((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "escogerPago"); // restauramos
-																													// el
-																													// panel.
-					mainW.vaciarCamposPago();
-					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1"); // Volvemos al
-																											// panel
-																											// principal.
+					// comprobar que no haya campos vacíos
+					if (mainW.getTxtCVC().getText().isBlank() || mainW.getTxtNum().getText().isBlank())
+						JOptionPane.showMessageDialog(null, "Debes rellenar todos los campos");
+					else {
+						// Sacar datos de la tarjeta-inicio
+						int cvc = Integer.valueOf(mainW.getTxtCVC().getText());
+						String numeroTarjeta = mainW.getTxtNum().getText();
+						LocalDate fechaCaducidad = LocalDate.of(mainW.getYearChooser().getYear(),
+								mainW.getMonthChooser().getMonth(), 1);
+						TarjetaDto tarjeta = new TarjetaDto(numeroTarjeta, fechaCaducidad, cvc, sesion.getIdAtleta());
+						// Sacar datos de la tarjeta-fin
+
+						pagoDto = pagCrud.pagarConTarjeta(pagoDto, tarjeta);
+						JOptionPane.showMessageDialog(mainW, "Se ha realizado un pago.\n" + pagoDto.toString());
+						((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "escogerPago");
+						// restauramos el panel
+
+						mainW.vaciarCamposPago();
+						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
+						// Volvemos al panel principal.
+					}
 
 				} catch (BusinessException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -243,7 +256,7 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String filename = mainW.getTextField().getText();
+				String filename = mainW.getTxtArchivoTiempos().getText();
 				
 				try {
 					List<InscripcionDto> insc = ParseadorTiempos.parse(filename);
@@ -273,24 +286,23 @@ public class InscripcionController {
 
 	}
 
-
-private void obtenerAtletas(String idCompeticion) {
-		if(idCompeticion.isBlank() || idCompeticion.isEmpty()) {
+	private void obtenerAtletas(String idCompeticion) {
+		if (idCompeticion.isBlank() || idCompeticion.isEmpty()) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID vacío");
-		}else {
+		} else {
 			int id = -1;
 			try {
 				id = Integer.parseUnsignedInt(idCompeticion);
-				
-				List<AtletaInscritoDto> res  = incCrud.obtenerAtletasParaCompeticion(id);
-				
-				String[] columnNames = { "Nombre", "Apellidos", "Categoría", "Fecha de Inscripcion" , "Estado"};
-				
+
+				List<AtletaInscritoDto> res = incCrud.obtenerAtletasParaCompeticion(id);
+
+				String[] columnNames = { "Nombre", "Apellidos", "Categoría", "Fecha de Inscripcion", "Estado" };
+
 				String[][] valuesToTable = new String[res.size()][columnNames.length];
-				
+
 				int count = 0;
-				for(AtletaInscritoDto dto : res) {
+				for (AtletaInscritoDto dto : res) {
 					int col = 0;
 					valuesToTable[count][col++] = dto.nombre;
 					valuesToTable[count][col++] = dto.apellido;
@@ -299,35 +311,34 @@ private void obtenerAtletas(String idCompeticion) {
 					valuesToTable[count][col++] = dto.estado.toString();
 					count++;
 				}
-				
-				TableModel model = new DefaultTableModel(valuesToTable,columnNames) {
+
+				TableModel model = new DefaultTableModel(valuesToTable, columnNames) {
 					/**
 					 * 
 					 */
 					private static final long serialVersionUID = 1L;
-	
+
 					@Override
 					public boolean isCellEditable(int row, int column) {
 						return false;
 					}
 				};
-				
+
 				mainW.getTablaClasificacion().setModel(model);
-				
+
 				mainW.getLblErrorOrg().setVisible(false);
 				mainW.getLblErrorOrg().setText("Error: ");
-				
-			}catch (BusinessException e) {
+
+			} catch (BusinessException e) {
 				mainW.getLblErrorOrg().setVisible(true);
 				mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
-			}catch(NumberFormatException e1) {
+			} catch (NumberFormatException e1) {
 				mainW.getLblErrorOrg().setVisible(true);
 				mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
 			}
 		}
 
 	}
-
 
 	private void obtenerClasificacion(String idCompeticion, String sexo) {
 
@@ -343,47 +354,43 @@ private void obtenerAtletas(String idCompeticion) {
 		} catch (NumberFormatException e1) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
-			
+
 		}
 
 		try {
 			List<InscripcionDto> clas = incCrud.obtenerClasificaciones(id, sexo);
 			String[] columnNames = { "Nombre", "Apellidos", "Posicion", "Tiempo" };
-			
+
 			String[][] valuesToTable = new String[clas.size()][columnNames.length];
-			
+
 			int count = 0;
 			AtletaDto atleta;
-			for(InscripcionDto dto : clas) {
+			for (InscripcionDto dto : clas) {
 				atleta = atlCrud.encontrarPorId(dto.idAtleta);
 				int col = 0;
 				valuesToTable[count][col++] = atleta.nombre;
 				valuesToTable[count][col++] = atleta.apellido;
-				
-				if(dto.posicionFinal <= 0) {
+
+				if (dto.posicionFinal <= 0) {
 					valuesToTable[count][col++] = "-";
-				}else {
-					valuesToTable[count][col++] = ""+dto.posicionFinal;
+				} else {
+					valuesToTable[count][col++] = "" + dto.posicionFinal;
 				}
-				
-				if(dto.tiempoQueTardaEnSegundos <= 0 ) {
+
+				if (dto.tiempoQueTardaEnSegundos <= 0) {
 					valuesToTable[count][col++] = "--:--:--";
-				}else {
-					valuesToTable[count][col++] = ""+dto.tiempoQueTarda;
+				} else {
+					valuesToTable[count][col++] = "" + dto.tiempoQueTarda;
 				}
-				
-				
-				
+
 				count++;
 			}
-		
-			
-			TableModel model = new DefaultTableModel(valuesToTable,columnNames) {
+
+			TableModel model = new DefaultTableModel(valuesToTable, columnNames) {
 				/**
 				 * 
 				 */
 				private static final long serialVersionUID = 1L;
-
 
 				@Override
 				public boolean isCellEditable(int row, int column) {
@@ -392,33 +399,31 @@ private void obtenerAtletas(String idCompeticion) {
 			};
 			mainW.getTablaClasificacion().setModel(model);
 
-
 		} catch (BusinessException e) {
 			mainW.getLblErrorOrg().setVisible(true);
-			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());	
+			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
 		}
 	}
 
-
-private void inscribirse(String emailAtleta, String idCompeticionString) {
-		if(emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank() || idCompeticionString.isEmpty()) {
+	private void inscribirse(String emailAtleta, String idCompeticionString) {
+		if (emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank()
+				|| idCompeticionString.isEmpty()) {
 			mainW.getLblError().setVisible(true);
 			mainW.getLblError().setText("Error: Algún campo está vacio");
-		}
-		else {
+		} else {
 			try {
 				int idCompeticion = Integer.parseInt(idCompeticionString);
 				incCrud.inscribirAtleta(emailAtleta, idCompeticion);
 				JOptionPane.showMessageDialog(null, "Atleta Inscrito");
 				mainW.getLblError().setVisible(false);
 				sesion = new Sesion(emailAtleta, idCompeticion);
-				((CardLayout)mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
+				((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
 			} catch (BusinessException e) {
 				mainW.getLblError().setText("Error: " + e.getMessage());
 				mainW.getLblError().setVisible(true);
 			}
-			
+
 		}
-		
+
 	}
 }
