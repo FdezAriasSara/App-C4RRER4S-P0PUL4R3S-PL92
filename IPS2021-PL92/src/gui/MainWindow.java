@@ -89,7 +89,7 @@ public class MainWindow extends JFrame {
 	private JTextArea ErrorTextAreaPago;
 	private JTextArea ErrorTextAreaSesion;
 	@SuppressWarnings("unused")
-	private QuieresRegistrarte registroDialog;
+	private CustomDialogRegistro registroDialog;
 	private JPanel panel_registrarse;
 	private JLabel lblNombre;
 	private JTextField textFieldNombre;
@@ -103,12 +103,14 @@ public class MainWindow extends JFrame {
 	private JTextField textFieldCorreo;
 	private JButton btnRegistrarse;
 	private JTextArea textAreaRegistro;
+	private JLabel lblSexo;
+	private JComboBox<String> comboSexo;
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow() {
-		this.registroDialog=new QuieresRegistrarte(this);
+		this.registroDialog = new CustomDialogRegistro(this);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 892, 639);
@@ -423,7 +425,7 @@ public class MainWindow extends JFrame {
 		return btnGenerarClasificacion;
 	}
 
-	public QuieresRegistrarte getRegistroDialog() {
+	public CustomDialogRegistro getRegistroDialog() {
 		return registroDialog;
 	}
 
@@ -516,15 +518,18 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtNum() {
 		if (txtNum == null) {
 			txtNum = new JTextField();
-			txtNum.addKeyListener(new KeyAdapter() {
+			txtNum.addFocusListener(new FocusAdapter() {
+
 				@Override
-				public void keyTyped(KeyEvent e) {
+				public void focusLost(FocusEvent e) {
+
 					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
 						mostrarErrorPagoTarjeta(
-								"El formato del número de tarjeta es incorrecto. \n Solo puede contener números.");
-						getTxtNum().setText("");
+								"El formato del número de tarjeta es incorrecto. \n Deben ser 16 dígitos.");
+					
 					}
 				}
+
 			});
 
 			txtNum.setBounds(417, 141, 384, 53);
@@ -536,9 +541,12 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtCVC() {
 		if (txtCVC == null) {
 			txtCVC = new JTextField();
-			txtCVC.addKeyListener(new KeyAdapter() {
+
+			txtCVC.addFocusListener(new FocusAdapter() {
+
 				@Override
-				public void keyTyped(KeyEvent e) {
+				public void focusLost(FocusEvent e) {
+
 					if (!compruebaCVC(getTxtCVC().getText())) {
 
 						mostrarErrorPagoTarjeta(
@@ -546,6 +554,7 @@ public class MainWindow extends JFrame {
 						getTxtCVC().setText("");
 					}
 				}
+
 			});
 			txtCVC.setColumns(10);
 			txtCVC.setBounds(417, 372, 384, 53);
@@ -642,18 +651,19 @@ public class MainWindow extends JFrame {
 			textFieldIniciarSesion.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if(!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
+					if (!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
 						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
-						getTextFieldIniciarSesion().setText("");//vacío el campo para evitar que proceda con la inscripción
+						getTextFieldIniciarSesion().setText("");// vacío el campo para evitar que proceda con la
+																// inscripción
 					}
 				}
 			});
-			textFieldIniciarSesion.addFocusListener(new FocusAdapter() { 
+			textFieldIniciarSesion.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					
-						vaciarErrorInicioSesion();
-					//para que el mensaje desaparezca cuando el usuario vuelve  a intentarlo
+
+					vaciarErrorInicioSesion();
+					// para que el mensaje desaparezca cuando el usuario vuelve a intentarlo
 				}
 			});
 			textFieldIniciarSesion.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -774,13 +784,13 @@ public class MainWindow extends JFrame {
 	private JTextArea getErrorTextAreaPago() {
 		if (ErrorTextAreaPago == null) {
 			ErrorTextAreaPago = new JTextArea();
-			ErrorTextAreaPago.setFont(new Font("Tahoma", Font.BOLD, 19));
+			ErrorTextAreaPago.setFont(new Font("Tahoma", Font.PLAIN, 19));
 			ErrorTextAreaPago.setBackground(new Color(240, 240, 240));
 			ErrorTextAreaPago.setForeground(Color.RED);
 			ErrorTextAreaPago.setVisible(false);
 			ErrorTextAreaPago.setEnabled(false);
 			ErrorTextAreaPago.setEditable(false);
-			ErrorTextAreaPago.setBounds(29, 476, 338, 70);
+			ErrorTextAreaPago.setBounds(29, 476, 553, 70);
 		}
 		return ErrorTextAreaPago;
 	}
@@ -793,11 +803,11 @@ public class MainWindow extends JFrame {
 
 	private boolean compruebaCVC(String text) {
 
-		return text.matches("\\d\\d\\d");
+		return text.matches("[0-9]{3}");
 	}
 
 	private boolean compruebaNumeroTarjeta(String text) {
-		return text.matches("(\\d)+");
+		return text.matches("[0-9]{16}");
 	}
 
 	public JTextArea getErrorTextAreaSesion() {
@@ -812,13 +822,14 @@ public class MainWindow extends JFrame {
 		}
 		return ErrorTextAreaSesion;
 	}
+
 	private JPanel getPanel_registrarse() {
 		if (panel_registrarse == null) {
 			panel_registrarse = new JPanel();
 			panel_registrarse.setLayout(null);
 			panel_registrarse.add(getLblNombre());
-			panel_registrarse.add(getTextFieldNombre());
-			panel_registrarse.add(getTextFieldApellidos());
+			panel_registrarse.add(getTxtRegNombre());
+			panel_registrarse.add(getTxtRegApellido());
 			panel_registrarse.add(getLblApellidos());
 			panel_registrarse.add(getLblDni());
 			panel_registrarse.add(getTextFieldDNI());
@@ -828,161 +839,176 @@ public class MainWindow extends JFrame {
 			panel_registrarse.add(getTextFieldCorreo());
 			panel_registrarse.add(getBtnRegistrarse());
 			panel_registrarse.add(getTextAreaRegistro());
-	
+			panel_registrarse.add(getLblSexo());
+			panel_registrarse.add(getComboSexo());
+
 		}
 		return panel_registrarse;
 	}
+
 	private JLabel getLblNombre() {
 		if (lblNombre == null) {
 			lblNombre = new JLabel("Nombre:");
-			lblNombre.setLabelFor(getTextFieldNombre());
+			lblNombre.setLabelFor(getTxtRegNombre());
 			lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			lblNombre.setBounds(66, 33, 81, 37);
+			lblNombre.setBounds(66, 10, 81, 37);
 		}
 		return lblNombre;
 	}
-	private JTextField getTextFieldNombre() {
+
+	public JTextField getTxtRegNombre() {
 		if (textFieldNombre == null) {
 			textFieldNombre = new JTextField();
 			textFieldNombre.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			textFieldNombre.setBounds(261, 34, 366, 37);
+			textFieldNombre.setBounds(261, 11, 366, 37);
 			textFieldNombre.setColumns(10);
 			textFieldNombre.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if(!comprobarSoloTexto(getTextFieldApellidos().getText())) {
-						mostrarErrorRegistro("El nombre solo puede tener letras. Si tu nombre es compuesto emplea el símbolo -.");
+					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
+						mostrarErrorRegistro(
+								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el símbolo -.");
+						getTxtRegNombre().setText("");
 					}
 				}
-				@Override
-				public void focusGained(FocusEvent e) {
-					borrarErrorRegistro();
-					
-				}
+
 			});
 		}
 		return textFieldNombre;
 	}
-	private JTextField getTextFieldApellidos() {
+
+	public JTextField getTxtRegApellido() {
 		if (textFieldApellidos == null) {
 			textFieldApellidos = new JTextField();
 			textFieldApellidos.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if(!comprobarSoloTexto(getTextFieldApellidos().getText())) {
-						mostrarErrorRegistro("El apellido solo puede tener letras. Si tu apellido es compuesto emplea el símbolo -.");
+					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
+						mostrarErrorRegistro(
+								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el símbolo -.");
+						getTxtRegApellido().setText("");
 					}
 				}
-				@Override
-				public void focusGained(FocusEvent e) {
-					borrarErrorRegistro();
-					
-				}
+
 			});
-			textFieldApellidos.setBounds(261, 102, 366, 37);
+			textFieldApellidos.setBounds(261, 75, 366, 37);
 			textFieldApellidos.setColumns(10);
 		}
 		return textFieldApellidos;
 	}
+
 	protected boolean comprobarSoloTexto(String text) {
-	//Comprueba que solo sea un nombre/apellido o un apellido/nombre compuesto
-		return text.matches("(\\D+)|((\\D)+ -(\\D)+)");
+		// Comprueba que solo sea un nombre/apellido o un apellido/nombre compuesto
+		return text.matches("[a-zA-Z]{2,50}|([a-zA-Z]{2,25} -[a-zA-Z]{2,25}");
+		// Evita que se introduzcan muchos caracteres
 	}
 
 	private JLabel getLblApellidos() {
 		if (lblApellidos == null) {
 			lblApellidos = new JLabel("Apellidos:");
-			lblApellidos.setLabelFor(getTextFieldApellidos());
+			lblApellidos.setLabelFor(getTxtRegApellido());
 			lblApellidos.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			lblApellidos.setBounds(66, 103, 105, 27);
+			lblApellidos.setBounds(66, 76, 105, 27);
 		}
 		return lblApellidos;
 	}
+
 	private JLabel getLblDni() {
 		if (lblDni == null) {
 			lblDni = new JLabel("DNI:");
 			lblDni.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			lblDni.setBounds(66, 164, 81, 31);
+			lblDni.setBounds(66, 135, 81, 31);
 		}
 		return lblDni;
 	}
-	private JTextField getTextFieldDNI() {
+
+	public JTextField getTextFieldDNI() {
 		if (textFieldDNI == null) {
 			textFieldDNI = new JTextField();
 			textFieldDNI.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if(!checkFormatoDni(getTextFieldDNI().getText())) {
+					if (!checkFormatoDni(getTextFieldDNI().getText())) {
 						mostrarErrorRegistro("El dni debe contener seis dígitos y una letra.");
 					}
 				}
+
 				@Override
 				public void focusGained(FocusEvent e) {
 					borrarErrorRegistro();
-					//para que al intentar arreglar el mail, se borre el mensaje de error y no se confunda el usuario
+					// para que al intentar arreglar el mail, se borre el mensaje de error y no se
+					// confunda el usuario
 				}
 
-				
 			});
 			textFieldDNI.setColumns(10);
-			textFieldDNI.setBounds(261, 165, 366, 37);
+			textFieldDNI.setBounds(261, 136, 366, 37);
 		}
 		return textFieldDNI;
 	}
+
 	private boolean checkFormatoDni(String text) {
-		
+
 		return text.matches("\\d{6}\\D");
 	}
+
 	private JLabel getLblNacimiento() {
 		if (lblNacimiento == null) {
 			lblNacimiento = new JLabel("Fecha de nacimiento:");
 			lblNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			lblNacimiento.setBounds(66, 302, 168, 37);
+			lblNacimiento.setBounds(66, 309, 168, 37);
 		}
 		return lblNacimiento;
 	}
-	private JCalendar getCalendarNacimiento() {
+
+	public JCalendar getCalendarNacimiento() {
 		if (calendarNacimiento == null) {
 			calendarNacimiento = new JCalendar();
-			calendarNacimiento.setBounds(261, 303, 205, 153);
-			
+			calendarNacimiento.setBounds(261, 310, 205, 153);
+
 		}
 		return calendarNacimiento;
 	}
+
 	private JLabel getLblEmail() {
 		if (lblEmail == null) {
 			lblEmail = new JLabel("Correo:");
 			lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			lblEmail.setBounds(66, 232, 96, 27);
+			lblEmail.setBounds(66, 195, 96, 27);
 		}
 		return lblEmail;
 	}
-	private JTextField getTextFieldCorreo() {
+
+	public JTextField getTextFieldCorreo() {
 		if (textFieldCorreo == null) {
 			textFieldCorreo = new JTextField();
 			textFieldCorreo.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if(!checkFormatoEmail(getTextFieldCorreo().getText())){
+					if (!checkFormatoEmail(getTextFieldCorreo().getText())) {
 						mostrarErrorRegistro("El correo no tiene el formato adecuado.");
 					}
 				}
+
 				@Override
 				public void focusGained(FocusEvent e) {
 					borrarErrorRegistro();
-					//para que al intentar arreglar el mail, se borre el mensaje de error y no se confunda el usuario
+					// para que al intentar arreglar el mail, se borre el mensaje de error y no se
+					// confunda el usuario
 				}
 			});
-			textFieldCorreo.setBounds(261, 231, 366, 37);
+			textFieldCorreo.setBounds(261, 194, 366, 37);
 			textFieldCorreo.setColumns(10);
 		}
 		return textFieldCorreo;
 	}
-	protected void mostrarErrorRegistro(String string) {
+
+	public void mostrarErrorRegistro(String string) {
 		getTextAreaRegistro().setText(string);
 		getTextAreaRegistro().setVisible(true);
 		getTextAreaRegistro().setEnabled(true);
 	}
+
 	protected void borrarErrorRegistro() {
 		getTextAreaRegistro().setText("");
 		getTextAreaRegistro().setVisible(false);
@@ -997,14 +1023,48 @@ public class MainWindow extends JFrame {
 		}
 		return btnRegistrarse;
 	}
+
 	private JTextArea getTextAreaRegistro() {
 		if (textAreaRegistro == null) {
 			textAreaRegistro = new JTextArea();
 			textAreaRegistro.setVisible(false);
 			textAreaRegistro.setForeground(Color.RED);
-			textAreaRegistro.setBounds(52, 474, 442, 72);
+			textAreaRegistro.setBounds(52, 474, 590, 72);
 			textAreaRegistro.setBackground(new Color(240, 240, 240));
 		}
 		return textAreaRegistro;
+	}
+
+	private JLabel getLblSexo() {
+		if (lblSexo == null) {
+			lblSexo = new JLabel("Sexo:");
+			lblSexo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lblSexo.setBounds(66, 258, 110, 27);
+		}
+		return lblSexo;
+	}
+
+	public JComboBox<String> getComboSexo() {
+		if (comboSexo == null) {
+			comboSexo = new JComboBox<String>();
+			comboSexo.setBounds(261, 262, 205, 27);
+			comboSexo.addItem("Femenino");
+			comboSexo.addItem("Masculino");
+		}
+		return comboSexo;
+	}
+
+	public void vaciarCamposInscripcion() {
+		getTxtFIDCompeticion().setText("");
+		getTxtFEmail().setText("");
+
+	}
+
+	public void vaciarCamposRegistro() {
+		getTxtRegApellido().setText("");
+		getTxtRegNombre().setText("");
+		getTextFieldCorreo().setText("");
+		getTextFieldDNI().setText("");
+
 	}
 }

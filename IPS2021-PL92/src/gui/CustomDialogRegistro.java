@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class QuieresRegistrarte extends JDialog {
+public class CustomDialogRegistro extends JDialog {
 
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class QuieresRegistrarte extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public QuieresRegistrarte(MainWindow mainW) {
+	public CustomDialogRegistro(MainWindow mainW) {
 		setVisible(false);
 		setResizable(false);
 		setModal(true);
@@ -85,7 +85,7 @@ public class QuieresRegistrarte extends JDialog {
 	private JLabel getLblWarning() {
 		if (lblWarning == null) {
 			lblWarning = new JLabel("");
-			lblWarning.setIcon(new ImageIcon(QuieresRegistrarte.class.getResource("/img/warningIcon.png")));
+			lblWarning.setIcon(new ImageIcon(CustomDialogRegistro.class.getResource("/img/warningIcon.png")));
 			lblWarning.setBounds(10, 34, 143, 150);
 		}
 		return lblWarning;

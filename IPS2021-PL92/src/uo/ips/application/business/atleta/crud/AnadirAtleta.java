@@ -11,9 +11,11 @@ import uo.ips.application.business.atleta.AtletaDto;
 
 public class AnadirAtleta {
 
-	private String AÑADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname) VALUES (?,?,?,?,?,?)";
+	private String AÑADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname,idAtleta) VALUES (?,?,?,?,?,?,?)";
 	private String BUSCAR_ATLETA_POR_DNI = "SELECT * FROM Atleta WHERE dni = ?";
 	private String BUSCAR_ATLETA_POR_EMAIL = "SELECT * FROM Atleta WHERE email = ?";
+	private String ID_MAXIMO="select max(idAtleta) from Atleta";
+
 	private AtletaDto atleta;
 
 	public AnadirAtleta(AtletaDto atleta) {
@@ -38,7 +40,8 @@ public class AnadirAtleta {
 			pst.setString(4, atleta.nombre);
 			pst.setString(5, atleta.sexo);
 			pst.setString(6, atleta.apellido);
-		
+			int id=getId();
+			pst.setInt(7, id);
 
 			pst.executeUpdate();
 
@@ -49,6 +52,32 @@ public class AnadirAtleta {
 			Jdbc.close(c);
 		}
 		return atleta;
+	}
+
+	private int getId() {
+		Connection c = null;
+		PreparedStatement pst = null;
+		ResultSet rs=null;
+		try {
+			
+			c = Jdbc.getConnection();
+
+			pst = c.prepareStatement(ID_MAXIMO);
+			
+		
+
+			rs=pst.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1)+1;
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Jdbc.close(rs,pst,c);
+			
+		}
+		return 0;
 	}
 
 	/**
