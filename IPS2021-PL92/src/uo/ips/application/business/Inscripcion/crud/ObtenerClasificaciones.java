@@ -56,7 +56,7 @@ public class ObtenerClasificaciones {
 				throw new BusinessException("La competicion no existe");
 			}
 			if(!competicionHaTerminado()) {
-				throw new BusinessException("La competicion aun no terminó, por lo que no podemos crear la clasificacion.");
+				throw new BusinessException("La competicion aun no terminó, importa los datos de final de carrera.");
 			}
 			
 			

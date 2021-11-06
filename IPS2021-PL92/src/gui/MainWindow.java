@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,13 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import com.toedter.calendar.JCalendar;
+
 
 public class MainWindow extends JFrame {
 
@@ -84,6 +83,10 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JTable tablaClasificacion;
 	private JTable tableCompeticion;
+
+	private JButton btnImportarDatos;
+	private JTextField txtArchivoTiempos;
+
 	private JMonthChooser monthChooser;
 	private JYearChooser yearChooser;
 	private JTextArea ErrorTextAreaPago;
@@ -185,6 +188,8 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getLblErrorOrg());
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
+			panel_organizador.add(getBtnImportarDatos());
+			panel_organizador.add(getTxtArchivoTiempos());
 		}
 		return panel_organizador;
 	}
@@ -759,6 +764,24 @@ public class MainWindow extends JFrame {
 		return tableCompeticion;
 	}
 
+	public JButton getBtnImportarDatos() {
+		if (btnImportarDatos == null) {
+			btnImportarDatos = new JButton("Importar Datos");
+			btnImportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnImportarDatos.setBounds(458, 361, 157, 35);
+		}
+		return btnImportarDatos;
+	}
+	public JTextField getTxtArchivoTiempos() {
+		if (txtArchivoTiempos == null) {
+			txtArchivoTiempos = new JTextField();
+			txtArchivoTiempos.setBounds(625, 359, 157, 35);
+			txtArchivoTiempos.setColumns(10);
+		}
+		return txtArchivoTiempos;
+	}
+
+
 	public JMonthChooser getMonthChooser() {
 		if (monthChooser == null) {
 			monthChooser = new JMonthChooser();
@@ -821,6 +844,7 @@ public class MainWindow extends JFrame {
 			ErrorTextAreaSesion.setBackground(new Color(240, 240, 240));
 		}
 		return ErrorTextAreaSesion;
+
 	}
 
 	private JPanel getPanel_registrarse() {

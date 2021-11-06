@@ -21,4 +21,11 @@ public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 	}
 
 
+	@Override
+	public void terminarCompeticion(int idCompeticion) throws BusinessException {
+		new TerminarCarrera(idCompeticion).execute();
+		
+	}
+
+
 }

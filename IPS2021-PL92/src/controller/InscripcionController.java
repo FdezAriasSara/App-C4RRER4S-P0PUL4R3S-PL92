@@ -3,7 +3,11 @@
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Date;
+
+import java.io.IOException;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -251,6 +255,7 @@ public class InscripcionController {
 				}
 			}
 		});
+
 		mainW.getBtnRegistrarse().addActionListener(new ActionListener() {
 
 			@Override
@@ -291,6 +296,42 @@ public class InscripcionController {
 	
 			
 	
+		
+		
+		
+		
+		mainW.getBtnImportarDatos().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String filename = mainW.getTxtArchivoTiempos().getText();
+				
+				try {
+					List<InscripcionDto> insc = ParseadorTiempos.parse(filename);
+					int notUpdated = incCrud.registrarTiempos(insc);
+					
+					System.out.println("Dorsales erroneos: " + notUpdated);
+					System.out.println("Dorsales repetidos: " + ParseadorTiempos.getRepeatedInLastExe());
+					System.out.println("Formato erroneo en linea: " + ParseadorTiempos.getWrongParseInLastExe());
+					JOptionPane.showMessageDialog(null, "Datos importados correctamente");
+					
+				} catch (IOException e1) {
+					mainW.getLblError().setVisible(true);
+					mainW.getLblError().setEnabled(true);
+					mainW.getLblError().setText("Error al encontrar archivo de datos");
+					
+					mainW.getLblError().setEnabled(false);
+				} catch (BusinessException e1) {
+					mainW.getLblError().setVisible(true);
+					mainW.getLblError().setEnabled(true);
+					mainW.getLblError().setText("Error al exportar datos a la base de datos");
+					
+					mainW.getLblError().setEnabled(false);
+				}
+				
+			}
+		});
+
 
 	}
 
