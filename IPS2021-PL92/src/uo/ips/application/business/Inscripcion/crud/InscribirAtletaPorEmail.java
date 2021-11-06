@@ -11,6 +11,7 @@ import uo.ips.application.business.BusinessFactory;
 
 public class InscribirAtletaPorEmail {
 
+	
 	private String SQLGetId = "SELECT idAtleta FROM Atleta WHERE email = ?";
 	private int  idCompeticion;
 	private String email;
@@ -28,7 +29,7 @@ public class InscribirAtletaPorEmail {
 
 	public void execute() throws BusinessException {
 		// Process
-
+		
 		try {
 			c = Jdbc.getConnection();
 
@@ -59,6 +60,6 @@ public class InscribirAtletaPorEmail {
 		
 		
 	}
-
+	
 }
 

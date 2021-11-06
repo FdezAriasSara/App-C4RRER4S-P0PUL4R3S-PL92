@@ -9,6 +9,8 @@ import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.crud.CompeticionCrudServiceImpl;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.crud.PagoCrudServiceImpl;
+import uo.ips.application.business.registro.RegistroCrudService;
+import uo.ips.application.business.registro.impl.RegistroCrudServiceImpl;
 
 public class BusinessFactory {
 	
@@ -30,5 +32,10 @@ public class BusinessFactory {
 	
 	public static PagoCrudService forPagoCrudService() {
 		return new PagoCrudServiceImpl();
+	}
+
+	public static RegistroCrudService forRegistroCrudService() {
+		
+		return new RegistroCrudServiceImpl();
 	}
 }

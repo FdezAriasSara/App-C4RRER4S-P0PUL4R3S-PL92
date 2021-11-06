@@ -9,4 +9,5 @@ public interface AtletaCrudService {
 	int CalcularCategoria(int idAtleta, int idCompeticion) throws BusinessException;
 	
 	AtletaDto encontrarPorId(int idAtleta) throws BusinessException;
+
 }
