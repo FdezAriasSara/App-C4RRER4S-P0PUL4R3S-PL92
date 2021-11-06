@@ -1,13 +1,24 @@
-package controller;
+ package controller;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+
+
+import java.sql.Date;
+
+
 import java.io.IOException;
+
 import java.time.LocalDate;
+
 import java.util.ArrayList;
+
+import java.time.ZoneId;
+
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -29,6 +40,7 @@ import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.PagoDto;
 import uo.ips.application.business.pago.TarjetaDto;
+import uo.ips.application.business.registro.RegistroCrudService;
 
 public class InscripcionController {
 
@@ -40,6 +52,7 @@ public class InscripcionController {
 	private CompeticionCrudService compCrud = BusinessFactory.forCompeticionCrudService();
 
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
+	private RegistroCrudService regCrud=BusinessFactory.forRegistroCrudService();
 
 	
 
@@ -221,6 +234,7 @@ public class InscripcionController {
 						String numeroTarjeta = mainW.getTxtNum().getText();
 						LocalDate fechaCaducidad = LocalDate.of(mainW.getYearChooser().getYear(),
 								mainW.getMonthChooser().getMonth(), 1);
+						
 						TarjetaDto tarjeta = new TarjetaDto(numeroTarjeta, fechaCaducidad, cvc, sesion.getIdAtleta());
 						// Sacar datos de la tarjeta-fin
 
@@ -230,7 +244,7 @@ public class InscripcionController {
 						// restauramos el panel
 
 						mainW.vaciarCamposPago();
-						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
+						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg2");
 						// Volvemos al panel principal.
 					}
 
@@ -254,7 +268,47 @@ public class InscripcionController {
 				}
 			}
 		});
+
+		mainW.getBtnRegistrarse().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			try {
 		
+				AtletaDto dto= new AtletaDto();
+				//si el atleta es mayor de edad
+				LocalDate fechaNacimiento=mainW.getCalendarNacimiento().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				if(!fechaNacimiento.isBefore(LocalDate.parse("2003-12-31")))
+					mainW.mostrarErrorRegistro("Debes ser mayor de edad para registrarte.");
+				else {
+					//recoger datos registro en un dto
+					dto.nombre=mainW.getTxtRegNombre().getText();
+					dto.apellido=mainW.getTxtRegApellido().getText();
+					dto.dni=mainW.getTextFieldDNI().getText();
+					dto.fechaNacimiento=Date.valueOf(fechaNacimiento);
+					dto.sexo=mainW.getComboSexo().getSelectedItem().toString();
+					dto.email=mainW.getTextFieldCorreo().getText();
+					//añadir a la base de datos.
+					atlCrud.anadirAtleta(dto);
+					
+					//una vez que el atleta se registra se le inscribe en la competición que había seleccionado.
+					inscribirse(dto.email, mainW.getTxtFIDCompeticion().getText());
+					mainW.vaciarCamposRegistro();
+				
+				}
+				
+				
+				
+							
+				} catch (BusinessException ex) {
+					JOptionPane.showMessageDialog(null,ex.getMessage());
+				}
+			}
+		});
+	
+			
+	
 		
 		
 		
@@ -367,6 +421,7 @@ public class InscripcionController {
 						idCategoriaSelected);
 			}
 		});
+
 
 	}
 	
@@ -536,12 +591,20 @@ public class InscripcionController {
 			mainW.getLblError().setText("Error: Algún campo está vacio");
 		} else {
 			try {
-				int idCompeticion = Integer.parseInt(idCompeticionString);
-				incCrud.inscribirAtleta(emailAtleta, idCompeticion);
-				JOptionPane.showMessageDialog(null, "Atleta Inscrito");
-				mainW.getLblError().setVisible(false);
-				sesion = new Sesion(emailAtleta, idCompeticion);
-				((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
+				if(comprobarSiEstaRegistrado(emailAtleta)) {
+					int idCompeticion = Integer.parseInt(idCompeticionString);
+					incCrud.inscribirAtleta(emailAtleta, idCompeticion);
+					JOptionPane.showMessageDialog(null, "Atleta Inscrito");
+					mainW.getLblError().setVisible(false);
+					sesion = new Sesion(emailAtleta, idCompeticion);
+					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
+					mainW.vaciarCamposInscripcion();
+				}else {//si el atleta no está registrado.
+					mainW.getTextFieldCorreo().setText(mainW.getTxtFEmail().getText());
+					//si el atleta decide registrarse, se habrá introducido ya el correo para su comodidad
+					mainW.getRegistroDialog().setVisible(true);
+				}
+			
 			} catch (BusinessException e) {
 				mainW.getLblError().setText("Error: " + e.getMessage());
 				mainW.getLblError().setVisible(true);
@@ -549,5 +612,15 @@ public class InscripcionController {
 
 		}
 
+	}
+
+	private boolean comprobarSiEstaRegistrado(String emailAtleta) {
+		if(!regCrud.ComprobarDatosInscripcion(emailAtleta)) {
+			mainW.setErrorAtletaNoRegistrado();
+		
+			return false;
+		}
+		return true;
+		
 	}
 }
