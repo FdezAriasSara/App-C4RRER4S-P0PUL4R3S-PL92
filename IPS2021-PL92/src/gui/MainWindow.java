@@ -91,6 +91,7 @@ public class MainWindow extends JFrame {
 	private JYearChooser yearChooser;
 	private JTextArea ErrorTextAreaPago;
 	private JTextArea ErrorTextAreaSesion;
+	private JButton btnCargarCategorias;
 
 
 	/**
@@ -172,6 +173,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
 			panel_organizador.add(getTxtArchivoTiempos());
+			panel_organizador.add(getBtnCargarCategorias());
 		}
 		return panel_organizador;
 	}
@@ -381,8 +383,6 @@ public class MainWindow extends JFrame {
 			cbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			cbCategoria.setBounds(147, 364, 157, 29);
 
-			cbCategoria.addItem("masculino");
-			cbCategoria.addItem("femenino");
 		}
 		return cbCategoria;
 	}
@@ -422,7 +422,7 @@ public class MainWindow extends JFrame {
 		if (btnObtenerAtletas == null) {
 			btnObtenerAtletas = new JButton("Obtener Atletas");
 			btnObtenerAtletas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btnObtenerAtletas.setBounds(458, 404, 294, 35);
+			btnObtenerAtletas.setBounds(525, 404, 324, 35);
 		}
 		return btnObtenerAtletas;
 	}
@@ -709,14 +709,14 @@ public class MainWindow extends JFrame {
 		if (btnImportarDatos == null) {
 			btnImportarDatos = new JButton("Importar Datos");
 			btnImportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btnImportarDatos.setBounds(458, 361, 157, 35);
+			btnImportarDatos.setBounds(525, 359, 157, 35);
 		}
 		return btnImportarDatos;
 	}
 	public JTextField getTxtArchivoTiempos() {
 		if (txtArchivoTiempos == null) {
 			txtArchivoTiempos = new JTextField();
-			txtArchivoTiempos.setBounds(625, 359, 157, 35);
+			txtArchivoTiempos.setBounds(692, 361, 157, 35);
 			txtArchivoTiempos.setColumns(10);
 		}
 		return txtArchivoTiempos;
@@ -784,5 +784,13 @@ public class MainWindow extends JFrame {
 		}
 		return ErrorTextAreaSesion;
 
+	}
+	public JButton getBtnCargarCategorias() {
+		if (btnCargarCategorias == null) {
+			btnCargarCategorias = new JButton("Cargar categorias");
+			btnCargarCategorias.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnCargarCategorias.setBounds(314, 364, 157, 29);
+		}
+		return btnCargarCategorias;
 	}
 }

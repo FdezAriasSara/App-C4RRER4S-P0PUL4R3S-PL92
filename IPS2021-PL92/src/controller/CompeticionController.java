@@ -35,8 +35,22 @@ public class CompeticionController {
 		});
 		
 		
+		mainW.getBtnCargarCategorias().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				añadirCategoriasAComboBox();
+			}
+			
+		});
 		
 		
+		
+		
+	}
+	
+	
+	private void añadirCategoriasAComboBox() {
+		
+		mainW.getCbCategoria().addItem("Absoluta");
 		
 	}
 	
