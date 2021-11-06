@@ -55,7 +55,7 @@ public class ListarCompeticionesInscripcionesAbiertas {
 		
 		
 	} catch (SQLException e) {
-		throw new RuntimeException(e);
+		throw new BusinessException(e);
 	}
 	finally {
 		Jdbc.close(rs, pst, c);

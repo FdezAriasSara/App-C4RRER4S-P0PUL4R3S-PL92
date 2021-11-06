@@ -27,8 +27,8 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	}
 
 	@Override
-	public List<InscripcionDto> obtenerClasificaciones(int idCompeticion, String sexo) throws BusinessException {
-		return new ObtenerClasificaciones(idCompeticion, sexo).execute();
+	public List<InscripcionDto> obtenerClasificaciones(int idCompeticion, int idCategoria) throws BusinessException {
+		return new ObtenerClasificaciones(idCompeticion, idCategoria).execute();
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import alb.util.assertion.Argument;
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
@@ -16,15 +17,22 @@ public class ObtenerClasificaciones {
 
 
 
-	private String SQL_Select_Terminadas = "SELECT i.* FROM Inscripcion i, Atleta a WHERE i.estado = 'TERMINADA' AND idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
-	private String SQL_Select_NOTerminadas = "SELECT i.* FROM Inscripcion i, Atleta a WHERE i.estado <> 'TERMINADA' AND idCompeticion = ? and i.idAtleta = a.idAtleta and a.sexo = ?";
+	private String SQL_Select_Terminadas = "SELECT i.*, g.nombreCategoria  FROM Inscripcion i, Competicion c , ContieneCategoria cc, Categoria g" + 
+	" WHERE i.estado = 'TERMINADA' AND " + 
+	" i.idCompeticion = c.idCompeticion and c.idCompeticion = cc.idCompeticion AND " + 
+	"cc.idCategoria = ? AND cc.idCategoria = i.idCategoria AND i.idCategoria = g.idCategoria AND cc.idCompeticion = ? ";
+	
+	private String SQL_Select_NOTerminadas = "SELECT i.*, g.nombreCategoria  FROM Inscripcion i, Competicion c , ContieneCategoria cc, Categoria g" + 
+	" WHERE i.estado <> 'TERMINADA' AND " + 
+	" i.idCompeticion = c.idCompeticion and c.idCompeticion = cc.idCompeticion AND " + 
+	"cc.idCategoria = ? AND cc.idCategoria = i.idCategoria AND  i.idCategoria = g.idCategoria AND cc.idCompeticion = ? ";
 	
 	private String SQL_Existe_Comp = "SELECT * FROM Competicion WHERE idCompeticion = ?";
 
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
-	private String categoria;
+	private int idCategoria;
 	
 
 	private Connection c = null;
@@ -35,10 +43,12 @@ public class ObtenerClasificaciones {
 	
 	
 
-	public ObtenerClasificaciones(int idCompeticion, String categoria) throws BusinessException {
+	public ObtenerClasificaciones(int idCompeticion, int categoria) throws BusinessException {
 		
+		Argument.isTrue(idCompeticion > 0);
+		Argument.isTrue(categoria > 0);
 		
-		this.categoria = categoria;
+		this.idCategoria = categoria;
 		
 		this.inscripciones = new ArrayList<InscripcionDto>();
 		this.idCompeticion = idCompeticion;
@@ -64,15 +74,15 @@ public class ObtenerClasificaciones {
 	
 			pst = c.prepareStatement(SQL_Select_Terminadas);
 			
-			pst.setInt(1,idCompeticion);
-			pst.setString(2,categoria);
+			pst.setInt(1,idCategoria);
+			pst.setInt(2,idCompeticion);
 			
 			rs = pst.executeQuery();
 			
 			while(rs.next()) {
 				
 				inscripciones.add(new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
-						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8)));
+						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8), rs.getString("nombreCategoria")));
 				
 			}
 			
@@ -83,15 +93,16 @@ public class ObtenerClasificaciones {
 			
 			pst = c.prepareStatement(SQL_Select_NOTerminadas);
 			
-			pst.setInt(1,idCompeticion);
-			pst.setString(2,categoria);
+
+			pst.setInt(1,idCategoria);
+			pst.setInt(2,idCompeticion);
 			
 			rs = pst.executeQuery();
 			
 			while(rs.next()) {
 				
 				inscripciones.add(new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
-						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8)));
+						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8),rs.getString("nombreCategoria")));
 				
 			}
 			

@@ -20,6 +20,8 @@ public class InscripcionDto {
 	//Esto no está en la bd pero no los borreis porfas que los uso
 	public Time tiempoInicio;
 	public Time tiempoFinal;
+	
+	public String nombreCategoria; //No me lo borreis que lo uso (Martin)
 
 	
 
@@ -44,6 +46,15 @@ public class InscripcionDto {
 		case("INSCRITO"):  this.estado = Estado.INSCRITO; break;
 		case("TERMINADA"):  this.estado = Estado.TERMINADA; break;
 		}
+		
+	}
+		
+
+		public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion,
+				Date fechaUltimoCambio, int idCategoria, int posicionFinal, Time tiempoQueTarda, String nombreCategoria) {
+			this(idCompeticion, idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria,posicionFinal,tiempoQueTarda);
+			this.nombreCategoria = nombreCategoria;
+			
 		
 	}
 	

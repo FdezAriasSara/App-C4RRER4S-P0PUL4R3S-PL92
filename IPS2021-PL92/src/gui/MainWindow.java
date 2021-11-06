@@ -360,6 +360,7 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtIDCompOrg() {
 		if (txtIDCompOrg == null) {
 			txtIDCompOrg = new JTextField();
+			
 			txtIDCompOrg.setHorizontalAlignment(SwingConstants.CENTER);
 			txtIDCompOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			txtIDCompOrg.setBounds(254, 314, 50, 29);
@@ -370,7 +371,7 @@ public class MainWindow extends JFrame {
 
 	public JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("Categor\u00EDa (sexo):");
+			lblNewLabel = new JLabel("Categor\u00EDa :");
 			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			lblNewLabel.setBounds(10, 359, 140, 35);
 		}
@@ -393,6 +394,7 @@ public class MainWindow extends JFrame {
 
 			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnGenerarClasificacion.setBounds(10, 404, 294, 35);
+			btnGenerarClasificacion.setEnabled(false);
 		}
 		return btnGenerarClasificacion;
 	}
@@ -423,6 +425,7 @@ public class MainWindow extends JFrame {
 			btnObtenerAtletas = new JButton("Obtener Atletas");
 			btnObtenerAtletas.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnObtenerAtletas.setBounds(525, 404, 324, 35);
+			btnObtenerAtletas.setEnabled(false);
 		}
 		return btnObtenerAtletas;
 	}
@@ -790,6 +793,7 @@ public class MainWindow extends JFrame {
 			btnCargarCategorias = new JButton("Cargar categorias");
 			btnCargarCategorias.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnCargarCategorias.setBounds(314, 364, 157, 29);
+			btnCargarCategorias.setEnabled(false);
 		}
 		return btnCargarCategorias;
 	}
