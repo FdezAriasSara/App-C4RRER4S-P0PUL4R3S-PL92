@@ -15,6 +15,7 @@ public class PagarConTransferencia {
 	// (idAtleta,idPago,fechaPago,importe) VALUES (?,?,?,?)";
 	private String SQL_CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripcion SET estado='PENDIENTE DE PAGO' WHERE idAtleta=? and idCompeticion=?";
 	private String SQL_BUSCAR_DATOS_TRANSFERENCIA = "SELECT * from Competicion where idCompeticion = ?";
+	private String SQL_BUSCAR_IMPORTE_PLAZO = "select Plazos.cuota from Plazos where idCompeticion = ? and NOW() >= fechaInicio and NOW() <= fechaFin";
 	private int idAtleta;
 	private int idCompeticon;
 
@@ -48,7 +49,38 @@ public class PagarConTransferencia {
 			Jdbc.close(c);
 		}
 
+		competicion.cuota = getImporte();
+
 		return competicion;
+	}
+
+	private double getImporte() throws BusinessException {
+		Connection c = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		double importe = 0.0;
+
+		try {
+			c = Jdbc.getConnection();
+
+			pst = c.prepareStatement(SQL_BUSCAR_IMPORTE_PLAZO);
+
+			pst.setInt(1, idCompeticon);
+
+			rs = pst.executeQuery();
+
+			if (rs.next()) {
+				importe = rs.getDouble(1);
+			} else {
+				throw new BusinessException("Competicion sin plazos de inscripcion abiertos");
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Jdbc.close(rs, pst, c);
+		}
+
+		return importe;
 	}
 
 	private void cambiarEstadoInscripcion() throws BusinessException {

@@ -22,15 +22,17 @@ import uo.ips.application.business.pago.crud.CargaPagos;
 
 public class ActualizarEstadoInscripcion {
 	private String SQL_BUSCAR_COMPETICION = "SELECT * from Competicion where idCompeticion = ?";
-	private String SQL_BUSCAR_INSCRIPCION = "SELECT * from Inscripcion where idCompeticion = ? and adAtleta = ?";
+	private String SQL_BUSCAR_INSCRIPCION = "SELECT * from Inscripcion where idCompeticion = ? and idAtleta = ?";
 	private String SQL_BUSCAR_ID_ATLETA = "SELECT idAtleta from Atleta where dni = ?";
-	private String SQL_BUSCAR_PLAZO = "select * from Plazos where idCompeticion = ? and ? >= fechaInicio and ? =< fechaFin";
+	private String SQL_BUSCAR_PLAZO = "select * from Plazos where idCompeticion = ? and ? >= fechaInicio and ? <= fechaFin";
 	private String SQL_ADD_PAGO = "insert into Pago(idAtleta, idPago, fechaPago, importe, idCompeticion, importe_devolver) values(?,?,?,?,?,?)";
 	private String SQL_UPDATE_INSCRIPCION = "update Inscripcion set estado = ? where idAtleta = ? and idCompeticion = ?";
 
 	private int idCompeticion;
 	private List<TransferenciaDto> datosPagos;
 	private final double PRECISION = 0.0001;
+
+	private Connection c = null;
 
 	public ActualizarEstadoInscripcion(int idCompeticion) {
 		this.idCompeticion = idCompeticion;
@@ -50,14 +52,18 @@ public class ActualizarEstadoInscripcion {
 		for (TransferenciaDto transferenciaDto : datosPagos) {
 			idAtleta = getIdAtleta(transferenciaDto.dni);
 			if (idAtleta == -1)
-				throw new BusinessException("Atleta no existente en ficehro de pagos");
-			InscripcionDto inscripcion = findInscripcionByIds(idAtleta).get();
+				throw new BusinessException("Atleta no existente en fichero de pagos");
+			Optional<InscripcionDto> oi = findInscripcionByIds(idAtleta);
+			if (!oi.isPresent())
+				throw new BusinessException("Hay pago de atleta no inscrito para la competición seleccionada");
+			InscripcionDto inscripcion = oi.get();
 			PlazoDto plazo = findPlazo(inscripcion.fechaInscripcion);
 			compruebaPago(plazo.cuota, inscripcion.fechaInscripcion, transferenciaDto, idAtleta);
 		}
 	}
 
-	private void compruebaPago(double cuota, Date fechaInscripcion, TransferenciaDto transferenciaDto, int idAtleta) {
+	private void compruebaPago(double cuota, Date fechaInscripcion, TransferenciaDto transferenciaDto, int idAtleta)
+			throws BusinessException {
 		LocalDate localFechaInscripcion = fechaInscripcion.toLocalDate();
 
 		if (isInPlazo(localFechaInscripcion, transferenciaDto.fecha)) {
@@ -79,13 +85,13 @@ public class ActualizarEstadoInscripcion {
 	}
 
 	private boolean isInPlazo(LocalDate localFechaInscripcion, LocalDate fechaTransferencia) {
-		localFechaInscripcion.plusDays(2);
-		return !fechaTransferencia.isAfter(localFechaInscripcion);
+		LocalDate fechaLimite = localFechaInscripcion.plusDays(2);
+		return !fechaTransferencia.isAfter(fechaLimite);
 	}
 
-	private void addPago(PagoDto pago) {
+	private void addPago(PagoDto pago) throws BusinessException {
 		// Process
-		Connection c = null;
+
 		PreparedStatement pst = null;
 
 		try {
@@ -102,7 +108,7 @@ public class ActualizarEstadoInscripcion {
 			pst.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new BusinessException("Fichero de pagos ya cargado con anterioridad");
 		} finally {
 			Jdbc.close(pst);
 			Jdbc.close(c);
@@ -111,7 +117,6 @@ public class ActualizarEstadoInscripcion {
 
 	private void updateInscripcion(String estado, int idAtleta) {
 		// Process
-		Connection c = null;
 		PreparedStatement pst = null;
 
 		try {
@@ -143,7 +148,6 @@ public class ActualizarEstadoInscripcion {
 
 	private Optional<CompeticionDto> buscarCompeticion() {
 
-		Connection c = null;
 		PreparedStatement pst = null;
 		Optional<CompeticionDto> competicion = null;
 
@@ -166,7 +170,6 @@ public class ActualizarEstadoInscripcion {
 	}
 
 	private Optional<InscripcionDto> findInscripcionByIds(int idAtleta) {
-		Connection c = null;
 		PreparedStatement pst = null;
 		Optional<InscripcionDto> inscripcion = null;
 
@@ -190,7 +193,6 @@ public class ActualizarEstadoInscripcion {
 	}
 
 	private int getIdAtleta(String dni) {
-		Connection c = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		int id = -1;
@@ -218,7 +220,6 @@ public class ActualizarEstadoInscripcion {
 	}
 
 	private PlazoDto findPlazo(Date fechaInscripcion) {
-		Connection c = null;
 		PreparedStatement pst = null;
 		Optional<PlazoDto> plazo = null;
 

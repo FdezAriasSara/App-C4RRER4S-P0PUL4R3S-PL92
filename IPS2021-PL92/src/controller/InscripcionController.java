@@ -1,13 +1,10 @@
- package controller;
+package controller;
 
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import java.sql.Date;
-
 import java.io.IOException;
-
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -23,6 +20,7 @@ import uo.ips.application.business.Sesion;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
+import uo.ips.application.business.Inscripcion.crud.ActualizarEstadoInscripcion;
 import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
@@ -38,7 +36,7 @@ public class InscripcionController {
 	private Sesion sesion;
 	private PagoCrudService pagCrud = BusinessFactory.forPagoCrudService();
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
-	private RegistroCrudService regCrud=BusinessFactory.forRegistroCrudService();
+	private RegistroCrudService regCrud = BusinessFactory.forRegistroCrudService();
 
 	public InscripcionController(MainWindow main) {
 		this.mainW = main;
@@ -221,7 +219,7 @@ public class InscripcionController {
 						String numeroTarjeta = mainW.getTxtNum().getText();
 						LocalDate fechaCaducidad = LocalDate.of(mainW.getYearChooser().getYear(),
 								mainW.getMonthChooser().getMonth(), 1);
-						
+
 						TarjetaDto tarjeta = new TarjetaDto(numeroTarjeta, fechaCaducidad, cvc, sesion.getIdAtleta());
 						// Sacar datos de la tarjeta-fin
 
@@ -260,78 +258,98 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-			try {
-		
-				AtletaDto dto= new AtletaDto();
-				//si el atleta es mayor de edad
-				LocalDate fechaNacimiento=mainW.getCalendarNacimiento().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				if(!fechaNacimiento.isBefore(LocalDate.parse("2003-12-31")))
-					mainW.mostrarErrorRegistro("Debes ser mayor de edad para registrarte.");
-				else {
-					//recoger datos registro en un dto
-					dto.nombre=mainW.getTxtRegNombre().getText();
-					dto.apellido=mainW.getTxtRegApellido().getText();
-					dto.dni=mainW.getTextFieldDNI().getText();
-					dto.fechaNacimiento=Date.valueOf(fechaNacimiento);
-					dto.sexo=mainW.getComboSexo().getSelectedItem().toString();
-					dto.email=mainW.getTextFieldCorreo().getText();
-					//añadir a la base de datos.
-					atlCrud.anadirAtleta(dto);
-					
-					//una vez que el atleta se registra se le inscribe en la competición que había seleccionado.
-					inscribirse(dto.email, mainW.getTxtFIDCompeticion().getText());
-					mainW.vaciarCamposRegistro();
-				
-				}
-				
-				
-				
-							
+
+				try {
+
+					AtletaDto dto = new AtletaDto();
+					// si el atleta es mayor de edad
+					LocalDate fechaNacimiento = mainW.getCalendarNacimiento().getDate().toInstant()
+							.atZone(ZoneId.systemDefault()).toLocalDate();
+					if (!fechaNacimiento.isBefore(LocalDate.parse("2003-12-31")))
+						mainW.mostrarErrorRegistro("Debes ser mayor de edad para registrarte.");
+					else {
+						// recoger datos registro en un dto
+						dto.nombre = mainW.getTxtRegNombre().getText();
+						dto.apellido = mainW.getTxtRegApellido().getText();
+						dto.dni = mainW.getTextFieldDNI().getText();
+						dto.fechaNacimiento = Date.valueOf(fechaNacimiento);
+						dto.sexo = mainW.getComboSexo().getSelectedItem().toString();
+						dto.email = mainW.getTextFieldCorreo().getText();
+						// añadir a la base de datos.
+						atlCrud.anadirAtleta(dto);
+
+						// una vez que el atleta se registra se le inscribe en la competición que había
+						// seleccionado.
+						inscribirse(dto.email, mainW.getTxtFIDCompeticion().getText());
+						mainW.vaciarCamposRegistro();
+
+					}
+
 				} catch (BusinessException ex) {
-					JOptionPane.showMessageDialog(null,ex.getMessage());
+					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
 			}
 		});
-	
-			
-	
-		
-		
-		
-		
+
 		mainW.getBtnImportarDatos().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String filename = mainW.getTxtArchivoTiempos().getText();
-				
+
 				try {
 					List<InscripcionDto> insc = ParseadorTiempos.parse(filename);
 					int notUpdated = incCrud.registrarTiempos(insc);
-					
+
 					System.out.println("Dorsales erroneos: " + notUpdated);
 					System.out.println("Dorsales repetidos: " + ParseadorTiempos.getRepeatedInLastExe());
 					System.out.println("Formato erroneo en linea: " + ParseadorTiempos.getWrongParseInLastExe());
 					JOptionPane.showMessageDialog(null, "Datos importados correctamente");
-					
+
 				} catch (IOException e1) {
 					mainW.getLblError().setVisible(true);
 					mainW.getLblError().setEnabled(true);
 					mainW.getLblError().setText("Error al encontrar archivo de datos");
-					
+
 					mainW.getLblError().setEnabled(false);
 				} catch (BusinessException e1) {
 					mainW.getLblError().setVisible(true);
 					mainW.getLblError().setEnabled(true);
 					mainW.getLblError().setText("Error al exportar datos a la base de datos");
-					
+
 					mainW.getLblError().setEnabled(false);
 				}
-				
+
 			}
 		});
 
+		mainW.getBtCargarPagos().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int fila = mainW.getTablaClasificacion().getSelectedRow();
+				if (fila > -1) {
+					DefaultTableModel modelo = (DefaultTableModel) mainW.getTablaClasificacion().getModel();
+					ActualizarEstadoInscripcion aEi = new ActualizarEstadoInscripcion(
+							Integer.parseInt((String) modelo.getValueAt(fila, 0)));
+					try {
+						aEi.execute();
+						mainW.getLblErrorOrg().setVisible(false);
+						mainW.getLblErrorOrg().setEnabled(false);
+						JOptionPane.showMessageDialog(mainW,
+								"Pagos cargados correctamente e inscripciones actualizadas");
+					} catch (BusinessException e1) {
+						mainW.getLblErrorOrg().setText(e1.getMessage());
+						mainW.getLblErrorOrg().setVisible(true);
+						mainW.getLblErrorOrg().setEnabled(true);
+					}
+				} else {
+					mainW.getLblErrorOrg().setText("Error: selecciona competición para cargar pagos");
+					mainW.getLblErrorOrg().setVisible(true);
+					mainW.getLblErrorOrg().setEnabled(true);
+				}
+			}
+		});
 
 	}
 
@@ -461,7 +479,7 @@ public class InscripcionController {
 			mainW.getLblError().setText("Error: Algún campo está vacio");
 		} else {
 			try {
-				if(comprobarSiEstaRegistrado(emailAtleta)) {
+				if (comprobarSiEstaRegistrado(emailAtleta)) {
 					int idCompeticion = Integer.parseInt(idCompeticionString);
 					incCrud.inscribirAtleta(emailAtleta, idCompeticion);
 					JOptionPane.showMessageDialog(null, "Atleta Inscrito");
@@ -469,12 +487,13 @@ public class InscripcionController {
 					sesion = new Sesion(emailAtleta, idCompeticion);
 					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
 					mainW.vaciarCamposInscripcion();
-				}else {//si el atleta no está registrado.
+				} else {// si el atleta no está registrado.
 					mainW.getTextFieldCorreo().setText(mainW.getTxtFEmail().getText());
-					//si el atleta decide registrarse, se habrá introducido ya el correo para su comodidad
+					// si el atleta decide registrarse, se habrá introducido ya el correo para su
+					// comodidad
 					mainW.getRegistroDialog().setVisible(true);
 				}
-			
+
 			} catch (BusinessException e) {
 				mainW.getLblError().setText("Error: " + e.getMessage());
 				mainW.getLblError().setVisible(true);
@@ -485,12 +504,12 @@ public class InscripcionController {
 	}
 
 	private boolean comprobarSiEstaRegistrado(String emailAtleta) {
-		if(!regCrud.ComprobarDatosInscripcion(emailAtleta)) {
+		if (!regCrud.ComprobarDatosInscripcion(emailAtleta)) {
 			mainW.setErrorAtletaNoRegistrado();
-		
+
 			return false;
 		}
 		return true;
-		
+
 	}
 }

@@ -108,6 +108,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblSexo;
 	private JComboBox<String> comboSexo;
 	private JButton btCargarPagos;
+	private JButton btMostrarCompeticiones;
 
 	/**
 	 * Create the frame.
@@ -191,6 +192,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnImportarDatos());
 			panel_organizador.add(getTxtArchivoTiempos());
 			panel_organizador.add(getBtCargarPagos());
+			panel_organizador.add(getBtMostrarCompeticiones());
 		}
 		return panel_organizador;
 	}
@@ -1093,7 +1095,7 @@ public class MainWindow extends JFrame {
 
 	}
 
-	private JButton getBtCargarPagos() {
+	public JButton getBtCargarPagos() {
 		if (btCargarPagos == null) {
 			btCargarPagos = new JButton("Cargar pagos");
 			btCargarPagos.setMnemonic('C');
@@ -1101,5 +1103,15 @@ public class MainWindow extends JFrame {
 			btCargarPagos.setBounds(662, 495, 140, 35);
 		}
 		return btCargarPagos;
+	}
+
+	public JButton getBtMostrarCompeticiones() {
+		if (btMostrarCompeticiones == null) {
+			btMostrarCompeticiones = new JButton("Mostrar competiciones");
+			btMostrarCompeticiones.setMnemonic('M');
+			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
+		}
+		return btMostrarCompeticiones;
 	}
 }
