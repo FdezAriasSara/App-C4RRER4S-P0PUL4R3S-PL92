@@ -32,5 +32,16 @@ public interface InscripcionCrudService {
 	 * @throws BusinessException
 	 */
 	int registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException;
-	
+	/**
+	 * Para cada inscripcion perteneciente a una competición cuyos plazos han terminado, se asignará un dorsal a aquellos competidores que no lo tengan asignado aún.
+	 * @throws BusinessException
+	 */
+	void asignarDorsalesNoReservados(int idCompeticion)throws BusinessException;
+	/**
+	 * Asigna a un atleta uno de los dorsales reservados.
+	 * @param email del competidor
+	 * @param dorsal a asignar de los reservados
+	 * @throws BusinessException si no encuentra al competidor
+	 */
+	void asignarDorsalReservado(String email,int dorsal,int idCompeticion) throws BusinessException;
 }

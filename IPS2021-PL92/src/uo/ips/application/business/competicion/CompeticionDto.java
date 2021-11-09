@@ -14,6 +14,7 @@ public class CompeticionDto {
 	public Date plazoFinInscripcion;
 	public double cuota;
 	public String cuentaBancaria;
+	public int dorsalesReservados;
 	
 	
 	

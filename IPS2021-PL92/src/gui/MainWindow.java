@@ -22,11 +22,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
-
+import java.awt.ScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MainWindow extends JFrame {
 
@@ -83,6 +87,7 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JTable tablaClasificacion;
 	private JTable tableCompeticion;
+	private JButton btnNuevaCompeticion;
 
 	private JButton btnImportarDatos;
 	private JTextField txtArchivoTiempos;
@@ -112,6 +117,17 @@ public class MainWindow extends JFrame {
 	private JTextArea textAreaRegistro;
 	private JLabel lblSexo;
 	private JComboBox<String> comboSexo;
+	private JButton btCargarPagos;
+
+	private JButton btMostrarCompeticiones;
+
+	private JButton btnAsignacionDorsales;
+	private JPanel panel_asignarDorsales;
+	private JScrollPane scrollPaneDorsales;
+	private JTable tableAsignar;
+	private JButton btnAsignar;
+	private JButton btNuevaCompeticion;
+
 
 
 	/**
@@ -158,6 +174,7 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_pago(), "Pg4");
 			panel_card.add(getPanel_sesion(), "Pg5");
 			panel_card.add(getPanel_registrarse(), "registro");
+			panel_card.add(getPanel_asignarDorsales(), "dorsales");
 
 		}
 		return panel_card;
@@ -195,7 +212,17 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
 			panel_organizador.add(getTxtArchivoTiempos());
+
 			panel_organizador.add(getBtnCargarCategorias());
+
+			panel_organizador.add(getBtCargarPagos());
+
+			panel_organizador.add(getBtMostrarCompeticiones());
+
+			panel_organizador.add(getBtnAsignacionDorsales());
+			panel_organizador.add(getBtNuevaCompeticion());
+
+
 		}
 		return panel_organizador;
 	}
@@ -397,6 +424,21 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtIDCompOrg() {
 		if (txtIDCompOrg == null) {
 			txtIDCompOrg = new JTextField();
+
+			txtIDCompOrg.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusLost(FocusEvent e) {
+					if(compruebaIDCompeticion( getTxtIDCompOrg().getText())) {
+						if(!getBtnAsignacionDorsales().getText().isBlank() ||!getBtnAsignacionDorsales().getText().isEmpty() ) {
+							getBtnAsignacionDorsales().setEnabled(true);
+						}
+					}else {
+						setErrorOrgID();
+					}
+				
+					
+				}
+			});
 			
 			txtIDCompOrg.setHorizontalAlignment(SwingConstants.CENTER);
 			txtIDCompOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -429,7 +471,7 @@ public class MainWindow extends JFrame {
 		if (btnGenerarClasificacion == null) {
 			btnGenerarClasificacion = new JButton("Generar clasificacion");
 
-			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnGenerarClasificacion.setBounds(10, 404, 294, 35);
 			btnGenerarClasificacion.setEnabled(false);
 		}
@@ -537,8 +579,8 @@ public class MainWindow extends JFrame {
 
 					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
 						mostrarErrorPagoTarjeta(
-								"El formato del número de tarjeta es incorrecto. \n Deben ser 16 dígitos.");
-					
+								"El formato del nï¿½mero de tarjeta es incorrecto. \n Deben ser 16 dï¿½gitos.");
+
 					}
 				}
 
@@ -562,7 +604,7 @@ public class MainWindow extends JFrame {
 					if (!compruebaCVC(getTxtCVC().getText())) {
 
 						mostrarErrorPagoTarjeta(
-								"El cvc debe ser un número de tres dígitos.\n Se encuentra en la cara trasera de tu tarjeta.");
+								"El cvc debe ser un nï¿½mero de tres dï¿½gitos.\n Se encuentra en la cara trasera de tu tarjeta.");
 						getTxtCVC().setText("");
 					}
 				}
@@ -665,8 +707,8 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
 						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
-						getTextFieldIniciarSesion().setText("");// vacío el campo para evitar que proceda con la
-																// inscripción
+						getTextFieldIniciarSesion().setText("");// vacï¿½o el campo para evitar que proceda con la
+																// inscripciï¿½n
 					}
 				}
 			});
@@ -697,9 +739,9 @@ public class MainWindow extends JFrame {
 		getErrorTextAreaSesion().setEnabled(true);
 	}
 
-	protected boolean checkFormatoEmail(String text) {
+	public boolean checkFormatoEmail(String text) {
 
-		return text.matches("(\\S)+@(\\S)+.(es|com)");
+		return text.matches("[a-zA-Z0-9]{0,100}@[a-zA-Z0-9]{0,40}+.(es|com|org)");
 	}
 
 	private JLabel getLblSesTitulo() {
@@ -779,15 +821,16 @@ public class MainWindow extends JFrame {
 		}
 		return btnImportarDatos;
 	}
+
 	public JTextField getTxtArchivoTiempos() {
 		if (txtArchivoTiempos == null) {
 			txtArchivoTiempos = new JTextField();
 			txtArchivoTiempos.setBounds(692, 361, 157, 35);
+			txtArchivoTiempos.setBounds(625, 359, 129, 35);
 			txtArchivoTiempos.setColumns(10);
 		}
 		return txtArchivoTiempos;
 	}
-
 
 	public JMonthChooser getMonthChooser() {
 		if (monthChooser == null) {
@@ -830,7 +873,9 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setVisible(true);
 		ErrorTextAreaPago.setEnabled(true);
 	}
-
+	private boolean compruebaIDCompeticion(String text) {
+		return text.matches("[0-9]+");
+	}
 	private boolean compruebaCVC(String text) {
 
 		return text.matches("[0-9]{3}");
@@ -908,7 +953,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el símbolo -.");
+								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegNombre().setText("");
 					}
 				}
@@ -926,7 +971,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el símbolo -.");
+								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegApellido().setText("");
 					}
 				}
@@ -970,7 +1015,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoDni(getTextFieldDNI().getText())) {
-						mostrarErrorRegistro("El dni debe contener seis dígitos y una letra.");
+						mostrarErrorRegistro("El dni debe contener seis dï¿½gitos y una letra.");
 					}
 				}
 
@@ -1108,5 +1153,90 @@ public class MainWindow extends JFrame {
 		getTextFieldDNI().setText("");
 
 
+	}
+
+	public JButton getBtCargarPagos() {
+		if (btCargarPagos == null) {
+			btCargarPagos = new JButton("Cargar pagos");
+			btCargarPagos.setMnemonic('C');
+			btCargarPagos.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btCargarPagos.setBounds(662, 495, 140, 35);
+		}
+		return btCargarPagos;
+	}
+
+
+	public JButton getBtMostrarCompeticiones() {
+		if (btMostrarCompeticiones == null) {
+			btMostrarCompeticiones = new JButton("Mostrar competiciones");
+			btMostrarCompeticiones.setMnemonic('M');
+			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
+		}
+		return btMostrarCompeticiones;
+	}
+
+	public JButton getBtnAsignacionDorsales() {
+		if (btnAsignacionDorsales == null) {
+			btnAsignacionDorsales = new JButton("Asignar dorsales");
+			btnAsignacionDorsales.setEnabled(false);
+			btnAsignacionDorsales.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
+			btnAsignacionDorsales.setBounds(460, 314, 292, 40);
+		}
+		return btnAsignacionDorsales;
+	}
+	private JPanel getPanel_asignarDorsales() {
+		if (panel_asignarDorsales == null) {
+			panel_asignarDorsales = new JPanel();
+			panel_asignarDorsales.setLayout(null);
+			panel_asignarDorsales.add(getTableAsignar());
+			panel_asignarDorsales.add(getScrollPaneDorsales());
+			panel_asignarDorsales.add(getBtnAsignar());
+		}
+		return panel_asignarDorsales;
+	}
+	public void setErrorOrgPlazosSinTerminar() {
+		getLblErrorOrg().setText("Error: Aún no han finalizado los plazos de inscripción.");
+		getLblErrorOrg().setForeground(Color.RED);
+		getLblErrorOrg().setVisible(true);
+	}
+	public void setErrorOrgID() {
+		getLblErrorOrg().setText("Error: El ID de competición solo puede tener dígitos.");
+		getLblErrorOrg().setForeground(Color.RED);
+		getLblErrorOrg().setVisible(true);
+	}
+	private JScrollPane getScrollPaneDorsales() { 
+		if (scrollPaneDorsales == null) {
+			scrollPaneDorsales = new JScrollPane(getTableAsignar());
+			scrollPaneDorsales.setBounds(173, 108, 514, 201);
+		}
+		return scrollPaneDorsales;
+	}
+	public JTable getTableAsignar() {
+		if (tableAsignar == null) {
+			tableAsignar = new JTable();
+			tableAsignar.setBounds(681, 108, -510, 201);
+			
+		}
+		return tableAsignar;
+	}
+	public JButton getBtnAsignar() {
+		if (btnAsignar == null) {
+			btnAsignar = new JButton("Asignar");
+			btnAsignar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			btnAsignar.setBounds(373, 415, 89, 23);
+		}
+		return btnAsignar;
+	}
+	
+
+	public JButton getBtNuevaCompeticion() {
+		if (btNuevaCompeticion == null) {
+			btNuevaCompeticion = new JButton("Nueva Competici\u00F3n");
+			btNuevaCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btNuevaCompeticion.setBounds(147, 495, 190, 35);
+		}
+		return btNuevaCompeticion;
 	}
 }

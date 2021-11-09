@@ -7,7 +7,7 @@ public class InscripcionDto {
 
 	public static final int VACIO = -1;
 	public int idCompeticion;
-	public int idAtleta;	
+	public int idAtleta;
 	public Date fechaInscripcion;
 	public Date fechaUltimoCambio;
 	public int idCategoria;
@@ -16,20 +16,17 @@ public class InscripcionDto {
 	public int tiempoQueTardaEnSegundos;
 	public Estado estado;
 	public int dorsal;
-	
-	//Esto no está en la bd pero no los borreis porfas que los uso
+
+	// Esto no está en la bd pero no los borreis porfas que los uso
 	public Time tiempoInicio;
 	public Time tiempoFinal;
 	
 	public String nombreCategoria; //No me lo borreis que lo uso (Martin)
 
-	
-
-
 	@SuppressWarnings("deprecation")
-	public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion,
-			Date fechaUltimoCambio, int idCategoria, int posicionFinal, Time tiempoQueTarda) {
-		
+	public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion, Date fechaUltimoCambio,
+			int idCategoria, int posicionFinal, Time tiempoQueTarda) {
+
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
 		this.fechaInscripcion = fechaInscripcion;
@@ -37,15 +34,21 @@ public class InscripcionDto {
 		this.idCategoria = idCategoria;
 		this.posicionFinal = posicionFinal;
 		this.tiempoQueTarda = tiempoQueTarda;
-		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds() +  tiempoQueTarda.getMinutes()*60 + tiempoQueTarda.getHours()*60*60;
-		
-		
-		
-		switch(estado) {
-		case("PRE_INSCRITO"): this.estado = Estado.PRE_INSCRITO; break;
-		case("INSCRITO"):  this.estado = Estado.INSCRITO; break;
-		case("TERMINADA"):  this.estado = Estado.TERMINADA; break;
+		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds() + tiempoQueTarda.getMinutes() * 60
+				+ tiempoQueTarda.getHours() * 60 * 60;
+
+		switch (estado) {
+		case ("PRE_INSCRITO"):
+			this.estado = Estado.PRE_INSCRITO;
+			break;
+		case ("INSCRITO"):
+			this.estado = Estado.INSCRITO;
+			break;
+		case ("TERMINADA"):
+			this.estado = Estado.TERMINADA;
+			break;
 		}
+
 		
 	}
 		
@@ -70,6 +73,37 @@ public class InscripcionDto {
 		return res + pos + time;
 		
 				
+
+
+	}
+
+	@SuppressWarnings("deprecation")
+	public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion, Date fechaUltimoCambio,
+			int idCategoria, int posicionFinal, Time tiempoQueTarda, int dorsal) {
+
+		this.idCompeticion = idCompeticion;
+		this.idAtleta = idAtleta;
+		this.fechaInscripcion = fechaInscripcion;
+		this.fechaUltimoCambio = fechaUltimoCambio;
+		this.idCategoria = idCategoria;
+		this.posicionFinal = posicionFinal;
+		this.tiempoQueTarda = tiempoQueTarda;
+		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds() + tiempoQueTarda.getMinutes() * 60
+				+ tiempoQueTarda.getHours() * 60 * 60;
+		this.dorsal = dorsal;
+
+		switch (estado) {
+		case ("PRE_INSCRITO"):
+			this.estado = Estado.PRE_INSCRITO;
+			break;
+		case ("INSCRITO"):
+			this.estado = Estado.INSCRITO;
+			break;
+		case ("TERMINADA"):
+			this.estado = Estado.TERMINADA;
+			break;
+		}
+
 	}
 
 

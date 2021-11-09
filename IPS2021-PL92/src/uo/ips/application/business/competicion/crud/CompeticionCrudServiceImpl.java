@@ -30,9 +30,14 @@ public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 
 
 	@Override
+
 	public List<CompeticionCategoriaDto> listarCompeticionesConSusCategorias(int idCompeticion)
 			throws BusinessException {
-		return new ListarCompeticionesConSusCategorias(idCompeticion).execute();
+		return new ListarCompeticionesConSusCategorias(idCompeticion).execute();}
+
+	public int dorsalesReservados(int competicionId) throws BusinessException {
+	
+		return new DorsalesReservadosPorCompeticion(competicionId).execute();
 	}
 
 
