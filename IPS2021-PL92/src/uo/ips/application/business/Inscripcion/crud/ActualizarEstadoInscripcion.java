@@ -57,7 +57,11 @@ public class ActualizarEstadoInscripcion {
 			if (!oi.isPresent())
 				throw new BusinessException("Hay pago de atleta no inscrito para la competición seleccionada");
 			InscripcionDto inscripcion = oi.get();
-			PlazoDto plazo = findPlazo(inscripcion.fechaInscripcion);
+			Optional<PlazoDto> op = findPlazo(inscripcion.fechaInscripcion);
+			if (!op.isPresent())
+				throw new BusinessException("Hay pago de atleta no inscrito para la competición seleccionada");
+			PlazoDto plazo = op.get();
+
 			compruebaPago(plazo.cuota, inscripcion.fechaInscripcion, transferenciaDto, idAtleta);
 		}
 	}
@@ -219,7 +223,7 @@ public class ActualizarEstadoInscripcion {
 		return id;
 	}
 
-	private PlazoDto findPlazo(Date fechaInscripcion) {
+	private Optional<PlazoDto> findPlazo(Date fechaInscripcion) {
 		PreparedStatement pst = null;
 		Optional<PlazoDto> plazo = null;
 
@@ -240,6 +244,6 @@ public class ActualizarEstadoInscripcion {
 			Jdbc.close(c);
 		}
 
-		return plazo.get();
+		return plazo;
 	}
 }
