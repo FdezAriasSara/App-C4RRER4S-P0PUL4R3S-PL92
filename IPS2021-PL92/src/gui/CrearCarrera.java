@@ -85,6 +85,8 @@ public class CrearCarrera extends JFrame {
 	private JScrollPane scrollPanePlazos;
 	private JPanel pnFilasPlazos;
 	private JLabel lblError;
+	private JLabel lblDorsales;
+	private JSpinner spinnerDorsales;
 
 	/**
 	 * Launch the application.
@@ -128,6 +130,8 @@ public class CrearCarrera extends JFrame {
 		contentPane.add(getTxtCuentaBancaria());
 		contentPane.add(getTabbedPane());
 		contentPane.add(getLblError());
+		contentPane.add(getLblDorsales());
+		contentPane.add(getSpinnerDorsales());
 		// contentPane.add(getScrollPaneCategorias());
 
 	}
@@ -180,7 +184,7 @@ public class CrearCarrera extends JFrame {
 
 	private JSpinner getSpinnerDistancia() {
 		if (spinner == null) {
-			spinner = new JSpinner();
+			spinner = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
 			spinner.setBounds(154, 108, 50, 19);
 		}
 		return spinner;
@@ -431,8 +435,8 @@ public class CrearCarrera extends JFrame {
 		competicion.distanciaKm = Integer.parseInt(getSpinnerDistancia().getValue().toString());
 		competicion.fechaCompeticion = new java.sql.Date(getCalendar().getDate().getTime());
 		competicion.organizador = getTxtOrganizador().getText();
-		competicion.plazos = new ArrayList<Plazo>();
 		competicion.cuentaBancaria = getTxtCuentaBancaria().getText();
+		competicion.dorsalesReservados = Integer.parseInt(getSpinnerDorsales().getValue().toString());;
 
 		List<CategoriaDto> categorias = createCategories();
 		List<PlazoDto> plazos = createPlazos();
@@ -691,5 +695,19 @@ public class CrearCarrera extends JFrame {
 		return true;
 
 	}
-
+	private JLabel getLblDorsales() {
+		if (lblDorsales == null) {
+			lblDorsales = new JLabel("Dorsales Reservados");
+			lblDorsales.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			lblDorsales.setBounds(41, 216, 134, 27);
+		}
+		return lblDorsales;
+	}
+	private JSpinner getSpinnerDorsales() {
+		if (spinnerDorsales == null) {
+			spinnerDorsales = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+			spinnerDorsales.setBounds(181, 221, 50, 19);
+		}
+		return spinnerDorsales;
+	}
 }
