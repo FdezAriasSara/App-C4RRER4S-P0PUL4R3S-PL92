@@ -826,7 +826,6 @@ public class MainWindow extends JFrame {
 		if (txtArchivoTiempos == null) {
 			txtArchivoTiempos = new JTextField();
 			txtArchivoTiempos.setBounds(692, 361, 157, 35);
-			txtArchivoTiempos.setBounds(625, 359, 129, 35);
 			txtArchivoTiempos.setColumns(10);
 		}
 		return txtArchivoTiempos;
