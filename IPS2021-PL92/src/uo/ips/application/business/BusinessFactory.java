@@ -1,5 +1,7 @@
 package uo.ips.application.business;
 
+import java.sql.Date;
+
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.crud.InscripcionCrudServiceImpl;
 import uo.ips.application.business.atleta.AtletaCrudService;
@@ -9,6 +11,8 @@ import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.crud.CompeticionCrudServiceImpl;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.crud.PagoCrudServiceImpl;
+import uo.ips.application.business.plazo.PlazoCrudService;
+import uo.ips.application.business.plazo.crud.PlazoCrudServiceImpl;
 import uo.ips.application.business.registro.RegistroCrudService;
 import uo.ips.application.business.registro.impl.RegistroCrudServiceImpl;
 
@@ -37,5 +41,10 @@ public class BusinessFactory {
 	public static RegistroCrudService forRegistroCrudService() {
 		
 		return new RegistroCrudServiceImpl();
+	}
+
+	public static PlazoCrudService forPlazoCrudService() {
+		
+		return new PlazoCrudServiceImpl() ;
 	}
 }
