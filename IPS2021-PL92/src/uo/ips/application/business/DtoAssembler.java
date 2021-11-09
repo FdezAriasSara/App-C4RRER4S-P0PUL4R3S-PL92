@@ -3,6 +3,8 @@ package uo.ips.application.business;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import uo.ips.application.business.Inscripcion.InscripcionDto;
@@ -62,11 +64,44 @@ public class DtoAssembler {
 		return Optional.ofNullable(dto);
 	}
 
+	public static Optional<InscripcionDto> toInscripcionConDorsal(ResultSet rs) throws SQLException {
+		InscripcionDto dto = null;
+
+		if (rs.next()) {
+			dto = toInscripcionDtoConDorsal(rs);
+		}
+		return Optional.ofNullable(dto);
+	}
+
+	private static InscripcionDto toInscripcionDtoConDorsal(ResultSet rs) throws SQLException {
+		InscripcionDto com = new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
+				rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8), rs.getInt(9));
+
+		return com;
+	}
+
 	private static InscripcionDto toInscripcionDto(ResultSet rs) throws SQLException {
 		InscripcionDto com = new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
 				rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8));
 
 		return com;
+	}
+	public static List<InscripcionDto> toInscripcionConDorsalList(ResultSet rs) throws SQLException {
+		List<InscripcionDto> res = new ArrayList<>();
+		while (rs.next()) {
+			res.add( toInscripcionDtoConDorsal(rs));
+		}
+
+		return res;
+	}
+
+	public static List<InscripcionDto> toInscripcionDtoList(ResultSet rs) throws SQLException {
+		List<InscripcionDto> res = new ArrayList<>();
+		while (rs.next()) {
+			res.add(toInscripcionDto(rs));
+		}
+
+		return res;
 	}
 
 	public static Optional<PlazoDto> toPlazo(ResultSet rs) throws SQLException {

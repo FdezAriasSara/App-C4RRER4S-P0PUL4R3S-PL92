@@ -4,9 +4,14 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+
+
+import java.nio.file.attribute.AclEntry;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -23,10 +28,12 @@ import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.Inscripcion.crud.ActualizarEstadoInscripcion;
 import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
+import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
 import uo.ips.application.business.pago.PagoCrudService;
 import uo.ips.application.business.pago.PagoDto;
 import uo.ips.application.business.pago.TarjetaDto;
+import uo.ips.application.business.plazo.PlazoCrudService;
 import uo.ips.application.business.registro.RegistroCrudService;
 
 public class InscripcionController {
@@ -37,6 +44,11 @@ public class InscripcionController {
 	private PagoCrudService pagCrud = BusinessFactory.forPagoCrudService();
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 	private RegistroCrudService regCrud = BusinessFactory.forRegistroCrudService();
+
+	private PlazoCrudService plazoCrud = BusinessFactory.forPlazoCrudService();
+	private CompeticionCrudService compCrud = BusinessFactory.forCompeticionCrudService();// para saber si hay dorsales
+																							// reservados
+
 
 	public InscripcionController(MainWindow main) {
 		this.mainW = main;
@@ -253,7 +265,9 @@ public class InscripcionController {
 				}
 			}
 		});
-
+		/**
+		 * Efectua el registro del atleta
+		 */
 		mainW.getBtnRegistrarse().addActionListener(new ActionListener() {
 
 			@Override
@@ -291,6 +305,99 @@ public class InscripcionController {
 			}
 		});
 
+		/*
+		 * Asignación de dorsales
+		 */
+		mainW.getBtnAsignacionDorsales().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ZoneId defaultZoneId = ZoneId.systemDefault();
+				int idCompeticion = Integer.parseInt(mainW.getTxtIDCompOrg().getText());
+
+				try {
+					// si la competición no tiene los plazos terminados-> mostrar error y no enseñar
+					// panel dorsales
+					Date ultimoPlazo = plazoCrud.getUltimoPlazoByCompeticionId(idCompeticion);
+					if (ultimoPlazo.after(Date.valueOf(LocalDate.now()))) {
+						mainW.setErrorOrgPlazosSinTerminar();
+					} else {
+						int dorsalesReservados = compCrud.dorsalesReservados(idCompeticion);
+						if (dorsalesReservados == 0) {
+							// tenga o no dorsales reservados,se hará asignación de los dorsales no
+							// reservados
+							//esto lo hago aquiporque sino, aunque se aborte la asignacion manual de dorsales la automatica seguía
+							incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTxtIDCompOrg().getText()));
+						}
+						
+							// si la competición teen dorsales reservados-> mostrar panel para reservarlos
+							inicializarTablaAsignacionReservas(dorsalesReservados);
+							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "dorsales");
+						}
+
+					
+					}
+
+				 catch (BusinessException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
+			}
+		});
+
+		mainW.getBtnAsignar().addActionListener(new ActionListener() {
+			boolean parar = false;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int idCompeticion = Integer.parseInt(mainW.getTxtIDCompOrg().getText());
+					int dorsales = compCrud.dorsalesReservados(idCompeticion);
+
+					List<String> emails = new ArrayList<>();
+					for (int fila = 0; fila < dorsales-1; fila++) {
+						//comprobaciones sobre los emails introducidos
+						String email = mainW.getTableAsignar().getValueAt(fila, 1).toString().trim();
+						
+						if(email.isBlank()||email.isEmpty()) {
+							JOptionPane.showMessageDialog(null, "No puedes dejar dorsales sin reservar.");
+							parar = true;
+							break;
+						}
+						if(!mainW.checkFormatoEmail(email)) {
+							JOptionPane.showMessageDialog(null, "El formato del email:"+email+" es incorrecto. Revíselo porfavor.");
+							parar = true;
+							break;
+						}
+						if (atlCrud.encontrarPorEmail(email) == null) {
+							JOptionPane.showMessageDialog(null, "No se encuentra el atleta con email: " + email);
+							parar = true;
+							break;
+						}
+						emails.add(email);
+					}
+					if (!parar) {
+						int dorsal = 1;
+						for (String mail : emails) {
+							incCrud.asignarDorsalReservado(mail, dorsal, idCompeticion);
+							dorsal++;
+						}
+						
+						incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTxtIDCompOrg().getText()));
+						JOptionPane.showMessageDialog(null,
+								"Se han asignado los dorsales de la competición con id " + idCompeticion);
+						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
+					
+					}
+
+				} catch (BusinessException e1) {
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
+			}
+		});
+
+
 		mainW.getBtnImportarDatos().addActionListener(new ActionListener() {
 
 			@Override
@@ -323,6 +430,7 @@ public class InscripcionController {
 			}
 		});
 
+
 		mainW.getBtCargarPagos().addActionListener(new ActionListener() {
 
 			@Override
@@ -350,6 +458,40 @@ public class InscripcionController {
 				}
 			}
 		});
+
+	}
+
+	protected void inicializarTablaAsignacionReservas(int dorsales) {
+		String[] columnNames = { "Dorsal", "Email Atleta" };
+
+		String[][] valuesToTable = new String[dorsales][2];
+
+		for (int i = 0; i < dorsales; i++) {
+
+			valuesToTable[i][0] = String.valueOf(i + 1);
+			valuesToTable[i][1] = "";
+		}
+
+		TableModel model = new DefaultTableModel(valuesToTable, columnNames) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				switch (column) {
+				case 0:
+					return false;
+				case 1:
+					return true;
+				default:
+					return false;
+				}
+			}
+		};
+
+		mainW.getTableAsignar().setModel(model);
 
 	}
 

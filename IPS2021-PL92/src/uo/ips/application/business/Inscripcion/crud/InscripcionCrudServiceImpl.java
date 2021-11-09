@@ -52,5 +52,17 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 		
 	}
 
+	@Override
+	public void asignarDorsalesNoReservados(int idCompeticion) throws BusinessException {
+		new AsignarDorsalesNoReservados(idCompeticion).execute();
+		
+	}
+
+	@Override
+	public void asignarDorsalReservado(String email, int dorsal,int idCompeticion) throws BusinessException {
+		new AsignarDorsalReservado(email,dorsal,idCompeticion).execute();
+		
+	}
+
 	
 }

@@ -1,6 +1,18 @@
 package uo.ips.application.business.plazo;
 
-public interface PlazoCrudService {
+import java.sql.Date;
 
-	public void addPlazo(PlazoDto plazo);
+import uo.ips.application.business.BusinessException;
+
+public interface PlazoCrudService {
+	/**
+	 * Encuentra la fecha final del �ltimo plazo de una competici�n.
+	 * @param competicionId 
+	 * @return
+	 * @throws BusinessException si no se encuentra la fecha
+	 */
+	Date getUltimoPlazoByCompeticionId(int competicionId) throws BusinessException;
+    
+    public void addPlazo(PlazoDto plazo);
 }
+

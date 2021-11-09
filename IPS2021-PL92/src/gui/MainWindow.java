@@ -22,10 +22,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
+import java.awt.ScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MainWindow extends JFrame {
 
@@ -109,7 +114,15 @@ public class MainWindow extends JFrame {
 	private JLabel lblSexo;
 	private JComboBox<String> comboSexo;
 	private JButton btCargarPagos;
+
 	private JButton btMostrarCompeticiones;
+
+	private JButton btnAsignacionDorsales;
+	private JPanel panel_asignarDorsales;
+	private JScrollPane scrollPaneDorsales;
+	private JTable tableAsignar;
+	private JButton btnAsignar;
+
 
 	/**
 	 * Create the frame.
@@ -155,6 +168,7 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_pago(), "Pg4");
 			panel_card.add(getPanel_sesion(), "Pg5");
 			panel_card.add(getPanel_registrarse(), "registro");
+			panel_card.add(getPanel_asignarDorsales(), "dorsales");
 
 		}
 		return panel_card;
@@ -193,7 +207,11 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnImportarDatos());
 			panel_organizador.add(getTxtArchivoTiempos());
 			panel_organizador.add(getBtCargarPagos());
+
 			panel_organizador.add(getBtMostrarCompeticiones());
+
+			panel_organizador.add(getBtnAsignacionDorsales());
+
 		}
 		return panel_organizador;
 	}
@@ -395,6 +413,21 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtIDCompOrg() {
 		if (txtIDCompOrg == null) {
 			txtIDCompOrg = new JTextField();
+			txtIDCompOrg.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusLost(FocusEvent e) {
+					if(compruebaIDCompeticion( getTxtIDCompOrg().getText())) {
+						if(!getBtnAsignacionDorsales().getText().isBlank() ||!getBtnAsignacionDorsales().getText().isEmpty() ) {
+							getBtnAsignacionDorsales().setEnabled(true);
+						}
+					}else {
+						setErrorOrgID();
+					}
+				
+					
+				}
+			});
+			
 			txtIDCompOrg.setHorizontalAlignment(SwingConstants.CENTER);
 			txtIDCompOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			txtIDCompOrg.setBounds(254, 314, 50, 29);
@@ -428,7 +461,7 @@ public class MainWindow extends JFrame {
 		if (btnGenerarClasificacion == null) {
 			btnGenerarClasificacion = new JButton("Generar clasificacion");
 
-			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnGenerarClasificacion.setBounds(10, 404, 294, 35);
 		}
 		return btnGenerarClasificacion;
@@ -694,9 +727,9 @@ public class MainWindow extends JFrame {
 		getErrorTextAreaSesion().setEnabled(true);
 	}
 
-	protected boolean checkFormatoEmail(String text) {
+	public boolean checkFormatoEmail(String text) {
 
-		return text.matches("(\\S)+@(\\S)+.(es|com)");
+		return text.matches("[a-zA-Z0-9]{0,100}@[a-zA-Z0-9]{0,40}+.(es|com|org)");
 	}
 
 	private JLabel getLblSesTitulo() {
@@ -780,7 +813,7 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtArchivoTiempos() {
 		if (txtArchivoTiempos == null) {
 			txtArchivoTiempos = new JTextField();
-			txtArchivoTiempos.setBounds(625, 359, 157, 35);
+			txtArchivoTiempos.setBounds(625, 359, 129, 35);
 			txtArchivoTiempos.setColumns(10);
 		}
 		return txtArchivoTiempos;
@@ -827,7 +860,9 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setVisible(true);
 		ErrorTextAreaPago.setEnabled(true);
 	}
-
+	private boolean compruebaIDCompeticion(String text) {
+		return text.matches("[0-9]+");
+	}
 	private boolean compruebaCVC(String text) {
 
 		return text.matches("[0-9]{3}");
@@ -1106,6 +1141,7 @@ public class MainWindow extends JFrame {
 		return btCargarPagos;
 	}
 
+
 	public JButton getBtMostrarCompeticiones() {
 		if (btMostrarCompeticiones == null) {
 			btMostrarCompeticiones = new JButton("Mostrar competiciones");
@@ -1115,4 +1151,60 @@ public class MainWindow extends JFrame {
 		}
 		return btMostrarCompeticiones;
 	}
+
+	public JButton getBtnAsignacionDorsales() {
+		if (btnAsignacionDorsales == null) {
+			btnAsignacionDorsales = new JButton("Asignar dorsales");
+			btnAsignacionDorsales.setEnabled(false);
+			btnAsignacionDorsales.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
+			btnAsignacionDorsales.setBounds(460, 314, 292, 40);
+		}
+		return btnAsignacionDorsales;
+	}
+	private JPanel getPanel_asignarDorsales() {
+		if (panel_asignarDorsales == null) {
+			panel_asignarDorsales = new JPanel();
+			panel_asignarDorsales.setLayout(null);
+			panel_asignarDorsales.add(getTableAsignar());
+			panel_asignarDorsales.add(getScrollPaneDorsales());
+			panel_asignarDorsales.add(getBtnAsignar());
+		}
+		return panel_asignarDorsales;
+	}
+	public void setErrorOrgPlazosSinTerminar() {
+		getLblErrorOrg().setText("Error: Aún no han finalizado los plazos de inscripción.");
+		getLblErrorOrg().setForeground(Color.RED);
+		getLblErrorOrg().setVisible(true);
+	}
+	public void setErrorOrgID() {
+		getLblErrorOrg().setText("Error: El ID de competición solo puede tener dígitos.");
+		getLblErrorOrg().setForeground(Color.RED);
+		getLblErrorOrg().setVisible(true);
+	}
+	private JScrollPane getScrollPaneDorsales() { 
+		if (scrollPaneDorsales == null) {
+			scrollPaneDorsales = new JScrollPane(getTableAsignar());
+			scrollPaneDorsales.setBounds(173, 108, 514, 201);
+		}
+		return scrollPaneDorsales;
+	}
+	public JTable getTableAsignar() {
+		if (tableAsignar == null) {
+			tableAsignar = new JTable();
+			tableAsignar.setBounds(681, 108, -510, 201);
+			
+		}
+		return tableAsignar;
+	}
+	public JButton getBtnAsignar() {
+		if (btnAsignar == null) {
+			btnAsignar = new JButton("Asignar");
+			btnAsignar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			btnAsignar.setBounds(373, 415, 89, 23);
+		}
+		return btnAsignar;
+	}
+	
+
 }

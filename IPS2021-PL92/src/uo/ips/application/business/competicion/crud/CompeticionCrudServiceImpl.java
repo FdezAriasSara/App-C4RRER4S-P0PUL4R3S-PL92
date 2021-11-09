@@ -28,4 +28,11 @@ public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 	}
 
 
+	@Override
+	public int dorsalesReservados(int competicionId) throws BusinessException {
+	
+		return new DorsalesReservadosPorCompeticion(competicionId).execute();
+	}
+
+
 }
