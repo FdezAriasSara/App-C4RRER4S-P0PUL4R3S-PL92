@@ -122,6 +122,7 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPaneDorsales;
 	private JTable tableAsignar;
 	private JButton btnAsignar;
+	private JButton btNuevaCompeticion;
 
 
 	/**
@@ -211,6 +212,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtMostrarCompeticiones());
 
 			panel_organizador.add(getBtnAsignacionDorsales());
+			panel_organizador.add(getBtNuevaCompeticion());
 
 		}
 		return panel_organizador;
@@ -1207,4 +1209,12 @@ public class MainWindow extends JFrame {
 	}
 	
 
+	public JButton getBtNuevaCompeticion() {
+		if (btNuevaCompeticion == null) {
+			btNuevaCompeticion = new JButton("Nueva Competici\u00F3n");
+			btNuevaCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btNuevaCompeticion.setBounds(147, 495, 190, 35);
+		}
+		return btNuevaCompeticion;
+	}
 }

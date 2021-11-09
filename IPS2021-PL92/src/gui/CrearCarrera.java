@@ -133,6 +133,8 @@ public class CrearCarrera extends JFrame {
 		contentPane.add(getLblDorsales());
 		contentPane.add(getSpinnerDorsales());
 		// contentPane.add(getScrollPaneCategorias());
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 	}
 
@@ -283,6 +285,18 @@ public class CrearCarrera extends JFrame {
 
 			}
 		});
+		
+		JButton eliminar = new JButton("Eliminar");
+		eliminar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnFilas.remove(pn);
+				repaint();
+				
+			}
+		});
+		
 
 		pn.add(lbNombre);
 		pn.add(nombre);
@@ -292,6 +306,7 @@ public class CrearCarrera extends JFrame {
 		pn.add(min);
 		pn.add(lbMax);
 		pn.add(max);
+		pn.add(eliminar);
 		pnFilas.add(pn);
 		pnFilas.add(Box.createRigidArea(new Dimension(0, 10)));
 		pn.setVisible(true);
@@ -328,6 +343,17 @@ public class CrearCarrera extends JFrame {
 				checkPlazosVality();
 			}
 		});
+		
+		JButton eliminar = new JButton("Eliminar");
+		eliminar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnFilasPlazos.remove(pn);
+				repaint();
+				
+			}
+		});
 
 		pn.add(lblFechaInicio);
 		pn.add(inicio);
@@ -337,6 +363,7 @@ public class CrearCarrera extends JFrame {
 
 		pn.add(lblcuota);
 		pn.add(cuota);
+		pn.add(eliminar);
 		pn.setVisible(true);
 		getPnFilasPlazos().add(pn);
 		getPnFilasPlazos().add(Box.createRigidArea(new Dimension(0, 10)));
@@ -500,7 +527,7 @@ public class CrearCarrera extends JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			tabbedPane.setBounds(41, 243, 666, 361);
+			tabbedPane.setBounds(41, 243, 687, 361);
 
 			tabbedPane.add(getPnCategorias());
 			tabbedPane.add("Categorias", pnCategorias);

@@ -1,4 +1,4 @@
-package uo.ips.application.business.plazo.impl;
+package uo.ips.application.business.plazo.crud;
 
 import java.sql.Connection;
 import java.sql.Date;

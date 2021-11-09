@@ -18,7 +18,6 @@ import uo.ips.application.business.plazo.crud.PlazoCrudServiceImpl;
 import uo.ips.application.business.registro.RegistroCrudService;
 import uo.ips.application.business.registro.impl.RegistroCrudServiceImpl;
 import uo.ips.application.business.plazo.PlazoCrudService;
-import uo.ips.application.business.plazo.impl.PlazoCrudServiceImpl;
 
 public class BusinessFactory {
 	

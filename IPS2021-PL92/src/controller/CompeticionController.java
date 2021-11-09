@@ -40,6 +40,17 @@ public class CompeticionController {
 			}
 
 		});
+		
+		mainW.getBtNuevaCompeticion().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CrearCarrera frame = new CrearCarrera();
+				frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
+				
+			}
+		});
 
 	}
 
