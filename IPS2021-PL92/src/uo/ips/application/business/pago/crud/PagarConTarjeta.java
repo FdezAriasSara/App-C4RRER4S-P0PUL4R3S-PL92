@@ -21,7 +21,7 @@ public class PagarConTarjeta {
 	private static String CAMBIAR_ESTADO_INSCRIPCION = "UPDATE Inscripcion  SET estado='INSCRITO'  WHERE idAtleta=? and idCompeticion=?";
 	private static String ESTADO_ACTUAL_INSCRIPCION = "SELECT estado FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
 	private static String EXISTE_INSCRIPCION = "SELECT * FROM Inscripcion WHERE idAtleta=? and idCompeticion=?";
-	private static String IMPORTE_PAGO = "SELECT cuota  FROM Competicion WHERE  idCompeticion=?";
+	private static String IMPORTE_PAGO = "SELECT cuota  FROM Plazos WHERE  idCompeticion=?";
 	private static String REALIZAR_PAGO = "INSERT INTO Pago (idAtleta,idPago,fechaPago,importe,idCompeticion) VALUES (?,?,?,?,?) ";
 
 	private Connection c;
