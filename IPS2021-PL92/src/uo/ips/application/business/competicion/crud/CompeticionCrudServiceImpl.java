@@ -3,6 +3,7 @@ package uo.ips.application.business.competicion.crud;
 import java.util.List;
 
 import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.competicion.CompeticionCategoriaDto;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
 
@@ -29,6 +30,11 @@ public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 
 
 	@Override
+
+	public List<CompeticionCategoriaDto> listarCompeticionesConSusCategorias(int idCompeticion)
+			throws BusinessException {
+		return new ListarCompeticionesConSusCategorias(idCompeticion).execute();}
+
 	public int dorsalesReservados(int competicionId) throws BusinessException {
 	
 		return new DorsalesReservadosPorCompeticion(competicionId).execute();

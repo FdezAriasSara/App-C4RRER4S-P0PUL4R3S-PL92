@@ -96,6 +96,10 @@ public class MainWindow extends JFrame {
 	private JYearChooser yearChooser;
 	private JTextArea ErrorTextAreaPago;
 	private JTextArea ErrorTextAreaSesion;
+
+	private JButton btnCargarCategorias;
+
+
 	@SuppressWarnings("unused")
 	private CustomDialogRegistro registroDialog;
 	private JPanel panel_registrarse;
@@ -123,6 +127,7 @@ public class MainWindow extends JFrame {
 	private JTable tableAsignar;
 	private JButton btnAsignar;
 	private JButton btNuevaCompeticion;
+
 
 
 	/**
@@ -207,12 +212,16 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
 			panel_organizador.add(getTxtArchivoTiempos());
+
+			panel_organizador.add(getBtnCargarCategorias());
+
 			panel_organizador.add(getBtCargarPagos());
 
 			panel_organizador.add(getBtMostrarCompeticiones());
 
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
+
 
 		}
 		return panel_organizador;
@@ -415,6 +424,7 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtIDCompOrg() {
 		if (txtIDCompOrg == null) {
 			txtIDCompOrg = new JTextField();
+
 			txtIDCompOrg.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
@@ -440,7 +450,7 @@ public class MainWindow extends JFrame {
 
 	public JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("Categor\u00EDa (sexo):");
+			lblNewLabel = new JLabel("Categor\u00EDa :");
 			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			lblNewLabel.setBounds(10, 359, 140, 35);
 		}
@@ -453,8 +463,6 @@ public class MainWindow extends JFrame {
 			cbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			cbCategoria.setBounds(147, 364, 157, 29);
 
-			cbCategoria.addItem("masculino");
-			cbCategoria.addItem("femenino");
 		}
 		return cbCategoria;
 	}
@@ -465,6 +473,7 @@ public class MainWindow extends JFrame {
 
 			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnGenerarClasificacion.setBounds(10, 404, 294, 35);
+			btnGenerarClasificacion.setEnabled(false);
 		}
 		return btnGenerarClasificacion;
 	}
@@ -498,7 +507,8 @@ public class MainWindow extends JFrame {
 		if (btnObtenerAtletas == null) {
 			btnObtenerAtletas = new JButton("Obtener Atletas");
 			btnObtenerAtletas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btnObtenerAtletas.setBounds(458, 404, 294, 35);
+			btnObtenerAtletas.setBounds(525, 404, 324, 35);
+			btnObtenerAtletas.setEnabled(false);
 		}
 		return btnObtenerAtletas;
 	}
@@ -807,7 +817,7 @@ public class MainWindow extends JFrame {
 		if (btnImportarDatos == null) {
 			btnImportarDatos = new JButton("Importar Datos");
 			btnImportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btnImportarDatos.setBounds(458, 361, 157, 35);
+			btnImportarDatos.setBounds(525, 359, 157, 35);
 		}
 		return btnImportarDatos;
 	}
@@ -815,7 +825,7 @@ public class MainWindow extends JFrame {
 	public JTextField getTxtArchivoTiempos() {
 		if (txtArchivoTiempos == null) {
 			txtArchivoTiempos = new JTextField();
-			txtArchivoTiempos.setBounds(625, 359, 129, 35);
+			txtArchivoTiempos.setBounds(692, 361, 157, 35);
 			txtArchivoTiempos.setColumns(10);
 		}
 		return txtArchivoTiempos;
@@ -886,6 +896,16 @@ public class MainWindow extends JFrame {
 		}
 		return ErrorTextAreaSesion;
 
+	}
+
+	public JButton getBtnCargarCategorias() {
+		if (btnCargarCategorias == null) {
+			btnCargarCategorias = new JButton("Cargar categorias");
+			btnCargarCategorias.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnCargarCategorias.setBounds(314, 364, 157, 29);
+			btnCargarCategorias.setEnabled(false);
+		}
+		return btnCargarCategorias;
 	}
 
 	private JPanel getPanel_registrarse() {
@@ -1130,6 +1150,7 @@ public class MainWindow extends JFrame {
 		getTxtRegNombre().setText("");
 		getTextFieldCorreo().setText("");
 		getTextFieldDNI().setText("");
+
 
 	}
 

@@ -16,8 +16,12 @@ import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
 
 public class CompeticionController {
+
 	private MainWindow mainW;
-	private CompeticionCrudService competicionModel = BusinessFactory.forCompeticionCrudService();
+
+	private CompeticionCrudService competicionModel = BusinessFactory.forCompeticionCrudService() ;
+	
+	
 
 	public CompeticionController(MainWindow main) {
 		this.mainW = main;
@@ -41,6 +45,12 @@ public class CompeticionController {
 
 		});
 		
+
+		
+
+		
+		
+
 		mainW.getBtNuevaCompeticion().addActionListener(new ActionListener() {
 			
 			@Override
@@ -51,8 +61,8 @@ public class CompeticionController {
 				
 			}
 		});
-
 	}
+
 
 	private void initBotonListarComp() {
 
