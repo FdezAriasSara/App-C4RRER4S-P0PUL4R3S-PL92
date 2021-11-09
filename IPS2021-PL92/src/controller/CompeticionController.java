@@ -87,6 +87,7 @@ public class CompeticionController {
 			}
 		};
 
+
 		mainW.getTableCompeticion().setModel(model);
 
 	}

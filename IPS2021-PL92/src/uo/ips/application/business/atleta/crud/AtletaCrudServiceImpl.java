@@ -22,4 +22,10 @@ public class AtletaCrudServiceImpl implements AtletaCrudService{
 		return new EncontrarAtletaPorId(idAtleta).execute();
 	}
 
+	@Override
+	public AtletaDto encontrarPorEmail(String email) throws BusinessException {
+
+		return new BuscarAtletaPorEmail(email).execute();
+	}
+
 }
