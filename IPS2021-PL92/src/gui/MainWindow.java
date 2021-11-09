@@ -984,7 +984,7 @@ public class MainWindow extends JFrame {
 
 	protected boolean comprobarSoloTexto(String text) {
 		// Comprueba que solo sea un nombre/apellido o un apellido/nombre compuesto
-		return text.matches("[a-zA-Z]{2,50}|([a-zA-Z]{2,25} -[a-zA-Z]{2,25}");
+		return text.matches("[a-zA-Z]{2,50}|([a-zA-Z]{2,25} -[a-zA-Z]{2,25})");
 		// Evita que se introduzcan muchos caracteres
 	}
 
@@ -1014,7 +1014,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoDni(getTextFieldDNI().getText())) {
-						mostrarErrorRegistro("El dni debe contener seis dï¿½gitos y una letra.");
+						mostrarErrorRegistro("El dni debe contener seis dígitos y una letra.");
 					}
 				}
 
