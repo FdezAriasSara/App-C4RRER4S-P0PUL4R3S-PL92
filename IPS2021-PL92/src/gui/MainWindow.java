@@ -82,6 +82,7 @@ public class MainWindow extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JTable tablaClasificacion;
 	private JTable tableCompeticion;
+	private JButton btnNuevaCompeticion;
 
 	private JButton btnImportarDatos;
 	private JTextField txtArchivoTiempos;
@@ -533,7 +534,7 @@ public class MainWindow extends JFrame {
 
 					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
 						mostrarErrorPagoTarjeta(
-								"El formato del número de tarjeta es incorrecto. \n Deben ser 16 dígitos.");
+								"El formato del nï¿½mero de tarjeta es incorrecto. \n Deben ser 16 dï¿½gitos.");
 
 					}
 				}
@@ -558,7 +559,7 @@ public class MainWindow extends JFrame {
 					if (!compruebaCVC(getTxtCVC().getText())) {
 
 						mostrarErrorPagoTarjeta(
-								"El cvc debe ser un número de tres dígitos.\n Se encuentra en la cara trasera de tu tarjeta.");
+								"El cvc debe ser un nï¿½mero de tres dï¿½gitos.\n Se encuentra en la cara trasera de tu tarjeta.");
 						getTxtCVC().setText("");
 					}
 				}
@@ -661,8 +662,8 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
 						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
-						getTextFieldIniciarSesion().setText("");// vacío el campo para evitar que proceda con la
-																// inscripción
+						getTextFieldIniciarSesion().setText("");// vacï¿½o el campo para evitar que proceda con la
+																// inscripciï¿½n
 					}
 				}
 			});
@@ -894,7 +895,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el símbolo -.");
+								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegNombre().setText("");
 					}
 				}
@@ -912,7 +913,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el símbolo -.");
+								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegApellido().setText("");
 					}
 				}
@@ -956,7 +957,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoDni(getTextFieldDNI().getText())) {
-						mostrarErrorRegistro("El dni debe contener seis dígitos y una letra.");
+						mostrarErrorRegistro("El dni debe contener seis dï¿½gitos y una letra.");
 					}
 				}
 

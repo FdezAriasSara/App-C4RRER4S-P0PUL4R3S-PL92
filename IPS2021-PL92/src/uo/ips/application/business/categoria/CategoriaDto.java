@@ -1,9 +1,9 @@
 package uo.ips.application.business.categoria;
 
 public class CategoriaDto {
-	String idCategoria;
-	String nombreCategoria;
-	int edadMin;
-	int edadMax;
-	int sexo;
+	public String idCategoria;
+	public String nombreCategoria;
+	public int edadMin;
+	public int edadMax;
+	public String sexo;
 }

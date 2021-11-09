@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import gui.CrearCarrera;
 import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.BusinessFactory;
@@ -90,6 +91,8 @@ public class CompeticionController {
 		mainW.getTableCompeticion().setModel(model);
 
 	}
+	
+	
 
 	private void initBotonListarComp2() {
 

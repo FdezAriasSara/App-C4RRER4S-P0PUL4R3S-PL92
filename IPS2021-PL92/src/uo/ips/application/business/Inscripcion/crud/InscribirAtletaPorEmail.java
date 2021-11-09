@@ -13,6 +13,7 @@ public class InscribirAtletaPorEmail {
 
 	
 	private String SQLGetId = "SELECT idAtleta FROM Atleta WHERE email = ?";
+	private String SQLGetCompeticion = "SELECT idCompeticion FROM Competicion WHERE idCompeticion=?";
 	private int  idCompeticion;
 	private String email;
 	private int idCategoria;
@@ -33,6 +34,13 @@ public class InscribirAtletaPorEmail {
 		try {
 			c = Jdbc.getConnection();
 
+			pst = c.prepareStatement(SQLGetCompeticion);
+			pst.setInt(1, idCompeticion);
+			ResultSet competicionRs = pst.executeQuery();
+			
+			if(!competicionRs.next())
+				throw new BusinessException("La competición no existe");
+			
 			pst = c.prepareStatement(SQLGetId);
 			pst.setString(1, email);
 			
@@ -41,7 +49,7 @@ public class InscribirAtletaPorEmail {
 			
 			if(emailRs.next())
 				idAtleta= emailRs.getInt(1);
-			
+		
 			
 
 		} catch (SQLException e) {
