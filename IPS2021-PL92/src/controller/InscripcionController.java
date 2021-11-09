@@ -326,19 +326,23 @@ public class InscripcionController {
 						if (dorsalesReservados == 0) {
 							// tenga o no dorsales reservados,se hará asignación de los dorsales no
 							// reservados
-							//esto lo hago aquiporque sino, aunque se aborte la asignacion manual de dorsales la automatica seguía
+							// esto lo hago aquiporque sino, aunque se aborte la asignacion manual de
+							// dorsales la automatica seguía
 							incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTxtIDCompOrg().getText()));
-						}
-						
+							JOptionPane.showMessageDialog(null,
+									"Se han asignado los dorsales de la competición con id " + idCompeticion);
+							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
+						} else {
+
 							// si la competición teen dorsales reservados-> mostrar panel para reservarlos
 							inicializarTablaAsignacionReservas(dorsalesReservados);
 							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "dorsales");
 						}
-
-					
 					}
 
-				 catch (BusinessException e1) {
+				}
+
+				catch (BusinessException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
 				}
 
@@ -355,17 +359,18 @@ public class InscripcionController {
 					int dorsales = compCrud.dorsalesReservados(idCompeticion);
 
 					List<String> emails = new ArrayList<>();
-					for (int fila = 0; fila < dorsales-1; fila++) {
-						//comprobaciones sobre los emails introducidos
+					for (int fila = 0; fila < dorsales - 1; fila++) {
+						// comprobaciones sobre los emails introducidos
 						String email = mainW.getTableAsignar().getValueAt(fila, 1).toString().trim();
-						
-						if(email.isBlank()||email.isEmpty()) {
+
+						if (email.isBlank() || email.isEmpty()) {
 							JOptionPane.showMessageDialog(null, "No puedes dejar dorsales sin reservar.");
 							parar = true;
 							break;
 						}
-						if(!mainW.checkFormatoEmail(email)) {
-							JOptionPane.showMessageDialog(null, "El formato del email:"+email+" es incorrecto. Revíselo porfavor.");
+						if (!mainW.checkFormatoEmail(email)) {
+							JOptionPane.showMessageDialog(null,
+									"El formato del email:" + email + " es incorrecto. Revíselo porfavor.");
 							parar = true;
 							break;
 						}
@@ -382,12 +387,12 @@ public class InscripcionController {
 							incCrud.asignarDorsalReservado(mail, dorsal, idCompeticion);
 							dorsal++;
 						}
-						
+
 						incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTxtIDCompOrg().getText()));
 						JOptionPane.showMessageDialog(null,
 								"Se han asignado los dorsales de la competición con id " + idCompeticion);
 						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
-					
+
 					}
 
 				} catch (BusinessException e1) {
