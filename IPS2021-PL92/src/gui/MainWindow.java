@@ -45,8 +45,6 @@ public class MainWindow extends JFrame {
 	private JPanel panel_atleta;
 	private JPanel panel_organizador;
 	private JButton btnListarCompeticionesAbiertas;
-	private JTextField txtFIDCompeticion;
-	private JLabel lblInscribirse;
 	private JPanel panel_default;
 	private JLabel lblBienvenida;
 	private JLabel lblSeleccion;
@@ -57,8 +55,6 @@ public class MainWindow extends JFrame {
 	private JButton btnInscribirse;
 	private JLabel lblError;
 	private JButton btnIniciarSesion;
-	private JLabel lblIDCompeticionOrg;
-	private JTextField txtIDCompOrg;
 	private JLabel lblNewLabel;
 	private JComboBox<String> cbCategoria;
 	private JButton btnGenerarClasificacion;
@@ -127,6 +123,7 @@ public class MainWindow extends JFrame {
 	private JTable tableAsignar;
 	private JButton btnAsignar;
 	private JButton btNuevaCompeticion;
+	private JButton btnMostrarTodasComp;
 
 
 
@@ -186,8 +183,6 @@ public class MainWindow extends JFrame {
 			panel_atleta.setLayout(null);
 			panel_atleta.add(getScrollPane_1());
 			panel_atleta.add(getBtnListarCompeticionesAbiertas());
-			panel_atleta.add(getTxtFIDCompeticion());
-			panel_atleta.add(getLblInscribirse());
 			panel_atleta.add(getLblEmailAtleta());
 			panel_atleta.add(getTxtFEmail());
 			panel_atleta.add(getBtnInscribirse());
@@ -202,8 +197,6 @@ public class MainWindow extends JFrame {
 		if (panel_organizador == null) {
 			panel_organizador = new JPanel();
 			panel_organizador.setLayout(null);
-			panel_organizador.add(getLblIDCompeticionOrg());
-			panel_organizador.add(getTxtIDCompOrg());
 			panel_organizador.add(getLblNewLabel());
 			panel_organizador.add(getCbCategoria());
 			panel_organizador.add(getBtnGenerarClasificacion());
@@ -221,6 +214,7 @@ public class MainWindow extends JFrame {
 
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
+			panel_organizador.add(getBtnMostrarTodasComp());
 
 
 		}
@@ -235,26 +229,6 @@ public class MainWindow extends JFrame {
 			btnListarCompeticionesAbiertas.setBounds(10, 10, 205, 34);
 		}
 		return btnListarCompeticionesAbiertas;
-	}
-
-	public JTextField getTxtFIDCompeticion() {
-		if (txtFIDCompeticion == null) {
-			txtFIDCompeticion = new JTextField();
-			txtFIDCompeticion.setHorizontalAlignment(SwingConstants.CENTER);
-			txtFIDCompeticion.setFont(new Font("Dialog", Font.PLAIN, 15));
-			txtFIDCompeticion.setBounds(327, 377, 51, 29);
-			txtFIDCompeticion.setColumns(10);
-		}
-		return txtFIDCompeticion;
-	}
-
-	public JLabel getLblInscribirse() {
-		if (lblInscribirse == null) {
-			lblInscribirse = new JLabel("ID Competicion en la que te quieres inscribir:");
-			lblInscribirse.setFont(new Font("Dialog", Font.PLAIN, 15));
-			lblInscribirse.setBounds(10, 374, 307, 34);
-		}
-		return lblInscribirse;
 	}
 
 	public JPanel getPanel_default() {
@@ -410,42 +384,6 @@ public class MainWindow extends JFrame {
 
 		}
 		return btnIniciarSesion;
-	}
-
-	public JLabel getLblIDCompeticionOrg() {
-		if (lblIDCompeticionOrg == null) {
-			lblIDCompeticionOrg = new JLabel("Introduzca el ID de la competicion:");
-			lblIDCompeticionOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblIDCompeticionOrg.setBounds(10, 314, 246, 35);
-		}
-		return lblIDCompeticionOrg;
-	}
-
-	public JTextField getTxtIDCompOrg() {
-		if (txtIDCompOrg == null) {
-			txtIDCompOrg = new JTextField();
-
-			txtIDCompOrg.addFocusListener(new FocusAdapter() {
-				@Override
-				public void focusLost(FocusEvent e) {
-					if(compruebaIDCompeticion( getTxtIDCompOrg().getText())) {
-						if(!getBtnAsignacionDorsales().getText().isBlank() ||!getBtnAsignacionDorsales().getText().isEmpty() ) {
-							getBtnAsignacionDorsales().setEnabled(true);
-						}
-					}else {
-						setErrorOrgID();
-					}
-				
-					
-				}
-			});
-			
-			txtIDCompOrg.setHorizontalAlignment(SwingConstants.CENTER);
-			txtIDCompOrg.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			txtIDCompOrg.setBounds(254, 314, 50, 29);
-			txtIDCompOrg.setColumns(10);
-		}
-		return txtIDCompOrg;
 	}
 
 	public JLabel getLblNewLabel() {
@@ -800,6 +738,7 @@ public class MainWindow extends JFrame {
 	public JTable getTablaClasificacion() {
 		if (tablaClasificacion == null) {
 			tablaClasificacion = new JTable();
+			
 			tablaClasificacion.setBounds(10, 10, 858, 294);
 		}
 		return tablaClasificacion;
@@ -1139,11 +1078,7 @@ public class MainWindow extends JFrame {
 		return comboSexo;
 	}
 
-	public void vaciarCamposInscripcion() {
-		getTxtFIDCompeticion().setText("");
-		getTxtFEmail().setText("");
-
-	}
+	
 
 	public void vaciarCamposRegistro() {
 		getTxtRegApellido().setText("");
@@ -1237,5 +1172,14 @@ public class MainWindow extends JFrame {
 			btNuevaCompeticion.setBounds(147, 495, 190, 35);
 		}
 		return btNuevaCompeticion;
+	}
+	public JButton getBtnMostrarTodasComp() {
+		if (btnMostrarTodasComp == null) {
+			btnMostrarTodasComp = new JButton("Mostrar todas las competiciones");
+			
+			btnMostrarTodasComp.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			btnMostrarTodasComp.setBounds(10, 314, 294, 35);
+		}
+		return btnMostrarTodasComp;
 	}
 }

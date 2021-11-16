@@ -21,6 +21,7 @@ public class CompeticionController {
 
 	private CompeticionCrudService competicionModel = BusinessFactory.forCompeticionCrudService() ;
 	
+	private CompeticionCrudService compCrud = BusinessFactory.forCompeticionCrudService();// para saber si hay dorsales
 	
 
 	public CompeticionController(MainWindow main) {
@@ -60,6 +61,60 @@ public class CompeticionController {
 				frame.setVisible(true);
 				
 			}
+		});
+		
+		
+		
+
+
+		
+		
+		mainW.getBtnMostrarTodasComp().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<CompeticionDto> competiciones = new ArrayList<CompeticionDto>();
+
+				try {
+					competiciones = competicionModel.listarTodasCompeticiones();
+
+				} catch (BusinessException e1) {
+					mainW.getLblError().setText("Problemas al listar las carreras");
+				}
+
+				String[] columnNames = { "ID", "Nombre", "Fecha Competicion", "Organizador", "Tipo", "KM", "Plazas disponibles" };
+
+				String[][] valuesToTable = new String[competiciones.size()][columnNames.length];
+
+				int counter = 0;
+
+				for (CompeticionDto c : competiciones) {
+					int col = 0;
+					valuesToTable[counter][col++] = "" + c.idCompeticion;
+					valuesToTable[counter][col++] = "" + c.nombre;
+					valuesToTable[counter][col++] = "" + c.fechaCompeticion;
+					valuesToTable[counter][col++] = "" + c.organizador;
+					valuesToTable[counter][col++] = "" + c.tipoCompeticion;
+					valuesToTable[counter][col++] = "" + c.distanciaKm;
+					valuesToTable[counter][col++] = "" + c.plazasDisponibles;
+					counter++;
+				}
+
+				TableModel model = new DefaultTableModel(valuesToTable, columnNames) {
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean isCellEditable(int row, int column) {
+						return false;
+					}
+				};
+
+				mainW.getTablaClasificacion().setModel(model);
+
+			}
+		
+		
 		});
 	}
 

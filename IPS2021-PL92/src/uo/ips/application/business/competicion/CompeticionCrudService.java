@@ -19,4 +19,7 @@ public interface CompeticionCrudService {
 	public List<CompeticionCategoriaDto> listarCompeticionesConSusCategorias(int idCompeticion) throws BusinessException;
 
 	public int dorsalesReservados(int idCompeticion) throws BusinessException;
+	
+	
+	public List<CompeticionDto> listarTodasCompeticiones() throws BusinessException;
 }

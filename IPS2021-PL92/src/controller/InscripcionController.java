@@ -14,19 +14,12 @@ import java.sql.Date;
 
 import java.io.IOException;
 
-
-import java.nio.file.attribute.AclEntry;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
 
 import java.time.ZoneId;
 
-
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -109,7 +102,7 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 
 				mainW.getLblError().setVisible(false);
-				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTxtFIDCompeticion().getText());
+				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString() );
 			}
 		});
 
@@ -119,7 +112,7 @@ public class InscripcionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainW.getLblError().setVisible(false);
-				obtenerAtletas(mainW.getTxtIDCompOrg().getText());
+				obtenerAtletas(mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 
 			}
 
@@ -312,7 +305,7 @@ public class InscripcionController {
 
 						// una vez que el atleta se registra se le inscribe en la competición que había
 						// seleccionado.
-						inscribirse(dto.email, mainW.getTxtFIDCompeticion().getText());
+						inscribirse(dto.email, mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
 						mainW.vaciarCamposRegistro();
 
 					}
@@ -331,7 +324,7 @@ public class InscripcionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ZoneId defaultZoneId = ZoneId.systemDefault();
-				int idCompeticion = Integer.parseInt(mainW.getTxtIDCompOrg().getText());
+				int idCompeticion = Integer.parseInt( mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 
 				try {
 					// si la competición no tiene los plazos terminados-> mostrar error y no enseñar
@@ -346,7 +339,7 @@ public class InscripcionController {
 							// reservados
 							// esto lo hago aquiporque sino, aunque se aborte la asignacion manual de
 							// dorsales la automatica seguía
-							incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTxtIDCompOrg().getText()));
+							incCrud.asignarDorsalesNoReservados(Integer.parseInt( mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString()));
 							JOptionPane.showMessageDialog(null,
 									"Se han asignado los dorsales de la competición con id " + idCompeticion);
 							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
@@ -373,7 +366,7 @@ public class InscripcionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int idCompeticion = Integer.parseInt(mainW.getTxtIDCompOrg().getText());
+					int idCompeticion = Integer.parseInt( mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
 					int dorsales = compCrud.dorsalesReservados(idCompeticion);
 
 					List<String> emails = new ArrayList<>();
@@ -406,7 +399,7 @@ public class InscripcionController {
 							dorsal++;
 						}
 
-						incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTxtIDCompOrg().getText()));
+						incCrud.asignarDorsalesNoReservados(Integer.parseInt( mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString()));
 						JOptionPane.showMessageDialog(null,
 								"Se han asignado los dorsales de la competición con id " + idCompeticion);
 						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
@@ -455,15 +448,15 @@ public class InscripcionController {
 		
 		
 		
-		mainW.getTxtIDCompOrg().addFocusListener(new FocusAdapter() {
+		mainW.getTablaClasificacion().addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				
-
-				if (mainW.getTxtIDCompOrg().getText().isEmpty() || mainW.getTxtIDCompOrg().getText().isEmpty()) {
+				
+				if (mainW.getTableCompeticion().getSelectedRow() >= 0) {
 					mainW.getLblErrorOrg().setVisible(true);
 					mainW.getLblErrorOrg().setText("Error: ID vacío");
-					mainW.getTxtIDCompOrg().setText("");
+					
 					mainW.getBtnCargarCategorias().setEnabled(false);
 					mainW.getBtnGenerarClasificacion().setEnabled(false);
 					mainW.getBtnObtenerAtletas().setEnabled(false);
@@ -473,15 +466,15 @@ public class InscripcionController {
 				int id = -1;
 
 				try {
-					id = Integer.parseUnsignedInt(mainW.getTxtIDCompOrg().getText());
+					id = Integer.parseUnsignedInt(mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 					currentIdCompeticon = id;
 					mainW.getBtnCargarCategorias().setEnabled(true);
 					mainW.getBtnGenerarClasificacion().setEnabled(true);
 					mainW.getBtnObtenerAtletas().setEnabled(true);
-				} catch (NumberFormatException e1) {
+				} catch (ArrayIndexOutOfBoundsException e1) {
 					mainW.getLblErrorOrg().setVisible(true);
 					mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
-					mainW.getTxtIDCompOrg().setText("");
+					
 					mainW.getBtnCargarCategorias().setEnabled(false);
 					mainW.getBtnGenerarClasificacion().setEnabled(false);
 					mainW.getBtnObtenerAtletas().setEnabled(false);
@@ -499,6 +492,16 @@ public class InscripcionController {
 			}
 			
 		});
+		
+		
+		mainW.getTablaClasificacion().addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				mainW.getBtnGenerarClasificacion().setEnabled(false);
+			}
+		});
+		
 		
 		mainW.getBtnGenerarClasificacion().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -558,8 +561,11 @@ public class InscripcionController {
 				}
 			}
 		});
-
+		
+		
+		
 	}
+		
 
 	protected void inicializarTablaAsignacionReservas(int dorsales) {
 		String[] columnNames = { "Dorsal", "Email Atleta" };
@@ -594,6 +600,10 @@ public class InscripcionController {
 		mainW.getTableAsignar().setModel(model);
 
 	}
+	
+	
+	
+
 	
 	
 	
@@ -768,7 +778,7 @@ public class InscripcionController {
 					mainW.getLblError().setVisible(false);
 					sesion = new Sesion(emailAtleta, idCompeticion);
 					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
-					mainW.vaciarCamposInscripcion();
+					
 				} else {// si el atleta no está registrado.
 					mainW.getTextFieldCorreo().setText(mainW.getTxtFEmail().getText());
 					// si el atleta decide registrarse, se habrá introducido ya el correo para su

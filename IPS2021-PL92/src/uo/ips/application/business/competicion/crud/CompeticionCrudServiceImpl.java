@@ -41,4 +41,10 @@ public class CompeticionCrudServiceImpl implements CompeticionCrudService {
 	}
 
 
+	@Override
+	public List<CompeticionDto> listarTodasCompeticiones() throws BusinessException {
+		return new ListarTodasCompeticiones().execute();
+	}
+
+
 }
