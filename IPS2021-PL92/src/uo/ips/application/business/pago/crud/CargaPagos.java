@@ -12,7 +12,7 @@ import java.util.List;
 import uo.ips.application.business.pago.TransferenciaDto;
 
 public class CargaPagos {
-	private final String RUTA_ARCHIVO = "C:\\Users\\Usuario\\Desktop\\IPS\\pagos.txt";
+	private final String RUTA_ARCHIVO = "pagos.txt";
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 
 	public List<TransferenciaDto> read() throws IOException {
