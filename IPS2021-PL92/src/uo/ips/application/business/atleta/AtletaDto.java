@@ -10,6 +10,7 @@ public class AtletaDto {
 	public String apellido;
 	public Date fechaNacimiento;
 	public String sexo;
+	public String club;
 
 	
 

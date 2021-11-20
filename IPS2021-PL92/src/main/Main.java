@@ -2,6 +2,7 @@ package main;
 
 import java.awt.EventQueue;
 
+import controller.ClubController;
 import controller.CompeticionController;
 import controller.InscripcionController;
 import gui.MainWindow;
@@ -19,7 +20,7 @@ public class Main {
 					MainWindow frame = new MainWindow();
 					new CompeticionController(frame );
 					new InscripcionController(frame);
-					
+					new ClubController(frame);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

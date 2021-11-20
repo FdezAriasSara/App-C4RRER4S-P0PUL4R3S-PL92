@@ -1,5 +1,7 @@
 package uo.ips.application.business.atleta;
 
+import java.util.List;
+
 import uo.ips.application.business.BusinessException;
 
 public interface AtletaCrudService {
@@ -10,5 +12,7 @@ public interface AtletaCrudService {
 	
 	AtletaDto encontrarPorId(int idAtleta) throws BusinessException;
 	AtletaDto encontrarPorEmail(String email) throws BusinessException;
+	
+	List<AtletaDto> findAll() throws BusinessException;
 
 }

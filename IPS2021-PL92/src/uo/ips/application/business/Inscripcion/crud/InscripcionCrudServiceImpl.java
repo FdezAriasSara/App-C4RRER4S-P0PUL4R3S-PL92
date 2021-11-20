@@ -1,5 +1,6 @@
 package uo.ips.application.business.Inscripcion.crud;
 
+import java.sql.Connection;
 import java.util.List;
 
 import uo.ips.application.business.BusinessException;
@@ -62,6 +63,11 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	public void asignarDorsalReservado(String email, int dorsal,int idCompeticion) throws BusinessException {
 		new AsignarDorsalReservado(email,dorsal,idCompeticion).execute();
 		
+	}
+
+	@Override
+	public int inscribirClusterEmails(int idCompeticion, Connection c, String club, String... email) throws BusinessException {
+		 return new IncribirClusterEmails(idCompeticion,c,club,email).execute();
 	}
 
 	

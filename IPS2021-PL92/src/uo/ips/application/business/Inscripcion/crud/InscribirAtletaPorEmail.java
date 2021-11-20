@@ -18,6 +18,7 @@ public class InscribirAtletaPorEmail {
 	private String email;
 	private int idCategoria;
 	private int idAtleta;
+	private String club = "";
 	
 	Connection c = null;
 	ResultSet rs = null;
@@ -26,13 +27,31 @@ public class InscribirAtletaPorEmail {
 	public InscribirAtletaPorEmail(String email, int idCompeticion) {
 		this.idCompeticion = idCompeticion;
 		this.email = email;
+		try {
+			c = Jdbc.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public InscribirAtletaPorEmail(String email, int idCompeticion, Connection c) {
+		this.idCompeticion = idCompeticion;
+		this.email = email;
+		this.c = c;
+	}
+	
+	public InscribirAtletaPorEmail(String email, int idCompeticion, Connection c, String club) {
+		this(email,idCompeticion,c);
+		this.club = club;
 	}
 
 	public void execute() throws BusinessException {
 		// Process
 		
 		try {
-			c = Jdbc.getConnection();
+			
 
 			pst = c.prepareStatement(SQLGetCompeticion);
 			pst.setInt(1, idCompeticion);
@@ -55,14 +74,22 @@ public class InscribirAtletaPorEmail {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rs, pst, c);
+			Jdbc.close(rs, pst);
 		}
 		
 		
 		this.idCategoria = BusinessFactory.forAtletaCrudService().CalcularCategoria(idAtleta, idCompeticion);
 		
+		if(this.club.isBlank()) {
+			new InscribirAtleta(idCompeticion,idAtleta,idCategoria,  c).execute();
+		}else {
+			
 		
-		new InscribirAtleta(idCompeticion,idAtleta,idCategoria).execute();
+			new InscribirAtleta(idCompeticion,idAtleta,idCategoria,  c,this.club).execute();
+			
+			
+		}
+		
 		
 		
 		

@@ -35,6 +35,7 @@ public class CompeticionController {
 		mainW.getBtnListarCompeticionesAbiertas().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				initBotonListarComp();
+				mainW.getBtnInscribirClubArch().setEnabled(true);
 			}
 
 		});
@@ -42,6 +43,7 @@ public class CompeticionController {
 		mainW.getBtMostrarCompeticiones().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				initBotonListarComp2();
+				mainW.getBtnInscribirClubArch().setEnabled(false);
 			}
 
 		});
