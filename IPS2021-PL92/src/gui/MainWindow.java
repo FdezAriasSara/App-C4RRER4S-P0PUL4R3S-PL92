@@ -224,6 +224,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
+			
 			panel_organizador.add(getTxtArchivoTiempos());
 
 			panel_organizador.add(getBtnCargarCategorias());
