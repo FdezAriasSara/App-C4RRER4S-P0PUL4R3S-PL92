@@ -733,7 +733,7 @@ public class MainWindow extends JFrame {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane(getTablaClasificacion());
 
-			scrollPane.setBounds(10, 10, 858, 294);
+			scrollPane.setBounds(10, 10, 680, 294);
 
 		}
 		return scrollPane;
@@ -1117,7 +1117,7 @@ public class MainWindow extends JFrame {
 			btnAsignacionDorsales
 					.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
 			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
-			btnAsignacionDorsales.setBounds(460, 314, 292, 40);
+			btnAsignacionDorsales.setBounds(525, 314, 324, 40);
 		}
 		return btnAsignacionDorsales;
 	}
