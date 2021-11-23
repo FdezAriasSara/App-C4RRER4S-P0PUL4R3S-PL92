@@ -1,5 +1,6 @@
 package uo.ips.application.business.Inscripcion;
 
+import java.sql.Connection;
 import java.util.List;
 
 import uo.ips.application.business.BusinessException;
@@ -44,4 +45,7 @@ public interface InscripcionCrudService {
 	 * @throws BusinessException si no encuentra al competidor
 	 */
 	void asignarDorsalReservado(String email,int dorsal,int idCompeticion) throws BusinessException;
+	
+	
+	int inscribirClusterEmails( int idCompeticion, Connection c, String club,String... email) throws BusinessException;
 }

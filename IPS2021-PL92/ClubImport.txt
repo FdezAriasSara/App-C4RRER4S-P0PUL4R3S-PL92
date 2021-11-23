@@ -1,0 +1,5 @@
+Triatlon Oviedo
+Martin;Beltran;martin@gmail.com;masculino;23-7-2001;4
+Sara;Fernandez;sara@gmail.com;femenino;06-12-2000;2
+Persona;No Registrada;noregistrado@gmail.com;masculino;05-05-1995;999999F
+Juana;De Arco;noExiste@gmail.com;femenino;06-11-1800;72745934

@@ -1,6 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.Button;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -37,6 +40,7 @@ public class MainWindow extends JFrame {
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panel_soy;
@@ -94,6 +98,11 @@ public class MainWindow extends JFrame {
 	private JTextArea ErrorTextAreaSesion;
 
 	private JButton btnCargarCategorias;
+	
+	
+	
+	
+	
 
 
 	@SuppressWarnings("unused")
@@ -124,6 +133,8 @@ public class MainWindow extends JFrame {
 	private JButton btnAsignar;
 	private JButton btNuevaCompeticion;
 	private JButton btnMostrarTodasComp;
+	private JButton btnInscribirClubArch;
+	private JButton btnInscribirClubFormulario;
 
 
 
@@ -141,6 +152,13 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getPanel_soy(), BorderLayout.NORTH);
 		contentPane.add(getPanel_card(), BorderLayout.CENTER);
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	public JPanel getPanel_soy() {
@@ -189,6 +207,8 @@ public class MainWindow extends JFrame {
 			panel_atleta.add(getLblError());
 			panel_atleta.add(getBtnIniciarSesion());
 			panel_atleta.add(getBtnListarInscripciones());
+			panel_atleta.add(getBtnInscribirClubArch());
+			panel_atleta.add(getBtnInscribirClubFormulario());
 		}
 		return panel_atleta;
 	}
@@ -204,6 +224,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
+			
 			panel_organizador.add(getTxtArchivoTiempos());
 
 			panel_organizador.add(getBtnCargarCategorias());
@@ -721,7 +742,7 @@ public class MainWindow extends JFrame {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane(getTablaClasificacion());
 
-			scrollPane.setBounds(10, 10, 858, 294);
+			scrollPane.setBounds(10, 10, 680, 294);
 
 		}
 		return scrollPane;
@@ -1116,7 +1137,7 @@ public class MainWindow extends JFrame {
 			btnAsignacionDorsales.setEnabled(false);
 			btnAsignacionDorsales.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
 			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
-			btnAsignacionDorsales.setBounds(460, 314, 292, 40);
+			btnAsignacionDorsales.setBounds(525, 314, 324, 40);
 		}
 		return btnAsignacionDorsales;
 	}
@@ -1181,5 +1202,22 @@ public class MainWindow extends JFrame {
 			btnMostrarTodasComp.setBounds(10, 314, 294, 35);
 		}
 		return btnMostrarTodasComp;
+	}
+	public JButton getBtnInscribirClubArch() {
+		if (btnInscribirClubArch == null) {
+			btnInscribirClubArch = new JButton("Inscribir a club con archivo");
+			btnInscribirClubArch.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnInscribirClubArch.setBounds(567, 463, 240, 34);
+			btnInscribirClubArch.setEnabled(false);
+		}
+		return btnInscribirClubArch;
+	}
+	public JButton getBtnInscribirClubFormulario() {
+		if (btnInscribirClubFormulario == null) {
+			btnInscribirClubFormulario = new JButton("Inscribir a club con formulario");
+			btnInscribirClubFormulario.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnInscribirClubFormulario.setBounds(567, 507, 240, 34);
+		}
+		return btnInscribirClubFormulario;
 	}
 }

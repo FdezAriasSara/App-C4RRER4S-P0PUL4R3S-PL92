@@ -1,5 +1,7 @@
 package uo.ips.application.business.atleta.crud;
 
+import java.util.List;
+
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
@@ -26,6 +28,11 @@ public class AtletaCrudServiceImpl implements AtletaCrudService{
 	public AtletaDto encontrarPorEmail(String email) throws BusinessException {
 
 		return new BuscarAtletaPorEmail(email).execute();
+	}
+
+	@Override
+	public List<AtletaDto> findAll() throws BusinessException {
+		return new FindAll().execute();
 	}
 
 }

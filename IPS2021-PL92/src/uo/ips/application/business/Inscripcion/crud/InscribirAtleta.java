@@ -12,12 +12,14 @@ import uo.ips.application.business.BusinessException;
 public class InscribirAtleta {
 	
 	private String SQL = "INSERT INTO Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria,posicionFinal,tiempoQueTarda) VALUES (?,?,?,?,?,?,?,?)";
+	private String SQL_Club = "INSERT INTO Inscripcion (idCompeticion,idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria,posicionFinal,tiempoQueTarda,club) VALUES (?,?,?,?,?,?,?,?,?)";
 	private String SQLGetInscripcion = "SELECT * FROM Inscripcion WHERE idCompeticion = ? AND idAtleta = ?";
 	private String SQLGetNumeroPlazas = "SELECT plazasDisponibles FROM Competicion WHERE idCompeticion = ?";
 	//private String SQLGetNumeroInscritos = "SELECT Count(*) FROM Inscritos WhERE idCompeticion = ?";
 	private int  idCompeticion;
 	private int idAtleta;
 	private int idCategoria;
+	private String club = "";
 	
 	Connection c = null;
 	ResultSet rs = null;
@@ -29,13 +31,33 @@ public class InscribirAtleta {
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
 		this.idCategoria = idCategoria;
+		try {
+			this.c = Jdbc.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public InscribirAtleta(int idCompeticion, int idAtleta, int idCategoria, Connection c) {
+		this.idCompeticion = idCompeticion;
+		this.idAtleta = idAtleta;
+		this.idCategoria = idCategoria;
+		
+		this.c = c;
+		
+	}
+	
+	public InscribirAtleta(int idCompeticion, int idAtleta, int idCategoria, Connection c, String club) {
+		this(idCompeticion, idAtleta, idCategoria,c);
+		this.club = club;
 	}
 
 	public void execute() throws BusinessException {
 		// Process
 
 		try {
-			c = Jdbc.getConnection();
+			
 
 
 			if(yaEstaInscrito()) {
@@ -44,23 +66,34 @@ public class InscribirAtleta {
 			if(!haySitio()) {
 				throw new BusinessException("La competición está llena");				
 			}
-
-			pst = c.prepareStatement(SQL);
+			if(this.club.isBlank()) {
+				pst = c.prepareStatement(SQL);
+			}else {
+				pst = c.prepareStatement(SQL_Club);
+			}
+			
 			pst.setInt(1, idCompeticion);
 			pst.setInt(2, idAtleta);
-			pst.setString(3, "PRE_INSCRITO");
+			
 			pst.setDate(4, new Date(System.currentTimeMillis()));
 			pst.setDate(5, new Date(System.currentTimeMillis()));
 			pst.setInt(6, idCategoria);
 			pst.setInt(7, -1);
 			pst.setString(8, "00:00:00");
+			
+			if(!this.club.isBlank()) {
+				pst.setString(9, this.club);
+				pst.setString(3, "INSCRITO");
+			}else {
+				pst.setString(3, "PRE_INSCRITO");
+			}
 
 			pst.executeUpdate();
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rs, pst, c);
+			Jdbc.close(rs, pst);
 		}
 	}
 
