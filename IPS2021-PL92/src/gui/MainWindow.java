@@ -135,6 +135,7 @@ public class MainWindow extends JFrame {
 	private JButton btnMostrarTodasComp;
 	private JButton btnInscribirClubArch;
 	private JButton btnInscribirClubFormulario;
+	private JPanel panel;
 
 
 
@@ -236,6 +237,7 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
 			panel_organizador.add(getBtnMostrarTodasComp());
+			panel_organizador.add(getPanel());
 
 
 		}
@@ -1219,5 +1221,12 @@ public class MainWindow extends JFrame {
 			btnInscribirClubFormulario.setBounds(567, 507, 240, 34);
 		}
 		return btnInscribirClubFormulario;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setBounds(700, 10, 148, 294);
+		}
+		return panel;
 	}
 }
