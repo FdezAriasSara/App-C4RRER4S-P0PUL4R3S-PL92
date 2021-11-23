@@ -1,12 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import java.awt.Button;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -24,23 +22,20 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
-import java.awt.ScrollPane;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class MainWindow extends JFrame {
 
 	/**
 	 * 
 	 */
-	
+
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panel_soy;
@@ -98,12 +93,6 @@ public class MainWindow extends JFrame {
 	private JTextArea ErrorTextAreaSesion;
 
 	private JButton btnCargarCategorias;
-	
-	
-	
-	
-	
-
 
 	@SuppressWarnings("unused")
 	private CustomDialogRegistro registroDialog;
@@ -124,8 +113,6 @@ public class MainWindow extends JFrame {
 	private JComboBox<String> comboSexo;
 	private JButton btCargarPagos;
 
-	private JButton btMostrarCompeticiones;
-
 	private JButton btnAsignacionDorsales;
 	private JPanel panel_asignarDorsales;
 	private JScrollPane scrollPaneDorsales;
@@ -135,8 +122,13 @@ public class MainWindow extends JFrame {
 	private JButton btnMostrarTodasComp;
 	private JButton btnInscribirClubArch;
 	private JButton btnInscribirClubFormulario;
-
-
+	private JButton btInformacionContable;
+	private JPanel panel_contabilidad;
+	private JLabel lbNombeCompeticion;
+	private JLabel lbNombeNombreCompeticion;
+	private JLabel lbFecha;
+	private JScrollPane scrollPane_2;
+	private JTable tablaContabilidad;
 
 	/**
 	 * Create the frame.
@@ -156,7 +148,7 @@ public class MainWindow extends JFrame {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			
+
 			e.printStackTrace();
 		}
 	}
@@ -190,6 +182,7 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_sesion(), "Pg5");
 			panel_card.add(getPanel_registrarse(), "registro");
 			panel_card.add(getPanel_asignarDorsales(), "dorsales");
+			panel_card.add(getPanel_contabilidad(), "contabilidad");
 
 		}
 		return panel_card;
@@ -224,19 +217,17 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
-			
+
 			panel_organizador.add(getTxtArchivoTiempos());
 
 			panel_organizador.add(getBtnCargarCategorias());
 
 			panel_organizador.add(getBtCargarPagos());
 
-			panel_organizador.add(getBtMostrarCompeticiones());
-
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
 			panel_organizador.add(getBtnMostrarTodasComp());
-
+			panel_organizador.add(getBtInformacionContable());
 
 		}
 		return panel_organizador;
@@ -759,7 +750,7 @@ public class MainWindow extends JFrame {
 	public JTable getTablaClasificacion() {
 		if (tablaClasificacion == null) {
 			tablaClasificacion = new JTable();
-			
+
 			tablaClasificacion.setBounds(10, 10, 858, 294);
 		}
 		return tablaClasificacion;
@@ -832,9 +823,11 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setVisible(true);
 		ErrorTextAreaPago.setEnabled(true);
 	}
+
 	private boolean compruebaIDCompeticion(String text) {
 		return text.matches("[0-9]+");
 	}
+
 	private boolean compruebaCVC(String text) {
 
 		return text.matches("[0-9]{3}");
@@ -1099,14 +1092,11 @@ public class MainWindow extends JFrame {
 		return comboSexo;
 	}
 
-	
-
 	public void vaciarCamposRegistro() {
 		getTxtRegApellido().setText("");
 		getTxtRegNombre().setText("");
 		getTextFieldCorreo().setText("");
 		getTextFieldDNI().setText("");
-
 
 	}
 
@@ -1120,27 +1110,18 @@ public class MainWindow extends JFrame {
 		return btCargarPagos;
 	}
 
-
-	public JButton getBtMostrarCompeticiones() {
-		if (btMostrarCompeticiones == null) {
-			btMostrarCompeticiones = new JButton("Mostrar competiciones");
-			btMostrarCompeticiones.setMnemonic('M');
-			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
-		}
-		return btMostrarCompeticiones;
-	}
-
 	public JButton getBtnAsignacionDorsales() {
 		if (btnAsignacionDorsales == null) {
 			btnAsignacionDorsales = new JButton("Asignar dorsales");
 			btnAsignacionDorsales.setEnabled(false);
-			btnAsignacionDorsales.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+			btnAsignacionDorsales
+					.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
 			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
 			btnAsignacionDorsales.setBounds(460, 314, 292, 40);
 		}
 		return btnAsignacionDorsales;
 	}
+
 	private JPanel getPanel_asignarDorsales() {
 		if (panel_asignarDorsales == null) {
 			panel_asignarDorsales = new JPanel();
@@ -1151,31 +1132,36 @@ public class MainWindow extends JFrame {
 		}
 		return panel_asignarDorsales;
 	}
+
 	public void setErrorOrgPlazosSinTerminar() {
 		getLblErrorOrg().setText("Error: Aún no han finalizado los plazos de inscripción.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
+
 	public void setErrorOrgID() {
 		getLblErrorOrg().setText("Error: El ID de competición solo puede tener dígitos.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
-	private JScrollPane getScrollPaneDorsales() { 
+
+	private JScrollPane getScrollPaneDorsales() {
 		if (scrollPaneDorsales == null) {
 			scrollPaneDorsales = new JScrollPane(getTableAsignar());
 			scrollPaneDorsales.setBounds(173, 108, 514, 201);
 		}
 		return scrollPaneDorsales;
 	}
+
 	public JTable getTableAsignar() {
 		if (tableAsignar == null) {
 			tableAsignar = new JTable();
 			tableAsignar.setBounds(681, 108, -510, 201);
-			
+
 		}
 		return tableAsignar;
 	}
+
 	public JButton getBtnAsignar() {
 		if (btnAsignar == null) {
 			btnAsignar = new JButton("Asignar");
@@ -1184,7 +1170,6 @@ public class MainWindow extends JFrame {
 		}
 		return btnAsignar;
 	}
-	
 
 	public JButton getBtNuevaCompeticion() {
 		if (btNuevaCompeticion == null) {
@@ -1194,15 +1179,17 @@ public class MainWindow extends JFrame {
 		}
 		return btNuevaCompeticion;
 	}
+
 	public JButton getBtnMostrarTodasComp() {
 		if (btnMostrarTodasComp == null) {
 			btnMostrarTodasComp = new JButton("Mostrar todas las competiciones");
-			
+
 			btnMostrarTodasComp.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnMostrarTodasComp.setBounds(10, 314, 294, 35);
 		}
 		return btnMostrarTodasComp;
 	}
+
 	public JButton getBtnInscribirClubArch() {
 		if (btnInscribirClubArch == null) {
 			btnInscribirClubArch = new JButton("Inscribir a club con archivo");
@@ -1212,6 +1199,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnInscribirClubArch;
 	}
+
 	public JButton getBtnInscribirClubFormulario() {
 		if (btnInscribirClubFormulario == null) {
 			btnInscribirClubFormulario = new JButton("Inscribir a club con formulario");
@@ -1219,5 +1207,69 @@ public class MainWindow extends JFrame {
 			btnInscribirClubFormulario.setBounds(567, 507, 240, 34);
 		}
 		return btnInscribirClubFormulario;
+	}
+
+	public JButton getBtInformacionContable() {
+		if (btInformacionContable == null) {
+			btInformacionContable = new JButton("Ver estado contable");
+			btInformacionContable.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btInformacionContable.setBounds(460, 495, 170, 35);
+		}
+		return btInformacionContable;
+	}
+
+	private JPanel getPanel_contabilidad() {
+		if (panel_contabilidad == null) {
+			panel_contabilidad = new JPanel();
+			panel_contabilidad.setLayout(null);
+			panel_contabilidad.add(getLbNombeCompeticion());
+			panel_contabilidad.add(getLbNombeNombreCompeticion());
+			panel_contabilidad.add(getLbFecha());
+			panel_contabilidad.add(getScrollPane_2());
+		}
+		return panel_contabilidad;
+	}
+
+	private JLabel getLbNombeCompeticion() {
+		if (lbNombeCompeticion == null) {
+			lbNombeCompeticion = new JLabel("Balance carrera: ");
+			lbNombeCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lbNombeCompeticion.setBounds(32, 11, 173, 35);
+		}
+		return lbNombeCompeticion;
+	}
+
+	public JLabel getLbNombeNombreCompeticion() {
+		if (lbNombeNombreCompeticion == null) {
+			lbNombeNombreCompeticion = new JLabel("");
+			lbNombeNombreCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lbNombeNombreCompeticion.setBounds(232, 11, 584, 35);
+		}
+		return lbNombeNombreCompeticion;
+	}
+
+	public JLabel getLbFecha() {
+		if (lbFecha == null) {
+			lbFecha = new JLabel("");
+			lbFecha.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			lbFecha.setBounds(32, 73, 173, 28);
+		}
+		return lbFecha;
+	}
+
+	private JScrollPane getScrollPane_2() {
+		if (scrollPane_2 == null) {
+			scrollPane_2 = new JScrollPane((Component) null);
+			scrollPane_2.setBounds(10, 118, 846, 411);
+			scrollPane_2.setViewportView(getTablaContabilidad());
+		}
+		return scrollPane_2;
+	}
+
+	public JTable getTablaContabilidad() {
+		if (tablaContabilidad == null) {
+			tablaContabilidad = new JTable();
+		}
+		return tablaContabilidad;
 	}
 }

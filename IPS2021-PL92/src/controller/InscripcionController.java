@@ -3,23 +3,13 @@ package controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
-
-import java.sql.Date;
-
-
 import java.io.IOException;
-
+import java.sql.Date;
 import java.time.LocalDate;
-
-import java.util.ArrayList;
-
 import java.time.ZoneId;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -36,7 +26,6 @@ import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.Inscripcion.crud.ActualizarEstadoInscripcion;
 import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
-
 import uo.ips.application.business.competicion.CompeticionCategoriaDto;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
@@ -53,7 +42,6 @@ public class InscripcionController {
 	private Sesion sesion;
 	private PagoCrudService pagCrud = BusinessFactory.forPagoCrudService();
 
-
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 	private RegistroCrudService regCrud = BusinessFactory.forRegistroCrudService();
 
@@ -61,12 +49,8 @@ public class InscripcionController {
 	private CompeticionCrudService compCrud = BusinessFactory.forCompeticionCrudService();// para saber si hay dorsales
 																							// reservados
 
-
-	
-
 	private List<CompeticionCategoriaDto> currentCategoriasInComboBox;
 	private int currentIdCompeticon = -1;
-	
 
 	public InscripcionController(MainWindow main) {
 		this.mainW = main;
@@ -102,17 +86,18 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 
 				mainW.getLblError().setVisible(false);
-				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString() );
+				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTableCompeticion().getModel()
+						.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
 			}
 		});
 
-		
 		mainW.getBtnObtenerAtletas().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainW.getLblError().setVisible(false);
-				obtenerAtletas(mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
+				obtenerAtletas(mainW.getTablaClasificacion().getModel()
+						.getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 
 			}
 
@@ -305,7 +290,8 @@ public class InscripcionController {
 
 						// una vez que el atleta se registra se le inscribe en la competición que había
 						// seleccionado.
-						inscribirse(dto.email, mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
+						inscribirse(dto.email, mainW.getTableCompeticion().getModel()
+								.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
 						mainW.vaciarCamposRegistro();
 
 					}
@@ -324,7 +310,8 @@ public class InscripcionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ZoneId defaultZoneId = ZoneId.systemDefault();
-				int idCompeticion = Integer.parseInt( mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
+				int idCompeticion = Integer.parseInt(mainW.getTablaClasificacion().getModel()
+						.getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 
 				try {
 					// si la competición no tiene los plazos terminados-> mostrar error y no enseñar
@@ -339,7 +326,9 @@ public class InscripcionController {
 							// reservados
 							// esto lo hago aquiporque sino, aunque se aborte la asignacion manual de
 							// dorsales la automatica seguía
-							incCrud.asignarDorsalesNoReservados(Integer.parseInt( mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString()));
+							incCrud.asignarDorsalesNoReservados(
+									Integer.parseInt(mainW.getTablaClasificacion().getModel()
+											.getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString()));
 							JOptionPane.showMessageDialog(null,
 									"Se han asignado los dorsales de la competición con id " + idCompeticion);
 							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
@@ -366,7 +355,8 @@ public class InscripcionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int idCompeticion = Integer.parseInt( mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
+					int idCompeticion = Integer.parseInt(mainW.getTableCompeticion().getModel()
+							.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
 					int dorsales = compCrud.dorsalesReservados(idCompeticion);
 
 					List<String> emails = new ArrayList<>();
@@ -399,7 +389,8 @@ public class InscripcionController {
 							dorsal++;
 						}
 
-						incCrud.asignarDorsalesNoReservados(Integer.parseInt( mainW.getTableCompeticion().getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString()));
+						incCrud.asignarDorsalesNoReservados(Integer.parseInt(mainW.getTableCompeticion().getModel()
+								.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString()));
 						JOptionPane.showMessageDialog(null,
 								"Se han asignado los dorsales de la competición con id " + idCompeticion);
 						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
@@ -412,7 +403,6 @@ public class InscripcionController {
 
 			}
 		});
-
 
 		mainW.getBtnImportarDatos().addActionListener(new ActionListener() {
 
@@ -445,28 +435,26 @@ public class InscripcionController {
 
 			}
 		});
-		
-		
-		
+
 		mainW.getTablaClasificacion().addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				
-				
+
 				if (mainW.getTableCompeticion().getSelectedRow() >= 0) {
 					mainW.getLblErrorOrg().setVisible(true);
 					mainW.getLblErrorOrg().setText("Error: ID vacío");
-					
+
 					mainW.getBtnCargarCategorias().setEnabled(false);
 					mainW.getBtnGenerarClasificacion().setEnabled(false);
 					mainW.getBtnObtenerAtletas().setEnabled(false);
 					return;
 				}
-				
+
 				int id = -1;
 
 				try {
-					id = Integer.parseUnsignedInt(mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
+					id = Integer.parseUnsignedInt(mainW.getTablaClasificacion().getModel()
+							.getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 					currentIdCompeticon = id;
 					mainW.getBtnCargarCategorias().setEnabled(true);
 					mainW.getBtnGenerarClasificacion().setEnabled(true);
@@ -474,65 +462,62 @@ public class InscripcionController {
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					mainW.getLblErrorOrg().setVisible(true);
 					mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
-					
+
 					mainW.getBtnCargarCategorias().setEnabled(false);
 					mainW.getBtnGenerarClasificacion().setEnabled(false);
 					mainW.getBtnObtenerAtletas().setEnabled(false);
 					return;
 				}
-				
+
 			}
 		});
-		
-		
+
 		mainW.getBtnCargarCategorias().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mainW.getCbCategoria().removeAllItems();
 				añadirCategoriasAComboBox(currentIdCompeticon);
 			}
-			
+
 		});
-		
-		
+
 		mainW.getTablaClasificacion().addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				
+
 				mainW.getBtnGenerarClasificacion().setEnabled(false);
 			}
 		});
-		
-		
+
 		mainW.getBtnGenerarClasificacion().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(currentCategoriasInComboBox.isEmpty()) {
+				if (currentCategoriasInComboBox.isEmpty()) {
 					mainW.getLblErrorOrg().setVisible(true);
-					mainW.getLblErrorOrg().setText("Error:Por favor, pulsa en cargar categorias antes de generar la clasificacion");
+					mainW.getLblErrorOrg()
+							.setText("Error:Por favor, pulsa en cargar categorias antes de generar la clasificacion");
 					return;
 				}
-				
-				if(currentIdCompeticon < 0) {
+
+				if (currentIdCompeticon < 0) {
 					mainW.getLblErrorOrg().setVisible(true);
 					mainW.getLblErrorOrg().setText("Error: indique el numero de competicion");
 					return;
 				}
-				
+
 				mainW.getLblError().setVisible(false);
-				int catSelectedCB = mainW.getCbCategoria().getSelectedIndex() - 1; //Resto 1 porque primera categoría es ABSOLUTA (generar todas las clasi)
+				int catSelectedCB = mainW.getCbCategoria().getSelectedIndex() - 1; // Resto 1 porque primera categoría
+																					// es ABSOLUTA (generar todas las
+																					// clasi)
 				int idCategoriaSelected;
-				
-				if(catSelectedCB < 0) {
+
+				if (catSelectedCB < 0) {
 					idCategoriaSelected = -1;
-				}else {
+				} else {
 					idCategoriaSelected = currentCategoriasInComboBox.get(catSelectedCB).idCategoria;
 				}
-				
-				
-				obtenerClasificacion(currentIdCompeticon,
-						idCategoriaSelected);
+
+				obtenerClasificacion(currentIdCompeticon, idCategoriaSelected);
 			}
 		});
-
 
 		mainW.getBtCargarPagos().addActionListener(new ActionListener() {
 
@@ -555,17 +540,13 @@ public class InscripcionController {
 						mainW.getLblErrorOrg().setEnabled(true);
 					}
 				} else {
-					mainW.getLblErrorOrg().setText("Error: selecciona competición para cargar pagos");
-					mainW.getLblErrorOrg().setVisible(true);
-					mainW.getLblErrorOrg().setEnabled(true);
+					JOptionPane.showMessageDialog(mainW, "Selecciona competición para cargar pagos", null,
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
-		
-		
-		
+
 	}
-		
 
 	protected void inicializarTablaAsignacionReservas(int dorsales) {
 		String[] columnNames = { "Dorsal", "Email Atleta" };
@@ -600,65 +581,50 @@ public class InscripcionController {
 		mainW.getTableAsignar().setModel(model);
 
 	}
-	
-	
-	
 
-	
-	
-	
-
-	
 	private void añadirCategoriasAComboBox(int idCompeticion) {
-		
-		
-		
+
 		try {
 			this.currentCategoriasInComboBox = compCrud.listarCompeticionesConSusCategorias(idCompeticion);
-			
+
 			mainW.getCbCategoria().addItem("ABSOLUTA");
-			for(CompeticionCategoriaDto dto :  currentCategoriasInComboBox) {
+			for (CompeticionCategoriaDto dto : currentCategoriasInComboBox) {
 				mainW.getCbCategoria().addItem(dto.nombreCategoría);
 			}
-			
-			
+
 		} catch (BusinessException e) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
 			return;
 		}
-		
-		
+
 	}
-	
-	
+
 	private void obtenerClasificacion(int idCompeticion, int idCategoria) {
 
-		
-		if(currentIdCompeticon < 0) {
+		if (currentIdCompeticon < 0) {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: indique el numero de competicion");
 			return;
 		}
-		
+
 		List<InscripcionDto> clas = new ArrayList<InscripcionDto>();
-			
+
 		try {
-			
-			if( idCategoria < 0) {//generar TODAS las clasificaciones
-				
-				for(CompeticionCategoriaDto compCat : currentCategoriasInComboBox) {
-					
+
+			if (idCategoria < 0) {// generar TODAS las clasificaciones
+
+				for (CompeticionCategoriaDto compCat : currentCategoriasInComboBox) {
+
 					clas.addAll(incCrud.obtenerClasificaciones(idCompeticion, compCat.idCategoria));
-					
+
 				}
-				
-			}else { //Generar solo categoria seleccionada
+
+			} else { // Generar solo categoria seleccionada
 				clas = incCrud.obtenerClasificaciones(idCompeticion, idCategoria);
 			}
-			
-		
-			String[] columnNames = { "Nombre", "Apellidos", "Posicion", "Tiempo","Categoria" };
+
+			String[] columnNames = { "Nombre", "Apellidos", "Posicion", "Tiempo", "Categoria" };
 
 			String[][] valuesToTable = new String[clas.size()][columnNames.length];
 
@@ -681,7 +647,7 @@ public class InscripcionController {
 				} else {
 					valuesToTable[count][col++] = "" + dto.tiempoQueTarda;
 				}
-				
+
 				valuesToTable[count][col++] = dto.nombreCategoria;
 
 				count++;
@@ -705,8 +671,6 @@ public class InscripcionController {
 			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
 		}
 	}
-	
-	
 
 	private void obtenerAtletas(String idCompeticion) {
 		if (idCompeticion.isBlank() || idCompeticion.isEmpty()) {
@@ -762,8 +726,6 @@ public class InscripcionController {
 
 	}
 
-	
-
 	private void inscribirse(String emailAtleta, String idCompeticionString) {
 		if (emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank()
 				|| idCompeticionString.isEmpty()) {
@@ -778,7 +740,7 @@ public class InscripcionController {
 					mainW.getLblError().setVisible(false);
 					sesion = new Sesion(emailAtleta, idCompeticion);
 					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
-					
+
 				} else {// si el atleta no está registrado.
 					mainW.getTextFieldCorreo().setText(mainW.getTxtFEmail().getText());
 					// si el atleta decide registrarse, se habrá introducido ya el correo para su
