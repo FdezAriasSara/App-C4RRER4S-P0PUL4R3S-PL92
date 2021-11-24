@@ -14,26 +14,23 @@ import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.Estado;
 
 public class ListarInscripcionesAtletaConDto {
-	
-	private final String SQL_Select_DatosCompIns = "select c.Nombre, i.estado, i.fechaUltimoCambio from Inscripcion i, Competicion c where ? = i.idAtleta and i.idCompeticion = c.idCompeticion";
+
+	private final String SQL_Select_DatosCompIns = "select c.Nombre, i.estado, i.fechaUltimoCambio, i.idCompeticion , i.idCategoria  from Inscripcion i, Competicion c where ? = i.idAtleta and i.idCompeticion = c.idCompeticion";
 
 	private int idAtleta;
 	private Connection c;
-	
-	
+
 	public ListarInscripcionesAtletaConDto(int idAtleta) {
 		Argument.isTrue(idAtleta > 0);
 		this.idAtleta = idAtleta;
 	}
-	
-	
-	public List<AtletaInscritoDto> execute() throws BusinessException{
-		
+
+	public List<AtletaInscritoDto> execute() throws BusinessException {
+
 		List<AtletaInscritoDto> inscripciones = new ArrayList<AtletaInscritoDto>();
 		ResultSet rsInscripciones = null;
-		
+
 		PreparedStatement pstInscripciones = null;
-	
 
 		try {
 			c = Jdbc.getConnection();
@@ -43,33 +40,36 @@ public class ListarInscripcionesAtletaConDto {
 			// Busamos las inscripciones asociadas al id.
 			pstInscripciones.setInt(1, idAtleta);
 			rsInscripciones = pstInscripciones.executeQuery();
-			
+
 			AtletaInscritoDto atl;
-			while(rsInscripciones.next()) {
+			while (rsInscripciones.next()) {
 				atl = new AtletaInscritoDto();
+				// añadidos para la historia de comparar
+				atl.idCompeticion = rsInscripciones.getInt("idCompeticion");
+
+				atl.idCategoria = rsInscripciones.getInt("idCategoria");
+
+				// añadidos para la historia de comparar -fin
 				atl.nombreCompeticion = rsInscripciones.getString("nombre");
-				atl.fechaUltimoCambio = rsInscripciones.getDate("fechaUltimoCambio");
+				atl.fechaUltimoCambio = rsInscripciones
+						.getDate("fechaUltimoCambio");
 				String state = rsInscripciones.getString("estado");
-				
-				if(state.toUpperCase().equals("PENDIENTE DE PAGO")) {
+
+				if (state.toUpperCase().equals("PENDIENTE DE PAGO")) {
 					atl.estado = Estado.PENDIENTE_DE_PAGO;
-				}else {
+				} else {
 					atl.estado = Estado.valueOf(state);
 				}
-				
+
 				inscripciones.add(atl);
 			}
-			
-		}catch(SQLException w) {
+
+		} catch (SQLException w) {
 			throw new BusinessException(w.getMessage());
 		}
-		
-		
-		
+
 		return inscripciones;
-		
+
 	}
 
-
-	
 }
