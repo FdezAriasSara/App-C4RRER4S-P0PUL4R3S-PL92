@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.table.DefaultTableModel;
+
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
@@ -112,8 +115,6 @@ public class MainWindow extends JFrame {
 	private JComboBox<String> comboSexo;
 	private JButton btCargarPagos;
 
-	private JButton btMostrarCompeticiones;
-
 	private JButton btnAsignacionDorsales;
 	private JPanel panel_asignarDorsales;
 	private JScrollPane scrollPaneDorsales;
@@ -122,6 +123,15 @@ public class MainWindow extends JFrame {
 	private JButton btnMostrarTodasComp;
 	private JButton btnInscribirClubArch;
 	private JButton btnInscribirClubFormulario;
+
+	private JButton btInformacionContable;
+	private JPanel panel_contabilidad;
+	private JLabel lbNombeCompeticion;
+	private JLabel lbNombeNombreCompeticion;
+	private JLabel lbFecha;
+	private JScrollPane scrollPane_2;
+	private JTable tablaContabilidad;
+
 	private JPanel panel_perfilAtleta;
 	private JPanel panel_perfil;
 	private JPanel panel_comparar;
@@ -149,6 +159,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblAtletaSeleccionado;
 	private JButton btnCompararse;
 
+
 	/**
 	 * Create the frame.
 	 */
@@ -165,8 +176,10 @@ public class MainWindow extends JFrame {
 		contentPane.add(getPanel_card(), BorderLayout.CENTER);
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+
 
 			e.printStackTrace();
 		}
@@ -201,7 +214,11 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_sesion(), "Pg5");
 			panel_card.add(getPanel_registrarse(), "registro");
 			panel_card.add(getPanel_asignarDorsales(), "dorsales");
+
+			panel_card.add(getPanel_contabilidad(), "contabilidad");
+
 			panel_card.add(getPanel_perfilAtleta(), "perfil");
+
 
 		}
 		return panel_card;
@@ -242,11 +259,13 @@ public class MainWindow extends JFrame {
 
 			panel_organizador.add(getBtCargarPagos());
 
-			panel_organizador.add(getBtMostrarCompeticiones());
-
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
 			panel_organizador.add(getBtnMostrarTodasComp());
+
+			panel_organizador.add(getBtInformacionContable());
+
+
 
 		}
 		return panel_organizador;
@@ -556,7 +575,7 @@ public class MainWindow extends JFrame {
 
 					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
 						mostrarErrorPagoTarjeta(
-								"El formato del n�mero de tarjeta es incorrecto. \n Deben ser 16 d�gitos.");
+								"El formato del nï¿½mero de tarjeta es incorrecto. \n Deben ser 16 dï¿½gitos.");
 
 					}
 				}
@@ -581,7 +600,7 @@ public class MainWindow extends JFrame {
 					if (!compruebaCVC(getTxtCVC().getText())) {
 
 						mostrarErrorPagoTarjeta(
-								"El cvc debe ser un n�mero de tres d�gitos.\n Se encuentra en la cara trasera de tu tarjeta.");
+								"El cvc debe ser un nï¿½mero de tres dï¿½gitos.\n Se encuentra en la cara trasera de tu tarjeta.");
 						getTxtCVC().setText("");
 					}
 				}
@@ -676,12 +695,12 @@ public class MainWindow extends JFrame {
 							getTextFieldIniciarSesion().getText())) {
 						mostrarErrorInicioSesion(
 								"El formato del correo es incorrecto.");
-						getTextFieldIniciarSesion().setText("");// vac�o el
+						getTextFieldIniciarSesion().setText("");// vacï¿½o el
 																// campo para
 																// evitar que
 																// proceda con
 																// la
-																// inscripci�n
+																// inscripciï¿½n
 					}
 				}
 			});
@@ -759,7 +778,7 @@ public class MainWindow extends JFrame {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane(getTablaClasificacion());
 
-			scrollPane.setBounds(10, 10, 858, 294);
+			scrollPane.setBounds(10, 10, 680, 294);
 
 		}
 		return scrollPane;
@@ -853,9 +872,11 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setEnabled(true);
 	}
 
+
 //	private boolean compruebaIDCompeticion(String text) {
 //		return text.matches("[0-9]+");
 //	}
+
 
 	private boolean compruebaCVC(String text) {
 
@@ -934,7 +955,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el s�mbolo -.");
+								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegNombre().setText("");
 					}
 				}
@@ -952,7 +973,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el s�mbolo -.");
+								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegApellido().setText("");
 					}
 				}
@@ -998,7 +1019,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoDni(getTextFieldDNI().getText())) {
 						mostrarErrorRegistro(
-								"El dni debe contener seis d�gitos y una letra.");
+								"El dni debe contener seis dígitos y una letra.");
 					}
 				}
 
@@ -1144,6 +1165,7 @@ public class MainWindow extends JFrame {
 		return btCargarPagos;
 	}
 
+
 	public JButton getBtMostrarCompeticiones() {
 		if (btMostrarCompeticiones == null) {
 			btMostrarCompeticiones = new JButton("Mostrar competiciones");
@@ -1158,10 +1180,12 @@ public class MainWindow extends JFrame {
 		if (btnAsignacionDorsales == null) {
 			btnAsignacionDorsales = new JButton("Asignar dorsales");
 			btnAsignacionDorsales.setEnabled(false);
-			btnAsignacionDorsales.setToolTipText(
-					"Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+
+			btnAsignacionDorsales
+					.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+
 			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
-			btnAsignacionDorsales.setBounds(460, 314, 292, 40);
+			btnAsignacionDorsales.setBounds(525, 314, 324, 40);
 		}
 		return btnAsignacionDorsales;
 	}
@@ -1178,14 +1202,14 @@ public class MainWindow extends JFrame {
 
 	public void setErrorOrgPlazosSinTerminar() {
 		getLblErrorOrg().setText(
-				"Error: A�n no han finalizado los plazos de inscripci�n.");
+				"Error: Aún no han finalizado los plazos de inscripción.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
 
 	public void setErrorOrgID() {
 		getLblErrorOrg().setText(
-				"Error: El ID de competici�n solo puede tener d�gitos.");
+				"Error: El ID de competición solo puede tener dígitos.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
@@ -1196,6 +1220,16 @@ public class MainWindow extends JFrame {
 			scrollPaneDorsales.setBounds(173, 108, 514, 201);
 		}
 		return scrollPaneDorsales;
+	}
+
+
+	public JTable getTableAsignar() {
+		if (tableAsignar == null) {
+			tableAsignar = new JTable();
+			tableAsignar.setBounds(681, 108, -510, 201);
+
+		}
+		return tableAsignar;
 	}
 
 	public JButton getBtnAsignar() {
@@ -1218,8 +1252,9 @@ public class MainWindow extends JFrame {
 
 	public JButton getBtnMostrarTodasComp() {
 		if (btnMostrarTodasComp == null) {
-			btnMostrarTodasComp = new JButton(
-					"Mostrar todas las competiciones");
+
+			btnMostrarTodasComp = new JButton("Mostrar todas las competiciones");
+
 
 			btnMostrarTodasComp.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnMostrarTodasComp.setBounds(10, 314, 294, 35);
@@ -1247,6 +1282,70 @@ public class MainWindow extends JFrame {
 		}
 		return btnInscribirClubFormulario;
 	}
+
+
+	public JButton getBtInformacionContable() {
+		if (btInformacionContable == null) {
+			btInformacionContable = new JButton("Ver estado contable");
+			btInformacionContable.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btInformacionContable.setBounds(460, 495, 170, 35);
+		}
+		return btInformacionContable;
+	}
+
+	private JPanel getPanel_contabilidad() {
+		if (panel_contabilidad == null) {
+			panel_contabilidad = new JPanel();
+			panel_contabilidad.setLayout(null);
+			panel_contabilidad.add(getLbNombeCompeticion());
+			panel_contabilidad.add(getLbNombeNombreCompeticion());
+			panel_contabilidad.add(getLbFecha());
+			panel_contabilidad.add(getScrollPane_2());
+		}
+		return panel_contabilidad;
+	}
+
+	private JLabel getLbNombeCompeticion() {
+		if (lbNombeCompeticion == null) {
+			lbNombeCompeticion = new JLabel("Balance carrera: ");
+			lbNombeCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lbNombeCompeticion.setBounds(32, 11, 173, 35);
+		}
+		return lbNombeCompeticion;
+	}
+
+	public JLabel getLbNombeNombreCompeticion() {
+		if (lbNombeNombreCompeticion == null) {
+			lbNombeNombreCompeticion = new JLabel("");
+			lbNombeNombreCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lbNombeNombreCompeticion.setBounds(232, 11, 584, 35);
+		}
+		return lbNombeNombreCompeticion;
+	}
+
+	public JLabel getLbFecha() {
+		if (lbFecha == null) {
+			lbFecha = new JLabel("");
+			lbFecha.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			lbFecha.setBounds(32, 73, 173, 28);
+		}
+		return lbFecha;
+	}
+
+	private JScrollPane getScrollPane_2() {
+		if (scrollPane_2 == null) {
+			scrollPane_2 = new JScrollPane((Component) null);
+			scrollPane_2.setBounds(10, 118, 846, 411);
+			scrollPane_2.setViewportView(getTablaContabilidad());
+		}
+		return scrollPane_2;
+	}
+
+	public JTable getTablaContabilidad() {
+		if (tablaContabilidad == null) {
+			tablaContabilidad = new JTable();
+		}
+		return tablaContabilidad;
 
 	public JPanel getPanel_perfilAtleta() {
 		if (panel_perfilAtleta == null) {
@@ -1522,9 +1621,10 @@ public class MainWindow extends JFrame {
 		getTableInscripciones().setVisible(false);
 		getTableAtletasDeCompSeleccionada().setVisible(false);
 		getTableComparativa().setVisible(false);
-		// para que la pr�xima vez que se abra un perfil se vea la visi�n de
+		// para que la próxima vez que se abra un perfil se vea la visión de
 		// perfil
 		((CardLayout) getPanel_perfilAtleta().getLayout())
 				.show(getPanel_perfilAtleta(), "perfil");
+
 	}
 }
