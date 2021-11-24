@@ -14,7 +14,7 @@ public class CategoriaCrudServiceImpl implements CategoriaCrudService {
 	}
 
 	@Override
-	public CategoriaDto encontrarCategoriaPorId(String idCategoria)
+	public CategoriaDto encontrarCategoriaPorId(int idCategoria)
 			throws BusinessException {
 
 		return new EncontrarCategoriaPorId(idCategoria).execute();

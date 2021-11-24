@@ -48,6 +48,7 @@ public class ObtenerAtletas {
 
 				atleta = new AtletaInscritoDto();
 				atleta.idAtleta = rs.getInt("idAtleta");
+				atleta.dorsal = rs.getInt("dorsal");
 				atleta.dni = rs.getString("dni");
 				atleta.nombre = rs.getString("name");
 				atleta.apellido = rs.getString("surname");

@@ -1474,7 +1474,7 @@ public class MainWindow extends JFrame {
 		if (btnVolverPerfil2 == null) {
 			btnVolverPerfil2 = new JButton("Volver ");
 			btnVolverPerfil2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			btnVolverPerfil2.setBounds(743, 484, 95, 36);
+			btnVolverPerfil2.setBounds(697, 484, 141, 36);
 		}
 		return btnVolverPerfil2;
 	}
@@ -1522,5 +1522,9 @@ public class MainWindow extends JFrame {
 		getTableInscripciones().setVisible(false);
 		getTableAtletasDeCompSeleccionada().setVisible(false);
 		getTableComparativa().setVisible(false);
+		// para que la próxima vez que se abra un perfil se vea la visión de
+		// perfil
+		((CardLayout) getPanel_perfilAtleta().getLayout())
+				.show(getPanel_perfilAtleta(), "perfil");
 	}
 }

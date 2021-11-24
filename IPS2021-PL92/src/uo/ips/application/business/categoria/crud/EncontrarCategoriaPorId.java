@@ -12,36 +12,36 @@ import uo.ips.application.business.categoria.CategoriaDto;
 
 public class EncontrarCategoriaPorId {
 	private static final String ENCONTRAR_CATEGORIA = "select * from Categoria where idCategoria=?";
-	private String idCategoria;
+	private int idCategoria;
 	private Connection c;
 
-	public EncontrarCategoriaPorId(String idCategoria) {
-		Argument.isNotNull(idCategoria,
-				"El id de la categoria no puede ser null");
-		Argument.isNotEmpty(idCategoria,
-				"El id de la categoria no puede ser vacío");
+	public EncontrarCategoriaPorId(int idCategoria) {
+		Argument.isTrue(idCategoria > 0);
 		this.idCategoria = idCategoria;
 	}
 
 	public CategoriaDto execute() throws BusinessException {
-		ResultSet rsInscripciones = null;
-		PreparedStatement pstInscripciones = null;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
 		CategoriaDto dto = new CategoriaDto();
 
 		try {
 			c = Jdbc.getConnection();
 
-			pstInscripciones = c.prepareStatement(ENCONTRAR_CATEGORIA);
+			pst = c.prepareStatement(ENCONTRAR_CATEGORIA);
 
-			pstInscripciones.setInt(1, Integer.valueOf(idCategoria));
-			rsInscripciones = pstInscripciones.executeQuery();
-			dto.edadMax = rsInscripciones.getInt("edadMax");
-			dto.edadMin = rsInscripciones.getInt("edadMin");
-			dto.idCategoria = String
-					.valueOf(rsInscripciones.getInt("idCategoria"));
-			dto.nombreCategoria = rsInscripciones.getString("nombreCategoria");
-			dto.sexo = rsInscripciones.getString("sexo");
-			return dto;
+			pst.setInt(1, idCategoria);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				dto.edadMax = rs.getInt("edadMax");
+				dto.edadMin = rs.getInt("edadMin");
+				dto.idCategoria = String.valueOf(rs.getInt("idCategoria"));
+				dto.nombreCategoria = rs.getString("nombreCategoria");
+				dto.sexo = rs.getString("sexo");
+				return dto;
+
+			}
+			throw new BusinessException("No se encontró la categoría");
 
 		} catch (
 

@@ -11,17 +11,17 @@ import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 
 public class ObtenerAtletasParaComparar {
-	private final String datos = "select, c.distanciaKm ,i.dorsal, i.club , i.idCategoria , i.tiempoQueTarda ,i.sexo , i.posicionFinal  from Inscripcion i, Competicion c where ? = i.idAtleta and ? = c.idCompeticion";
+	private final String datos = "select c.distanciaKm ,i.idAtleta, i.club , i.idCategoria , i.tiempoQueTarda , i.posicionFinal  from Inscripcion i, Competicion c where ? = i.dorsal and ? = c.idCompeticion";
 
-	private int idAtleta;
+	private int dorsal;
 	private Connection c;
 
 	private int competicionId;
 
-	public ObtenerAtletasParaComparar(int idAtleta, int competicionId) {
+	public ObtenerAtletasParaComparar(int dorsal, int competicionId) {
 		Argument.isTrue(competicionId > 0);
-		Argument.isTrue(idAtleta > 0);
-		this.idAtleta = idAtleta;
+		Argument.isTrue(dorsal > 0);
+		this.dorsal = dorsal;
 		this.competicionId = competicionId;
 	}
 
@@ -35,24 +35,25 @@ public class ObtenerAtletasParaComparar {
 
 			pstInscripciones = c.prepareStatement(datos);
 
-			pstInscripciones.setInt(1, idAtleta);
+			pstInscripciones.setInt(1, dorsal);
 			pstInscripciones.setInt(2, competicionId);
 			rsInscripciones = pstInscripciones.executeQuery();
+			if (rsInscripciones.next()) {
+				AtletaInscritoDto atl = new AtletaInscritoDto();
 
-			AtletaInscritoDto atl = new AtletaInscritoDto();
+				atl.idCompeticion = competicionId;
+				atl.club = rsInscripciones.getString("club");
+				atl.idCategoria = rsInscripciones.getInt("idCategoria");
+				atl.posicionFinal = rsInscripciones.getInt("posicionFinal");
+				atl.tiempoQueTarda = rsInscripciones.getTime("tiempoQueTarda");
+				atl.idAtleta = rsInscripciones.getInt("idAtleta");
 
-			atl.idCompeticion = competicionId;
-			atl.dorsal = rsInscripciones.getInt("dorsal");
-			atl.club = rsInscripciones.getString("club");
-			atl.idCategoria = rsInscripciones.getInt("idCategoria");
-			atl.posicionFinal = rsInscripciones.getInt("posicionFinal");
-			atl.tiempoQueTarda = rsInscripciones.getTime("tiempoQueTarda");
-			atl.sexo = rsInscripciones.getString("sexo");
+				atl.ritmoPorKm = calcularRitmoPorKm(atl)
+						/ rsInscripciones.getInt("distanciaKm");
 
-			atl.ritmoPorKm = calcularRitmoPorKm(atl)
-					/ rsInscripciones.getInt("distanciaKm");
-
-			return atl;
+				return atl;
+			}
+			throw new BusinessException("No se encontró la inscripcion");
 
 		} catch (
 

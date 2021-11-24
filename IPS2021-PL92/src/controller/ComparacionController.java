@@ -19,6 +19,7 @@ import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
+import uo.ips.application.business.categoria.CategoriaCrudService;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 
 public class ComparacionController {
@@ -34,6 +35,7 @@ public class ComparacionController {
 	protected String nombreComp;
 	protected String idCompeticionSeleccionada;
 	private int dorsalAtletaSeleccionado;
+	private CategoriaCrudService categoriaCrud = BusinessFactory.forCategoria();
 
 	public ComparacionController(MainWindow main) {
 		this.mainW = main;
@@ -58,7 +60,10 @@ public class ComparacionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				volverAMiPerfil();
+				((DefaultTableModel) mainW.getTableComparativa().getModel())
+						.setRowCount(0);
+				((CardLayout) mainW.getPanel_perfilAtleta().getLayout())
+						.show(mainW.getPanel_perfilAtleta(), "otrosAtletas");
 
 			}
 		});
@@ -164,7 +169,7 @@ public class ComparacionController {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				mostrarComparativa(sesion.getIdCompeticion());
+				mostrarComparativa(Integer.valueOf(idCompeticionSeleccionada));
 				((CardLayout) mainW.getPanel_perfilAtleta().getLayout())
 						.show(mainW.getPanel_perfilAtleta(), "comparacion");
 			}
@@ -369,37 +374,42 @@ public class ComparacionController {
 
 	private void mostrarComparativa(int id) {
 
-		AtletaInscritoDto current;
+		AtletaInscritoDto current, seleccionado;
 		try {
+
 			current = incCrud
 					.obtenerAtletaParaComparar(sesion.getDorsalAtleta(id), id);
+			AtletaDto currentDto = atlCrud.encontrarPorId(sesion.getIdAtleta());
 
-			AtletaInscritoDto selecconado = incCrud
+			seleccionado = incCrud
 					.obtenerAtletaParaComparar(dorsalAtletaSeleccionado, id);
-
+			AtletaDto selectDto = atlCrud.encontrarPorId(seleccionado.idAtleta);
 			String[] columnNames = { "Nombre", "Apellidos", "Sexo", "Club",
 					"Categoría", "Posición final", "Tiempo", "Ritmo(min/km)" };
 
 			String[][] valuesToTable = new String[2][columnNames.length];
 
 			int col = 0;
-			valuesToTable[0][col++] = current.nombre;
-			valuesToTable[0][col++] = current.apellido;
+			valuesToTable[0][col++] = currentDto.nombre;
+			valuesToTable[0][col++] = currentDto.apellido;
 			valuesToTable[0][col++] = current.sexo;
 			valuesToTable[0][col++] = current.club;
-			valuesToTable[0][col++] = current.categoria;
+			valuesToTable[0][col++] = categoriaCrud.encontrarCategoriaPorId(
+					current.idCategoria).nombreCategoria;
 			valuesToTable[0][col++] = String.valueOf(current.posicionFinal);
 			valuesToTable[0][col++] = current.tiempoQueTarda.toString();
 			valuesToTable[0][col++] = String.valueOf(current.ritmoPorKm);
 			col = 0;
-			valuesToTable[1][col++] = selecconado.nombre;
-			valuesToTable[1][col++] = selecconado.apellido;
-			valuesToTable[1][col++] = selecconado.sexo;
-			valuesToTable[1][col++] = selecconado.club;
-			valuesToTable[1][col++] = selecconado.categoria;
-			valuesToTable[1][col++] = String.valueOf(selecconado.posicionFinal);
-			valuesToTable[1][col++] = selecconado.tiempoQueTarda.toString();
-			valuesToTable[1][col++] = String.valueOf(selecconado.ritmoPorKm);
+			valuesToTable[1][col++] = selectDto.nombre;
+			valuesToTable[1][col++] = selectDto.apellido;
+			valuesToTable[1][col++] = seleccionado.sexo;
+			valuesToTable[1][col++] = seleccionado.club;
+			valuesToTable[1][col++] = categoriaCrud.encontrarCategoriaPorId(
+					seleccionado.idCategoria).nombreCategoria;
+			valuesToTable[1][col++] = String
+					.valueOf(seleccionado.posicionFinal);
+			valuesToTable[1][col++] = seleccionado.tiempoQueTarda.toString();
+			valuesToTable[1][col++] = String.valueOf(seleccionado.ritmoPorKm);
 
 			TableModel model = new DefaultTableModel(valuesToTable,
 					columnNames) {
@@ -421,17 +431,16 @@ public class ComparacionController {
 			// nuevo.
 			mainW.getTableComparativa().setVisible(true);
 		} catch (BusinessException e) {
-			mainW.getLblErrorPerfil().setVisible(false);
-			mainW.getLblErrorPerfil().setText("Error: ");
+			JOptionPane.showMessageDialog(null, e.getMessage());
+
 		}
 
 	}
 
 	void volverAMiPerfil() {
-
+		mainW.resetearCamposYVistasPerfilAtleta();
 		((CardLayout) mainW.getPanel_perfilAtleta().getLayout())
 				.show(mainW.getPanel_perfilAtleta(), "perfil");
-		mainW.resetearCamposYVistasPerfilAtleta();
 
 	}
 
