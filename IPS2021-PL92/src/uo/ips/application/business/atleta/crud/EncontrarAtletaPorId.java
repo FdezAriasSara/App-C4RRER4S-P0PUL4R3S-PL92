@@ -43,7 +43,6 @@ public class EncontrarAtletaPorId {
 				atleta.nombre = rs.getString("Name");
 				atleta.fechaNacimiento = rs.getDate("fechaNacimiento");
 				atleta.sexo = rs.getString("sexo");
-				System.out.println(atleta.sexo);
 
 			} else {
 				throw new BusinessException("No se encontró al atleta");

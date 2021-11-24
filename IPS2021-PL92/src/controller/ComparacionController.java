@@ -249,30 +249,32 @@ public class ComparacionController {
 													.getTableInscripciones()
 													.getSelectedRow(), 0)
 											.toString();
-									mainW.getLblCompeticionSeleccionada()
-											.setText(nombreComp);
-									mainW.getLblNombreCompeticion()
-											.setText(nombreComp);
-									mainW.getLblNombreCompeticion2()
-											.setText(nombreComp);
+									rellenarLasLabelDeNombreDeCompeticion();
 									// Solo se permite mostrar los atletas de
 									// una competición terminada.
-									if (mainW.getTableInscripciones()
-											.getValueAt(mainW
-													.getTableInscripciones()
-													.getSelectedRow(), 2)
-											.equals("TERMINADA")) {
-										mainW.getBtnMostrarAtletas()
-												.setEnabled(true);
-									} else {
-										mainW.getBtnMostrarAtletas()
-												.setEnabled(false);
-									}
+									evitarMostrarAtletasDeUnaCompeticionNoTerminada();
 								}
+
 							});
 
 		} catch (BusinessException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage());
+		}
+	}
+
+	private void rellenarLasLabelDeNombreDeCompeticion() {
+		mainW.getLblCompeticionSeleccionada().setText(nombreComp);
+		mainW.getLblNombreCompeticion().setText(nombreComp);
+		mainW.getLblNombreCompeticion2().setText(nombreComp);
+	}
+
+	private void evitarMostrarAtletasDeUnaCompeticionNoTerminada() {
+		if (mainW.getTableInscripciones()
+				.getValueAt(mainW.getTableInscripciones().getSelectedRow(), 2)
+				.equals("TERMINADA")) {
+			mainW.getBtnMostrarAtletas().setEnabled(true);
+		} else {
+			mainW.getBtnMostrarAtletas().setEnabled(false);
 		}
 	}
 
