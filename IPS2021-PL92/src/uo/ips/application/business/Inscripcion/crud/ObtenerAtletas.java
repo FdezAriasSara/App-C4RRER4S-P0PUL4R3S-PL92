@@ -19,7 +19,6 @@ public class ObtenerAtletas {
 	private int idCompeticion;
 	private List<AtletaInscritoDto> atletas = new ArrayList<AtletaInscritoDto>();
 
-
 	private Connection c = null;
 	private ResultSet rs = null;
 	private PreparedStatement pst = null;
@@ -29,7 +28,7 @@ public class ObtenerAtletas {
 	}
 
 	public List<AtletaInscritoDto> execute() throws BusinessException {
-		
+
 		try {
 
 			c = Jdbc.getConnection();
@@ -46,17 +45,19 @@ public class ObtenerAtletas {
 
 			AtletaInscritoDto atleta;
 			while (rs.next()) {
-				
+
 				atleta = new AtletaInscritoDto();
+				atleta.idAtleta = rs.getInt("idAtleta");
+				atleta.dorsal = rs.getInt("dorsal");
 				atleta.dni = rs.getString("dni");
 				atleta.nombre = rs.getString("name");
 				atleta.apellido = rs.getString("surname");
 				atleta.categoria = rs.getString("nombreCategoria");
 				atleta.fechaInscripcion = rs.getDate("fechaInscripcion");
-				atleta.estado = Estado.valueOf(rs.getString("estado").toUpperCase());
+				atleta.estado = Estado
+						.valueOf(rs.getString("estado").toUpperCase());
 				atletas.add(atleta);
 			}
-
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -78,6 +79,5 @@ public class ObtenerAtletas {
 		return rs.next();
 
 	}
-	
 
 }
