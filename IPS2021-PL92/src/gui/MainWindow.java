@@ -24,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
@@ -852,9 +853,9 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setEnabled(true);
 	}
 
-	private boolean compruebaIDCompeticion(String text) {
-		return text.matches("[0-9]+");
-	}
+//	private boolean compruebaIDCompeticion(String text) {
+//		return text.matches("[0-9]+");
+//	}
 
 	private boolean compruebaCVC(String text) {
 
@@ -1247,7 +1248,7 @@ public class MainWindow extends JFrame {
 		return btnInscribirClubFormulario;
 	}
 
-	private JPanel getPanel_perfilAtleta() {
+	public JPanel getPanel_perfilAtleta() {
 		if (panel_perfilAtleta == null) {
 			panel_perfilAtleta = new JPanel();
 			panel_perfilAtleta.setLayout(new CardLayout(0, 0));
@@ -1337,9 +1338,9 @@ public class MainWindow extends JFrame {
 		return btnCambiarUsuario;
 	}
 
-	private JLabel getLblCompeticionSeleccionada() {
+	public JLabel getLblCompeticionSeleccionada() {
 		if (lblCompeticionSeleccionada == null) {
-			lblCompeticionSeleccionada = new JLabel("bon dia");
+			lblCompeticionSeleccionada = new JLabel("");
 			lblCompeticionSeleccionada.setForeground(new Color(51, 153, 255));
 			lblCompeticionSeleccionada
 					.setFont(new Font("Tahoma", Font.ITALIC, 23));
@@ -1358,9 +1359,10 @@ public class MainWindow extends JFrame {
 		return lblMostrarAtletas;
 	}
 
-	private JButton getBtnMostrarAtletas() {
+	public JButton getBtnMostrarAtletas() {
 		if (btnMostrarAtletas == null) {
 			btnMostrarAtletas = new JButton("Mostrar");
+			btnMostrarAtletas.setEnabled(false);
 			btnMostrarAtletas.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnMostrarAtletas.setBounds(424, 422, 117, 29);
 		}
@@ -1377,16 +1379,17 @@ public class MainWindow extends JFrame {
 		return lblCancelarInscripcion;
 	}
 
-	private JButton getBtnCancelarInscripcion() {
+	public JButton getBtnCancelarInscripcion() {
 		if (btnCancelarInscripcion == null) {
 			btnCancelarInscripcion = new JButton("Cancelar");
+			btnCancelarInscripcion.setEnabled(false);
 			btnCancelarInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			btnCancelarInscripcion.setBounds(424, 482, 117, 29);
 		}
 		return btnCancelarInscripcion;
 	}
 
-	private JLabel getLblErrorPerfil() {
+	public JLabel getLblErrorPerfil() {
 		if (lblErrorPerfil == null) {
 			lblErrorPerfil = new JLabel("Error:");
 			lblErrorPerfil.setForeground(new Color(255, 0, 0));
@@ -1438,7 +1441,7 @@ public class MainWindow extends JFrame {
 		return tableInscripciones;
 	}
 
-	private JButton getBtnVolverPerfil() {
+	public JButton getBtnVolverPerfil() {
 		if (btnVolverPerfil == null) {
 			btnVolverPerfil = new JButton("Volver");
 			btnVolverPerfil.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -1447,7 +1450,7 @@ public class MainWindow extends JFrame {
 		return btnVolverPerfil;
 	}
 
-	private JLabel getLblNombreCompeticion() {
+	public JLabel getLblNombreCompeticion() {
 		if (lblNombreCompeticion == null) {
 			lblNombreCompeticion = new JLabel("NOMBRE COMPETICION");
 			lblNombreCompeticion.setForeground(new Color(51, 153, 255));
@@ -1457,7 +1460,7 @@ public class MainWindow extends JFrame {
 		return lblNombreCompeticion;
 	}
 
-	private JLabel getLblNombreCompeticion2() {
+	public JLabel getLblNombreCompeticion2() {
 		if (lblNombreCompeticion2 == null) {
 			lblNombreCompeticion2 = new JLabel("NOMBRE COMPETICI\u00D3N");
 			lblNombreCompeticion2.setForeground(new Color(51, 153, 255));
@@ -1467,7 +1470,7 @@ public class MainWindow extends JFrame {
 		return lblNombreCompeticion2;
 	}
 
-	private JButton getBtnVolverPerfil2() {
+	public JButton getBtnVolverPerfil2() {
 		if (btnVolverPerfil2 == null) {
 			btnVolverPerfil2 = new JButton("Volver ");
 			btnVolverPerfil2.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -1485,22 +1488,39 @@ public class MainWindow extends JFrame {
 		return lblCompara;
 	}
 
-	private JLabel getLblAtletaSeleccionado() {
+	public JLabel getLblAtletaSeleccionado() {
 		if (lblAtletaSeleccionado == null) {
 			lblAtletaSeleccionado = new JLabel("nombre atleta");
 			lblAtletaSeleccionado.setForeground(new Color(102, 153, 255));
-			lblAtletaSeleccionado.setFont(new Font("Dialog", Font.PLAIN, 30));
-			lblAtletaSeleccionado.setBounds(237, 371, 193, 45);
+			lblAtletaSeleccionado.setFont(new Font("Dialog", Font.PLAIN, 25));
+			lblAtletaSeleccionado.setBounds(239, 371, 264, 45);
 		}
 		return lblAtletaSeleccionado;
 	}
 
-	private JButton getBtnCompararse() {
+	public JButton getBtnCompararse() {
 		if (btnCompararse == null) {
 			btnCompararse = new JButton("Comparar");
 			btnCompararse.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			btnCompararse.setBounds(440, 378, 109, 38);
+			btnCompararse.setBounds(508, 379, 124, 38);
 		}
 		return btnCompararse;
+	}
+
+	public void resetearCamposYVistasPerfilAtleta() {
+
+		getLblCompeticionSeleccionada().setText("");
+		getLblAtletaSeleccionado().setText("");
+		getLblNombreCompeticion().setText("");
+		getLblNombreCompeticion2().setText("");
+		getBtnMisInscripciones().setVisible(true);
+
+		((DefaultTableModel) getTableInscripciones().getModel()).setRowCount(0);
+		((DefaultTableModel) getTableAtletasDeCompSeleccionada().getModel())
+				.setRowCount(0);
+		((DefaultTableModel) getTableComparativa().getModel()).setRowCount(0);
+		getTableInscripciones().setVisible(false);
+		getTableAtletasDeCompSeleccionada().setVisible(false);
+		getTableComparativa().setVisible(false);
 	}
 }

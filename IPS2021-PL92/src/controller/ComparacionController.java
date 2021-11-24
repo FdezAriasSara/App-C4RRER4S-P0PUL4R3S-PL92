@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -16,7 +18,7 @@ import uo.ips.application.business.Sesion;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.atleta.AtletaCrudService;
-import uo.ips.application.business.competicion.CompeticionCategoriaDto;
+import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 
 public class ComparacionController {
@@ -27,13 +29,11 @@ public class ComparacionController {
 	private Sesion sesion;
 
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
-
 	private CompeticionCrudService compCrud = BusinessFactory
-			.forCompeticionCrudService();// para saber si hay dorsales
-											// reservados
-
-	private List<CompeticionCategoriaDto> currentCategoriasInComboBox;
-	private int currentIdCompeticon = -1;
+			.forCompeticionCrudService();
+	protected String nombreComp;
+	protected String idCompeticionSeleccionada;
+	private int dorsalAtletaSeleccionado;
 
 	public ComparacionController(MainWindow main) {
 		this.mainW = main;
@@ -46,6 +46,22 @@ public class ComparacionController {
 	}
 
 	private void initActions() {
+		mainW.getBtnVolverPerfil().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				volverAMiPerfil();
+
+			}
+		});
+		mainW.getBtnVolverPerfil2().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				volverAMiPerfil();
+
+			}
+		});
 
 		/*
 		 * Botón para cambiar de usuario una vez ha iniciado sesión
@@ -55,22 +71,11 @@ public class ComparacionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) mainW.getPanel_card().getLayout())
-						.show(mainW.getPanel_card(), "Pg5");
+						.show(mainW.getPanel_card(), "pg5");
 
 			}
 		});
-		/*
-		 * Botón para cambiar de usuario una vez ha iniciado sesión
-		 */
-		mainW.getBtnCambiarUsuario().addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((CardLayout) mainW.getPanel_card().getLayout())
-						.show(mainW.getPanel_card(), "Pg5");
-
-			}
-		});
 		/*
 		 * Botón para que el atleta acceda a sus inscripciones.
 		 */
@@ -79,7 +84,7 @@ public class ComparacionController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) mainW.getPanel_card().getLayout())
-						.show(mainW.getPanel_card(), "Pg5");
+						.show(mainW.getPanel_card(), "perfil");
 
 			}
 		});
@@ -114,6 +119,31 @@ public class ComparacionController {
 
 			}
 		});
+		/**
+		 * Muestra los atletas de la competición de la inscripción seleccionada
+		 */
+		mainW.getBtnMostrarAtletas().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				obtenerAtletas(idCompeticionSeleccionada);
+				((CardLayout) mainW.getPanel_perfilAtleta().getLayout())
+						.show(mainW.getPanel_perfilAtleta(), "otrosAtletas");
+
+			}
+		});
+		/**
+		 * Botón para cancelar la inscripción s
+		 */
+		mainW.getBtnCancelarInscripcion()
+				.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO
+					}
+				});
 
 		/*
 		 * Boton que despliega las inscripciones que corresponden al atleta.
@@ -122,118 +152,287 @@ public class ComparacionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mostrarInscripciones();
+				mainW.getBtnMisInscripciones().setVisible(false);
+			}
+		});
 
-				try {
+		/**
+		 * Botón para que el atleta se compare con el atleta que ha seleccionado
+		 */
+		mainW.getBtnCompararse().addActionListener(new ActionListener() {
 
-					// Esta lista mejor de inscripciones
-
-					List<AtletaInscritoDto> inscripciones = incCrud
-							.listarInscripcionesAtletaConDto(
-									sesion.getIdAtleta());
-
-					// Esta es la lista del nombre de las columnas
-					String[] columnNames = { "Competición",
-							"Estado Inscripcion", "Ultimo Cambio" };
-
-					// Esta es la array que contiene los elementos a
-					// listar, el primer [es el numero
-					// de fila]
-					// el segundo [el numero de la columna de acuerdo a
-					// los datos de arriba]
-					String[][] valuesToTable = new String[inscripciones
-							.size()][columnNames.length];
-
-					int count = 0;
-					for (AtletaInscritoDto dto : inscripciones) {
-						int col = 0;
-						valuesToTable[count][col++] = dto.nombreCompeticion;
-						valuesToTable[count][col++] = dto.estado.toString();
-						valuesToTable[count][col++] = dto.fechaUltimoCambio
-								.toString();
-						count++;
-					}
-
-					TableModel model = new DefaultTableModel(valuesToTable,
-							columnNames) {
-						/**
-						 * 
-						 */
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};
-
-					mainW.getTableCompeticion().setModel(model);
-
-				} catch (BusinessException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
-
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mostrarComparativa(sesion.getIdCompeticion());
+				((CardLayout) mainW.getPanel_perfilAtleta().getLayout())
+						.show(mainW.getPanel_perfilAtleta(), "comparacion");
 			}
 		});
 
 	}
 
-	private void obtenerAtletas(String idCompeticion) {
-		if (idCompeticion.isBlank() || idCompeticion.isEmpty()) {
-			mainW.getLblErrorOrg().setVisible(true);
-			mainW.getLblErrorOrg().setText("Error: ID vacío");
-		} else {
-			int id = -1;
-			try {
-				id = Integer.parseUnsignedInt(idCompeticion);
+	private void mostrarInscripciones() {
 
-				List<AtletaInscritoDto> res = incCrud
-						.obtenerAtletasParaCompeticion(id);
+		try {
 
-				String[] columnNames = { "Nombre", "Apellidos", "Categoría",
-						"Fecha de Inscripcion", "Estado" };
+			// Esta lista mejor de inscripciones
 
-				String[][] valuesToTable = new String[res
-						.size()][columnNames.length];
+			List<AtletaInscritoDto> inscripciones = incCrud
+					.listarInscripcionesAtletaConDto(sesion.getIdAtleta());
 
-				int count = 0;
-				for (AtletaInscritoDto dto : res) {
-					int col = 0;
-					valuesToTable[count][col++] = dto.nombre;
-					valuesToTable[count][col++] = dto.apellido;
-					valuesToTable[count][col++] = dto.categoria;
-					valuesToTable[count][col++] = dto.fechaInscripcion
-							.toString();
-					valuesToTable[count][col++] = dto.estado.toString();
-					count++;
-				}
+			// Esta es la lista del nombre de las columnas
+			String[] columnNames = { "ID", "Competición", "Estado Inscripcion",
+					"Ultimo Cambio" };
 
-				TableModel model = new DefaultTableModel(valuesToTable,
-						columnNames) {
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
+			// Esta es la array que contiene los elementos a
+			// listar, el primer [es el numero
+			// de fila]
+			// el segundo [el numero de la columna de acuerdo a
+			// los datos de arriba]
+			String[][] valuesToTable = new String[inscripciones
+					.size()][columnNames.length];
 
-					@Override
-					public boolean isCellEditable(int row, int column) {
-						return false;
-					}
-				};
+			int count = 0;
+			for (AtletaInscritoDto dto : inscripciones) {
+				int col = 0;
+				valuesToTable[count][col++] = String.valueOf(dto.idCompeticion);
 
-				mainW.getTableAtletasDeCompSeleccionada().setModel(model);
-
-				mainW.getLblErrorOrg().setVisible(false);
-				mainW.getLblErrorOrg().setText("Error: ");
-
-			} catch (BusinessException e) {
-				mainW.getLblErrorOrg().setVisible(true);
-				mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
-			} catch (NumberFormatException e1) {
-				mainW.getLblErrorOrg().setVisible(true);
-				mainW.getLblErrorOrg().setText(
-						"Error: ID de competicion no numerico, vacío o menor que 0");
+				valuesToTable[count][col++] = dto.nombreCompeticion;
+				valuesToTable[count][col++] = dto.estado.toString();
+				valuesToTable[count][col++] = dto.fechaUltimoCambio.toString();
+				count++;
 			}
+
+			TableModel model = new DefaultTableModel(valuesToTable,
+					columnNames) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+
+			mainW.getTableInscripciones().setModel(model);
+			// una vez que el atleta hace click en el botón de volver, se hace
+			// invisible las tablas para que no quede feo al borrarles el
+			// modelo. Por eso hago set visible cada vez que creo un modelo
+			// nuevo.
+
+			mainW.getTableInscripciones().setVisible(true);
+			mainW.getTableInscripciones().getSelectionModel()
+					.addListSelectionListener(
+
+							new ListSelectionListener() {
+
+								@Override
+								public void valueChanged(
+
+										ListSelectionEvent event) {
+									nombreComp = mainW.getTableInscripciones()
+											.getValueAt(mainW
+													.getTableInscripciones()
+													.getSelectedRow(), 1)
+											.toString();
+									idCompeticionSeleccionada = mainW
+											.getTableInscripciones()
+											.getValueAt(mainW
+													.getTableInscripciones()
+													.getSelectedRow(), 0)
+											.toString();
+									mainW.getLblCompeticionSeleccionada()
+											.setText(nombreComp);
+									mainW.getLblNombreCompeticion()
+											.setText(nombreComp);
+									mainW.getLblNombreCompeticion2()
+											.setText(nombreComp);
+									// Solo se permite mostrar los atletas de
+									// una competición terminada.
+									if (mainW.getTableInscripciones()
+											.getValueAt(mainW
+													.getTableInscripciones()
+													.getSelectedRow(), 2)
+											.equals("TERMINADA")) {
+										mainW.getBtnMostrarAtletas()
+												.setEnabled(true);
+									} else {
+										mainW.getBtnMostrarAtletas()
+												.setEnabled(false);
+									}
+								}
+							});
+
+		} catch (BusinessException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+		}
+	}
+
+	private void obtenerAtletas(String idCompeticion) {
+
+		int id = -1;
+		try {
+			id = Integer.parseUnsignedInt(idCompeticion);
+
+			List<AtletaInscritoDto> res = incCrud
+					.obtenerAtletasParaCompeticion(id);
+
+			String[] columnNames = { "Dorsal", "Nombre", "Apellidos", "sexo",
+					"Categoría" };
+
+			String[][] valuesToTable = new String[res
+					.size()][columnNames.length];
+
+			int count = 0;
+
+			for (AtletaInscritoDto atleta : res) {
+				// Necesito encontrar el nombre y apellidos del atleta-> uso un
+				// atletaDto normal
+				AtletaDto dtoAtleta = atlCrud.encontrarPorId(atleta.idAtleta);
+
+				int col = 0;
+				valuesToTable[count][col++] = String.valueOf(atleta.dorsal);
+				valuesToTable[count][col++] = dtoAtleta.nombre;
+				valuesToTable[count][col++] = dtoAtleta.apellido;
+				valuesToTable[count][col++] = dtoAtleta.sexo;
+				valuesToTable[count][col++] = atleta.categoria;
+
+				count++;
+			}
+
+			TableModel model = new DefaultTableModel(valuesToTable,
+					columnNames) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+
+			mainW.getTableAtletasDeCompSeleccionada().setModel(model);
+			// una vez que el atleta hace click en el botón de volver, se hace
+			// invisible las tablas para que no quede feo al borrarles el
+			// modelo. Por eso hago set visible cada vez que creo un modelo
+			// nuevo.
+			mainW.getTableAtletasDeCompSeleccionada().setVisible(true);
+			mainW.getTableAtletasDeCompSeleccionada().getSelectionModel()
+					.addListSelectionListener(
+
+							new ListSelectionListener() {
+
+								private String nombre;
+								private String apellido;
+
+								@Override
+								public void valueChanged(
+										ListSelectionEvent event) {
+									dorsalAtletaSeleccionado = Integer.valueOf(
+											mainW.getTableAtletasDeCompSeleccionada()
+													.getValueAt(mainW
+															.getTableAtletasDeCompSeleccionada()
+															.getSelectedRow(),
+															0)
+													.toString());
+									nombre = mainW
+											.getTableAtletasDeCompSeleccionada()
+											.getValueAt(mainW
+													.getTableAtletasDeCompSeleccionada()
+													.getSelectedRow(), 1)
+											.toString();
+									apellido = mainW
+											.getTableAtletasDeCompSeleccionada()
+											.getValueAt(mainW
+													.getTableAtletasDeCompSeleccionada()
+													.getSelectedRow(), 2)
+											.toString();
+									mainW.getLblAtletaSeleccionado()
+											.setText(nombre + " " + apellido);
+
+								}
+							});
+			mainW.getLblErrorPerfil().setVisible(false);
+			mainW.getLblErrorPerfil().setText("Error: ");
+
+		} catch (BusinessException e) {
+			mainW.getLblErrorPerfil().setVisible(true);
+			mainW.getLblErrorPerfil().setText("Error: " + e.getMessage());
 		}
 
 	}
+
+	private void mostrarComparativa(int id) {
+
+		AtletaInscritoDto current;
+		try {
+			current = incCrud
+					.obtenerAtletaParaComparar(sesion.getDorsalAtleta(id), id);
+
+			AtletaInscritoDto selecconado = incCrud
+					.obtenerAtletaParaComparar(dorsalAtletaSeleccionado, id);
+
+			String[] columnNames = { "Nombre", "Apellidos", "Sexo", "Club",
+					"Categoría", "Posición final", "Tiempo", "Ritmo(min/km)" };
+
+			String[][] valuesToTable = new String[2][columnNames.length];
+
+			int col = 0;
+			valuesToTable[0][col++] = current.nombre;
+			valuesToTable[0][col++] = current.apellido;
+			valuesToTable[0][col++] = current.sexo;
+			valuesToTable[0][col++] = current.club;
+			valuesToTable[0][col++] = current.categoria;
+			valuesToTable[0][col++] = String.valueOf(current.posicionFinal);
+			valuesToTable[0][col++] = current.tiempoQueTarda.toString();
+			valuesToTable[0][col++] = String.valueOf(current.ritmoPorKm);
+			col = 0;
+			valuesToTable[1][col++] = selecconado.nombre;
+			valuesToTable[1][col++] = selecconado.apellido;
+			valuesToTable[1][col++] = selecconado.sexo;
+			valuesToTable[1][col++] = selecconado.club;
+			valuesToTable[1][col++] = selecconado.categoria;
+			valuesToTable[1][col++] = String.valueOf(selecconado.posicionFinal);
+			valuesToTable[1][col++] = selecconado.tiempoQueTarda.toString();
+			valuesToTable[1][col++] = String.valueOf(selecconado.ritmoPorKm);
+
+			TableModel model = new DefaultTableModel(valuesToTable,
+					columnNames) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+
+			mainW.getTableComparativa().setModel(model);
+			// una vez que el atleta hace click en el botón de volver, se hace
+			// invisible las tablas para que no quede feo al borrarles el
+			// modelo. Por eso hago set visible cada vez que creo un modelo
+			// nuevo.
+			mainW.getTableComparativa().setVisible(true);
+		} catch (BusinessException e) {
+			mainW.getLblErrorPerfil().setVisible(false);
+			mainW.getLblErrorPerfil().setText("Error: ");
+		}
+
+	}
+
+	void volverAMiPerfil() {
+
+		((CardLayout) mainW.getPanel_perfilAtleta().getLayout())
+				.show(mainW.getPanel_perfilAtleta(), "perfil");
+		mainW.resetearCamposYVistasPerfilAtleta();
+
+	}
+
 }

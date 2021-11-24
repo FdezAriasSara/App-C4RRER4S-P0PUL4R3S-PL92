@@ -79,10 +79,9 @@ public class InscripcionController {
 						.show(mainW.getPanel_card(), "Pg1");
 				mainW.getTableCompeticion().removeAll();
 				mainW.getTablaClasificacion().removeAll();
-				mainW.getTableAtletasDeCompSeleccionada().removeAll();
-				mainW.getTableComparativa().removeAll();
-				mainW.getTableInscripciones().removeAll();
 				mainW.getBtnVolverBienvenida().setEnabled(false);
+				mainW.resetearCamposYVistasPerfilAtleta();
+
 			}
 		});
 
@@ -122,37 +121,6 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) mainW.getPanel_card().getLayout())
 						.show(mainW.getPanel_card(), "Pg5");
-
-			}
-		});
-		/**
-		 * Implementa la funcionalidad de inicio de sesión necesaria para listar
-		 * las inscripciones.
-		 */
-		mainW.getBtnSesion().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String email = mainW.getTextFieldIniciarSesion().getText();
-				if (email.isEmpty()) {
-					JOptionPane.showMessageDialog(null,
-							"Debes rellenar tu email para iniciar sesion.");
-				} else {
-					iniciarSesion(new Sesion(email));
-					if (sesion.getIdAtleta() == Sesion.NO_INICIADO) {
-						mainW.mostrarErrorInicioSesion(
-								"No se ha encontrado un usuario asociado al correo electrónico.\n Inténtalo de nuevo.");
-						mainW.vaciarCampoIniciarSesion();
-					} else {
-
-						// acceder a sus inscripciones.
-						((CardLayout) mainW.getPanel_card().getLayout())
-								.show(mainW.getPanel_card(), "Pg2");
-
-						mainW.vaciarCampoIniciarSesion();
-					}
-
-				}
 
 			}
 		});

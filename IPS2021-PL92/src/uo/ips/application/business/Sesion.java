@@ -13,7 +13,7 @@ public class Sesion {
 	private int idCompeticion;
 
 	private String SQLGetId = "SELECT idAtleta FROM Atleta WHERE email = ?";
-
+	private String SQLGetDorsal = "SELECT dorsal FROM Inscripcion i WHERE i.idCompeticion=?  and i.idAtleta=?";
 	Connection c = null;
 	ResultSet rs = null;
 	PreparedStatement pst = null;
@@ -22,16 +22,17 @@ public class Sesion {
 		this.idAtleta = getIdAtleta(email);
 		this.idCompeticion = idCompeticion;
 	}
+
 	/*
 	 * Constructor creado para funcionalidad de registrarse con email.
 	 */
 	public Sesion(String email) {
 		this.idAtleta = getIdAtleta(email);
-		
+
 	}
 
 	public int getIdAtleta() {
-		
+
 		return idAtleta;
 	}
 
@@ -57,8 +58,31 @@ public class Sesion {
 		} finally {
 			Jdbc.close(rs, pst, c);
 		}
-		
+
 		return idAtleta;
+	}
+
+	public int getDorsalAtleta(int idCompeticion) {
+		int dorsal = NO_INICIADO;
+		try {
+			c = Jdbc.getConnection();
+
+			pst = c.prepareStatement(SQLGetDorsal);
+			pst.setInt(1, idCompeticion);
+			pst.setInt(2, idAtleta);
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next())
+				dorsal = rs.getInt(1);
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Jdbc.close(rs, pst, c);
+		}
+
+		return dorsal;
 	}
 
 }

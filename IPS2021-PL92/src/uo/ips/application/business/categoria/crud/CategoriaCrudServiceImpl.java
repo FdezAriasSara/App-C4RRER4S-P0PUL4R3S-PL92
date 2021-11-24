@@ -7,9 +7,17 @@ import uo.ips.application.business.categoria.CategoriaDto;
 public class CategoriaCrudServiceImpl implements CategoriaCrudService {
 
 	@Override
-	public void AñadirCategoria(CategoriaDto categoria,int competicionId) throws BusinessException {
-		new AñadirCategoria(categoria,competicionId).execute();
-		
+	public void AñadirCategoria(CategoriaDto categoria, int competicionId)
+			throws BusinessException {
+		new AñadirCategoria(categoria, competicionId).execute();
+
+	}
+
+	@Override
+	public CategoriaDto encontrarCategoriaPorId(String idCategoria)
+			throws BusinessException {
+
+		return new EncontrarCategoriaPorId(idCategoria).execute();
 	}
 
 }

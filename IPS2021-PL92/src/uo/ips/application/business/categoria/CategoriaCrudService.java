@@ -4,5 +4,9 @@ import uo.ips.application.business.BusinessException;
 
 public interface CategoriaCrudService {
 
-	public void AñadirCategoria(CategoriaDto categoria, int idCompeticion) throws BusinessException;
+	public void AñadirCategoria(CategoriaDto categoria, int idCompeticion)
+			throws BusinessException;
+
+	public CategoriaDto encontrarCategoriaPorId(String idCategoria)
+			throws BusinessException;
 }
