@@ -332,35 +332,15 @@ public class ComparacionController {
 
 							new ListSelectionListener() {
 
-								private String nombre;
-								private String apellido;
-
 								@Override
 								public void valueChanged(
 										ListSelectionEvent event) {
-									dorsalAtletaSeleccionado = Integer.valueOf(
-											mainW.getTableAtletasDeCompSeleccionada()
-													.getValueAt(mainW
-															.getTableAtletasDeCompSeleccionada()
-															.getSelectedRow(),
-															0)
-													.toString());
-									nombre = mainW
-											.getTableAtletasDeCompSeleccionada()
-											.getValueAt(mainW
-													.getTableAtletasDeCompSeleccionada()
-													.getSelectedRow(), 1)
-											.toString();
-									apellido = mainW
-											.getTableAtletasDeCompSeleccionada()
-											.getValueAt(mainW
-													.getTableAtletasDeCompSeleccionada()
-													.getSelectedRow(), 2)
-											.toString();
-									mainW.getLblAtletaSeleccionado()
-											.setText(nombre + " " + apellido);
+									guardarDorsalSeleccionado();
+									evitarCompararseConUnoMismo();
+									rellenarLabelAtletaSeleccionado();
 
 								}
+
 							});
 			mainW.getLblErrorPerfil().setVisible(false);
 			mainW.getLblErrorPerfil().setText("Error: ");
@@ -368,6 +348,38 @@ public class ComparacionController {
 		} catch (BusinessException e) {
 			mainW.getLblErrorPerfil().setVisible(true);
 			mainW.getLblErrorPerfil().setText("Error: " + e.getMessage());
+		}
+
+	}
+
+	private void guardarDorsalSeleccionado() {
+		this.dorsalAtletaSeleccionado = Integer
+				.valueOf(mainW.getTableAtletasDeCompSeleccionada()
+						.getValueAt(mainW.getTableAtletasDeCompSeleccionada()
+								.getSelectedRow(), 0)
+						.toString());
+	}
+
+	private void rellenarLabelAtletaSeleccionado() {
+		String nombre, apellido;
+		nombre = mainW.getTableAtletasDeCompSeleccionada().getValueAt(
+				mainW.getTableAtletasDeCompSeleccionada().getSelectedRow(), 1)
+				.toString();
+		apellido = mainW.getTableAtletasDeCompSeleccionada().getValueAt(
+				mainW.getTableAtletasDeCompSeleccionada().getSelectedRow(), 2)
+				.toString();
+		mainW.getLblAtletaSeleccionado().setText(nombre + " " + apellido);
+	}
+
+	private void evitarCompararseConUnoMismo() {
+		if (Integer.valueOf(sesion.getDorsalAtleta(
+				Integer.valueOf(idCompeticionSeleccionada))) == (Integer
+						.valueOf(dorsalAtletaSeleccionado))) {
+			mainW.getBtnCompararse().setEnabled(false);
+		} else {
+			// necesario si se selecciona primero a uno mismo y luego da a otro.
+			// de no hacerlo se queda bloqueado el boton
+			mainW.getBtnCompararse().setEnabled(true);
 		}
 
 	}
@@ -392,8 +404,13 @@ public class ComparacionController {
 			int col = 0;
 			valuesToTable[0][col++] = currentDto.nombre;
 			valuesToTable[0][col++] = currentDto.apellido;
-			valuesToTable[0][col++] = current.sexo;
-			valuesToTable[0][col++] = current.club;
+			valuesToTable[0][col++] = currentDto.sexo;
+			if (current.club == null) {
+				valuesToTable[0][col++] = "X";
+			} else {
+				valuesToTable[0][col++] = current.club;
+			}
+
 			valuesToTable[0][col++] = categoriaCrud.encontrarCategoriaPorId(
 					current.idCategoria).nombreCategoria;
 			valuesToTable[0][col++] = String.valueOf(current.posicionFinal);
@@ -402,8 +419,12 @@ public class ComparacionController {
 			col = 0;
 			valuesToTable[1][col++] = selectDto.nombre;
 			valuesToTable[1][col++] = selectDto.apellido;
-			valuesToTable[1][col++] = seleccionado.sexo;
-			valuesToTable[1][col++] = seleccionado.club;
+			valuesToTable[1][col++] = selectDto.sexo;
+			if (seleccionado.club == null) {
+				valuesToTable[1][col++] = "X";
+			} else {
+				valuesToTable[1][col++] = seleccionado.club;
+			}
 			valuesToTable[1][col++] = categoriaCrud.encontrarCategoriaPorId(
 					seleccionado.idCategoria).nombreCategoria;
 			valuesToTable[1][col++] = String
