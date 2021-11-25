@@ -754,7 +754,7 @@ public class InscripcionController {
 
 							if (JOptionPane.OK_OPTION == confirmado) {
 								int posListaEspera = incCrud.inscribirAtletaListaEspera(emailAtleta, idCompeticion);
-								JOptionPane.showMessageDialog(mainW, "Atleta inscrito en lista de espera en posicion"
+								JOptionPane.showMessageDialog(mainW, "Atleta inscrito en lista de espera en posicion "
 										+ posListaEspera + " a fecha de: "
 										+ LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
 								mainW.getLblError().setVisible(false);
