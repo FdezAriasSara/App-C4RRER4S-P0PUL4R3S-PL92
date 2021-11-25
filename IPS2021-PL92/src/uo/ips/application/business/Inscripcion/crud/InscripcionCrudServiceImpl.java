@@ -36,39 +36,49 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	public List<AtletaInscritoDto> obtenerAtletasParaCompeticion(int idCompeticion) throws BusinessException {
 		return new ObtenerAtletas(idCompeticion).execute();
 	}
+
 	@Override
 	public List<String> listarInscripcionesDelAtleta(int idAtleta) throws BusinessException {
-		
+
 		return new ListarInscripcionesAtleta(idAtleta).execute();
 	}
-	
+
 	@Override
-	public List<AtletaInscritoDto> listarInscripcionesAtletaConDto(int idAtleta) throws BusinessException{
+	public List<AtletaInscritoDto> listarInscripcionesAtletaConDto(int idAtleta) throws BusinessException {
 		return new ListarInscripcionesAtletaConDto(idAtleta).execute();
 	}
 
 	@Override
 	public int registrarTiempos(List<InscripcionDto> inscripciones) throws BusinessException {
 		return new RegistrarTiempos(inscripciones).execute();
-		
+
 	}
 
 	@Override
 	public void asignarDorsalesNoReservados(int idCompeticion) throws BusinessException {
 		new AsignarDorsalesNoReservados(idCompeticion).execute();
-		
+
 	}
 
 	@Override
-	public void asignarDorsalReservado(String email, int dorsal,int idCompeticion) throws BusinessException {
-		new AsignarDorsalReservado(email,dorsal,idCompeticion).execute();
-		
+	public void asignarDorsalReservado(String email, int dorsal, int idCompeticion) throws BusinessException {
+		new AsignarDorsalReservado(email, dorsal, idCompeticion).execute();
+
 	}
 
 	@Override
-	public int inscribirClusterEmails(int idCompeticion, Connection c, String club, String... email) throws BusinessException {
-		 return new IncribirClusterEmails(idCompeticion,c,club,email).execute();
+	public int inscribirClusterEmails(int idCompeticion, Connection c, String club, String... email)
+			throws BusinessException {
+		return new IncribirClusterEmails(idCompeticion, c, club, email).execute();
 	}
 
-	
+	@Override
+	public int inscribirAtletaListaEspera(String emailAtleta, int idCompeticion) throws BusinessException {
+		return new InscribirAtletaListaEspera(emailAtleta, idCompeticion).execute();
+	}
+
+	@Override
+	public boolean tieneListaEspera(int idCompeticion) throws BusinessException {
+		return new TieneListaEspera(idCompeticion).execute();
+	}
 }

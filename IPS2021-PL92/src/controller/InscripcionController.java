@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +88,11 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 
 				mainW.getLblError().setVisible(false);
-				inscribirse(mainW.getTxtFEmail().getText(), mainW.getTableCompeticion().getModel()
-						.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
+				inscribirse(mainW.getTxtFEmail().getText(),
+						mainW.getTableCompeticion().getModel()
+								.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString(),
+						Integer.parseInt(mainW.getTableCompeticion().getModel()
+								.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 6).toString()));
 			}
 		});
 
@@ -290,8 +295,11 @@ public class InscripcionController {
 
 						// una vez que el atleta se registra se le inscribe en la competición que había
 						// seleccionado.
-						inscribirse(dto.email, mainW.getTableCompeticion().getModel()
-								.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
+						inscribirse(dto.email,
+								mainW.getTableCompeticion().getModel()
+										.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString(),
+								Integer.parseInt(mainW.getTableCompeticion().getModel()
+										.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 6).toString()));
 						mainW.vaciarCamposRegistro();
 
 					}
@@ -726,7 +734,7 @@ public class InscripcionController {
 
 	}
 
-	private void inscribirse(String emailAtleta, String idCompeticionString) {
+	private void inscribirse(String emailAtleta, String idCompeticionString, int plazas) {
 		if (emailAtleta.isBlank() || emailAtleta.isEmpty() || idCompeticionString.isBlank()
 				|| idCompeticionString.isEmpty()) {
 			mainW.getLblError().setVisible(true);
@@ -735,12 +743,29 @@ public class InscripcionController {
 			try {
 				if (comprobarSiEstaRegistrado(emailAtleta)) {
 					int idCompeticion = Integer.parseInt(idCompeticionString);
-					incCrud.inscribirAtleta(emailAtleta, idCompeticion);
-					JOptionPane.showMessageDialog(null, "Atleta Inscrito");
-					mainW.getLblError().setVisible(false);
-					sesion = new Sesion(emailAtleta, idCompeticion);
-					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
+					if (plazas > 0) {
+						incCrud.inscribirAtleta(emailAtleta, idCompeticion);
+						pasarAPagos(emailAtleta, idCompeticion);
+						JOptionPane.showMessageDialog(null, "Atleta Inscrito");
+					} else {
+						if (incCrud.tieneListaEspera(idCompeticion)) {
+							int confirmado = JOptionPane.showConfirmDialog(mainW,
+									"La competición está llena, ¿Quieres apuntarte en la lista de espera?");
 
+							if (JOptionPane.OK_OPTION == confirmado) {
+								int posListaEspera = incCrud.inscribirAtletaListaEspera(emailAtleta, idCompeticion);
+								JOptionPane.showMessageDialog(mainW, "Atleta inscrito en lista de espera en posicion"
+										+ posListaEspera + " a fecha de: "
+										+ LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)));
+								mainW.getLblError().setVisible(false);
+								pasarAPagos(emailAtleta, idCompeticion);
+							}
+						} else {
+							JOptionPane.showMessageDialog(mainW,
+									"La competición está llena y no permite lista de espera", null,
+									JOptionPane.ERROR_MESSAGE);
+						}
+					}
 				} else {// si el atleta no está registrado.
 					mainW.getTextFieldCorreo().setText(mainW.getTxtFEmail().getText());
 					// si el atleta decide registrarse, se habrá introducido ya el correo para su
@@ -765,5 +790,11 @@ public class InscripcionController {
 		}
 		return true;
 
+	}
+
+	private void pasarAPagos(String emailAtleta, int idCompeticion) {
+		mainW.getLblError().setVisible(false);
+		sesion = new Sesion(emailAtleta, idCompeticion);
+		((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
 	}
 }
