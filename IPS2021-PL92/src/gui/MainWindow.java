@@ -28,7 +28,6 @@ import javax.swing.border.EmptyBorder;
 
 import javax.swing.table.DefaultTableModel;
 
-
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
@@ -159,7 +158,6 @@ public class MainWindow extends JFrame {
 	private JLabel lblAtletaSeleccionado;
 	private JButton btnCompararse;
 
-
 	/**
 	 * Create the frame.
 	 */
@@ -179,7 +177,6 @@ public class MainWindow extends JFrame {
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-
 
 			e.printStackTrace();
 		}
@@ -218,7 +215,6 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_contabilidad(), "contabilidad");
 
 			panel_card.add(getPanel_perfilAtleta(), "perfil");
-
 
 		}
 		return panel_card;
@@ -265,19 +261,15 @@ public class MainWindow extends JFrame {
 
 			panel_organizador.add(getBtInformacionContable());
 
-
-
 		}
 		return panel_organizador;
 	}
 
 	public JButton getBtnListarCompeticionesAbiertas() {
 		if (btnListarCompeticionesAbiertas == null) {
-			btnListarCompeticionesAbiertas = new JButton(
-					"Listar Competiciones");
+			btnListarCompeticionesAbiertas = new JButton("Listar Competiciones");
 
-			btnListarCompeticionesAbiertas
-					.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnListarCompeticionesAbiertas.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnListarCompeticionesAbiertas.setBounds(10, 10, 205, 34);
 		}
 		return btnListarCompeticionesAbiertas;
@@ -323,8 +315,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
-					((CardLayout) getPanel_card().getLayout())
-							.show(getPanel_card(), "Pg2");
+					((CardLayout) getPanel_card().getLayout()).show(getPanel_card(), "Pg2");
 
 				}
 			});
@@ -342,13 +333,11 @@ public class MainWindow extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
-					((CardLayout) getPanel_card().getLayout())
-							.show(getPanel_card(), "Pg3");
+					((CardLayout) getPanel_card().getLayout()).show(getPanel_card(), "Pg3");
 
 				}
 			});
-			btnOrganizadorBienvenida
-					.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			btnOrganizadorBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnOrganizadorBienvenida.setBounds(433, 354, 183, 47);
 		}
 		return btnOrganizadorBienvenida;
@@ -356,8 +345,7 @@ public class MainWindow extends JFrame {
 
 	public JLabel getLblEmailAtleta() {
 		if (lblEmailAtleta == null) {
-			lblEmailAtleta = new JLabel(
-					"Introduzca el email con el que se registro:");
+			lblEmailAtleta = new JLabel("Introduzca el email con el que se registro:");
 			lblEmailAtleta.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			lblEmailAtleta.setBounds(10, 418, 307, 34);
 		}
@@ -691,10 +679,8 @@ public class MainWindow extends JFrame {
 			textFieldIniciarSesion.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if (!checkFormatoEmail(
-							getTextFieldIniciarSesion().getText())) {
-						mostrarErrorInicioSesion(
-								"El formato del correo es incorrecto.");
+					if (!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
+						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
 						getTextFieldIniciarSesion().setText("");// vacï¿½o el
 																// campo para
 																// evitar que
@@ -734,8 +720,7 @@ public class MainWindow extends JFrame {
 
 	public boolean checkFormatoEmail(String text) {
 
-		return text
-				.matches("[a-zA-Z0-9]{0,100}@[a-zA-Z0-9]{0,40}+.(es|com|org)");
+		return text.matches("[a-zA-Z0-9]{0,100}@[a-zA-Z0-9]{0,40}+.(es|com|org)");
 	}
 
 	private JLabel getLblSesTitulo() {
@@ -830,10 +815,8 @@ public class MainWindow extends JFrame {
 	public JMonthChooser getMonthChooser() {
 		if (monthChooser == null) {
 			monthChooser = new JMonthChooser();
-			monthChooser.getComboBox()
-					.setFont(new Font("Tahoma", Font.PLAIN, 21));
-			monthChooser.getSpinner()
-					.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			monthChooser.getComboBox().setFont(new Font("Tahoma", Font.PLAIN, 21));
+			monthChooser.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 18));
 			monthChooser.setBounds(417, 271, 180, 41);
 
 		}
@@ -843,8 +826,7 @@ public class MainWindow extends JFrame {
 	public JYearChooser getYearChooser() {
 		if (yearChooser == null) {
 			yearChooser = new JYearChooser();
-			yearChooser.getSpinner()
-					.setFont(new Font("Tahoma", Font.PLAIN, 42));
+			yearChooser.getSpinner().setFont(new Font("Tahoma", Font.PLAIN, 42));
 			yearChooser.setBounds(635, 271, 134, 41);
 			yearChooser.setStartYear(2021);
 			yearChooser.setEndYear(2029);
@@ -872,11 +854,9 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setEnabled(true);
 	}
 
-
 //	private boolean compruebaIDCompeticion(String text) {
 //		return text.matches("[0-9]+");
 //	}
-
 
 	private boolean compruebaCVC(String text) {
 
@@ -1018,8 +998,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoDni(getTextFieldDNI().getText())) {
-						mostrarErrorRegistro(
-								"El dni debe contener seis dígitos y una letra.");
+						mostrarErrorRegistro("El dni debe contener seis dígitos y una letra.");
 					}
 				}
 
@@ -1077,8 +1056,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoEmail(getTextFieldCorreo().getText())) {
-						mostrarErrorRegistro(
-								"El correo no tiene el formato adecuado.");
+						mostrarErrorRegistro("El correo no tiene el formato adecuado.");
 					}
 				}
 
@@ -1164,17 +1142,16 @@ public class MainWindow extends JFrame {
 		}
 		return btCargarPagos;
 	}
-
-
-	public JButton getBtMostrarCompeticiones() {
-		if (btMostrarCompeticiones == null) {
-			btMostrarCompeticiones = new JButton("Mostrar competiciones");
-			btMostrarCompeticiones.setMnemonic('M');
-			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
-		}
-		return btMostrarCompeticiones;
-	}
+// 25-11-21-> lo quit� por los conlfictos-> btnMostrarTodasComp;
+//	public JButton getBtMostrarCompeticiones() {
+//		if (btMostrarCompeticiones == null) {
+//			btMostrarCompeticiones = new JButton("Mostrar competiciones");
+//			btMostrarCompeticiones.setMnemonic('M');
+//			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
+//		}
+//		return btMostrarCompeticiones;
+//	}
 
 	public JButton getBtnAsignacionDorsales() {
 		if (btnAsignacionDorsales == null) {
@@ -1201,15 +1178,13 @@ public class MainWindow extends JFrame {
 	}
 
 	public void setErrorOrgPlazosSinTerminar() {
-		getLblErrorOrg().setText(
-				"Error: Aún no han finalizado los plazos de inscripción.");
+		getLblErrorOrg().setText("Error: Aún no han finalizado los plazos de inscripción.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
 
 	public void setErrorOrgID() {
-		getLblErrorOrg().setText(
-				"Error: El ID de competición solo puede tener dígitos.");
+		getLblErrorOrg().setText("Error: El ID de competición solo puede tener dígitos.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
@@ -1220,16 +1195,6 @@ public class MainWindow extends JFrame {
 			scrollPaneDorsales.setBounds(173, 108, 514, 201);
 		}
 		return scrollPaneDorsales;
-	}
-
-
-	public JTable getTableAsignar() {
-		if (tableAsignar == null) {
-			tableAsignar = new JTable();
-			tableAsignar.setBounds(681, 108, -510, 201);
-
-		}
-		return tableAsignar;
 	}
 
 	public JButton getBtnAsignar() {
@@ -1255,7 +1220,6 @@ public class MainWindow extends JFrame {
 
 			btnMostrarTodasComp = new JButton("Mostrar todas las competiciones");
 
-
 			btnMostrarTodasComp.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnMostrarTodasComp.setBounds(10, 314, 294, 35);
 		}
@@ -1274,15 +1238,12 @@ public class MainWindow extends JFrame {
 
 	public JButton getBtnInscribirClubFormulario() {
 		if (btnInscribirClubFormulario == null) {
-			btnInscribirClubFormulario = new JButton(
-					"Inscribir a club con formulario");
-			btnInscribirClubFormulario
-					.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnInscribirClubFormulario = new JButton("Inscribir a club con formulario");
+			btnInscribirClubFormulario.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnInscribirClubFormulario.setBounds(567, 507, 240, 34);
 		}
 		return btnInscribirClubFormulario;
 	}
-
 
 	public JButton getBtInformacionContable() {
 		if (btInformacionContable == null) {
@@ -1346,6 +1307,7 @@ public class MainWindow extends JFrame {
 			tablaContabilidad = new JTable();
 		}
 		return tablaContabilidad;
+	}
 
 	public JPanel getPanel_perfilAtleta() {
 		if (panel_perfilAtleta == null) {
@@ -1414,7 +1376,8 @@ public class MainWindow extends JFrame {
 	public JTable getTableAsignar() {
 		if (tableAsignar == null) {
 			tableAsignar = new JTable();
-			tableAsignar.setBounds(10, 83, 846, 280);
+			tableAsignar.setBounds(681, 108, -510, 201);
+
 		}
 		return tableAsignar;
 	}
@@ -1441,8 +1404,7 @@ public class MainWindow extends JFrame {
 		if (lblCompeticionSeleccionada == null) {
 			lblCompeticionSeleccionada = new JLabel("");
 			lblCompeticionSeleccionada.setForeground(new Color(51, 153, 255));
-			lblCompeticionSeleccionada
-					.setFont(new Font("Tahoma", Font.ITALIC, 23));
+			lblCompeticionSeleccionada.setFont(new Font("Tahoma", Font.ITALIC, 23));
 			lblCompeticionSeleccionada.setBounds(10, 374, 433, 37);
 		}
 		return lblCompeticionSeleccionada;
@@ -1450,8 +1412,7 @@ public class MainWindow extends JFrame {
 
 	private JLabel getLblMostrarAtletas() {
 		if (lblMostrarAtletas == null) {
-			lblMostrarAtletas = new JLabel(
-					"Mostrar atletas de la competici\u00F3n seleccionada:");
+			lblMostrarAtletas = new JLabel("Mostrar atletas de la competici\u00F3n seleccionada:");
 			lblMostrarAtletas.setFont(new Font("Tahoma", Font.PLAIN, 17));
 			lblMostrarAtletas.setBounds(10, 414, 383, 51);
 		}
@@ -1470,8 +1431,7 @@ public class MainWindow extends JFrame {
 
 	private JLabel getLblCancelarInscripcion() {
 		if (lblCancelarInscripcion == null) {
-			lblCancelarInscripcion = new JLabel(
-					"Cancelar inscripci\u00F3n de la competici\u00F3n seleccionada:");
+			lblCancelarInscripcion = new JLabel("Cancelar inscripci\u00F3n de la competici\u00F3n seleccionada:");
 			lblCancelarInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 			lblCancelarInscripcion.setBounds(10, 476, 394, 40);
 		}
@@ -1501,8 +1461,7 @@ public class MainWindow extends JFrame {
 
 	private JScrollPane getScrollPane_AtletasCompSeleccionada() {
 		if (scrollPane_AtletasCompSeleccionada == null) {
-			scrollPane_AtletasCompSeleccionada = new JScrollPane(
-					getTableAtletasDeCompSeleccionada());
+			scrollPane_AtletasCompSeleccionada = new JScrollPane(getTableAtletasDeCompSeleccionada());
 			scrollPane_AtletasCompSeleccionada.setBounds(10, 62, 846, 280);
 		}
 		return scrollPane_AtletasCompSeleccionada;
@@ -1615,16 +1574,14 @@ public class MainWindow extends JFrame {
 		getBtnMisInscripciones().setVisible(true);
 
 		((DefaultTableModel) getTableInscripciones().getModel()).setRowCount(0);
-		((DefaultTableModel) getTableAtletasDeCompSeleccionada().getModel())
-				.setRowCount(0);
+		((DefaultTableModel) getTableAtletasDeCompSeleccionada().getModel()).setRowCount(0);
 		((DefaultTableModel) getTableComparativa().getModel()).setRowCount(0);
 		getTableInscripciones().setVisible(false);
 		getTableAtletasDeCompSeleccionada().setVisible(false);
 		getTableComparativa().setVisible(false);
 		// para que la próxima vez que se abra un perfil se vea la visión de
 		// perfil
-		((CardLayout) getPanel_perfilAtleta().getLayout())
-				.show(getPanel_perfilAtleta(), "perfil");
+		((CardLayout) getPanel_perfilAtleta().getLayout()).show(getPanel_perfilAtleta(), "perfil");
 
 	}
 }
