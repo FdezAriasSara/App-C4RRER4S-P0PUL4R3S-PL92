@@ -186,6 +186,7 @@ public class MainWindow extends JFrame {
 	private JLabel lblCompara;
 	private JLabel lblAtletaSeleccionado;
 	private JButton btnCompararse;
+	private JPanel pnFiltro;
 
 	/**
 	 * Create the frame.
