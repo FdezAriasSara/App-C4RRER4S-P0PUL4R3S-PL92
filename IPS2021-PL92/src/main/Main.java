@@ -2,6 +2,7 @@ package main;
 
 import java.awt.EventQueue;
 
+import alb.util.jdbc.Jdbc;
 import controller.ClubController;
 import controller.CompeticionController;
 import controller.InscripcionController;
@@ -24,6 +25,8 @@ public class Main {
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+				}finally {
+					Jdbc.closeConnection();
 				}
 			}
 		});
