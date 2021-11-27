@@ -571,7 +571,7 @@ public class MainWindow extends JFrame {
 
 					if (!compruebaNumeroTarjeta(getTxtNum().getText())) {
 						mostrarErrorPagoTarjeta(
-								"El formato del n�mero de tarjeta es incorrecto. \n Deben ser 16 d�gitos.");
+								"El formato del nï¿½mero de tarjeta es incorrecto. \n Deben ser 16 dï¿½gitos.");
 
 					}
 				}
@@ -596,7 +596,7 @@ public class MainWindow extends JFrame {
 					if (!compruebaCVC(getTxtCVC().getText())) {
 
 						mostrarErrorPagoTarjeta(
-								"El cvc debe ser un n�mero de tres d�gitos.\n Se encuentra en la cara trasera de tu tarjeta.");
+								"El cvc debe ser un nï¿½mero de tres dï¿½gitos.\n Se encuentra en la cara trasera de tu tarjeta.");
 						getTxtCVC().setText("");
 					}
 				}
@@ -699,8 +699,8 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
 						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
-						getTextFieldIniciarSesion().setText("");// vac�o el campo para evitar que proceda con la
-																// inscripci�n
+						getTextFieldIniciarSesion().setText("");// vacï¿½o el campo para evitar que proceda con la
+																// inscripciï¿½n
 					}
 				}
 			});
@@ -963,7 +963,7 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
-								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el s�mbolo -.");
+								"El apellido solo puede tener letras. Si tu apellido es compuesto emplea el sï¿½mbolo -.");
 						getTxtRegApellido().setText("");
 					}
 				}
@@ -1007,7 +1007,7 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoDni(getTextFieldDNI().getText())) {
-						mostrarErrorRegistro("El dni debe contener seis d�gitos y una letra.");
+						mostrarErrorRegistro("El dni debe contener seis dígitos y una letra.");
 					}
 				}
 
@@ -1185,12 +1185,12 @@ public class MainWindow extends JFrame {
 		return panel_asignarDorsales;
 	}
 	public void setErrorOrgPlazosSinTerminar() {
-		getLblErrorOrg().setText("Error: A�n no han finalizado los plazos de inscripci�n.");
+		getLblErrorOrg().setText("Error: Aún no han finalizado los plazos de inscripción.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
 	public void setErrorOrgID() {
-		getLblErrorOrg().setText("Error: El ID de competici�n solo puede tener d�gitos.");
+		getLblErrorOrg().setText("Error: El ID de competición solo puede tener dígitos.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
@@ -1412,7 +1412,7 @@ public class MainWindow extends JFrame {
 	}
 	public JButton getBtnInscribirFormulario() {
 		if (btnInscribirFormulario == null) {
-			btnInscribirFormulario = new JButton("A�adir");
+			btnInscribirFormulario = new JButton("Añadir");
 			btnInscribirFormulario.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			btnInscribirFormulario.setBounds(436, 233, 131, 24);
 		}
