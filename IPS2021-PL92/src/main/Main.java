@@ -19,6 +19,7 @@ public class Main {
 			@Override
 			public void run() {
 				try {
+
 					MainWindow frame = new MainWindow();
 					new CompeticionController(frame);
 					new InscripcionController(frame);
