@@ -49,7 +49,7 @@ public class ListarCompeticionesConSusCategorias {
 				dto = new CompeticionCategoriaDto();
 				dto.idCategoria = rs.getInt("idCategoria");
 				dto.idCompeticion = rs.getInt("idCompeticion");
-				dto.nombreCategoría = rs.getString("nombreCategoria");
+				dto.nombreCategoria = rs.getString("nombreCategoria");
 				dtos.add(dto);
 				
 			}

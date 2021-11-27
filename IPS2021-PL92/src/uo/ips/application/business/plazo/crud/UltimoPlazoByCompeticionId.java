@@ -10,13 +10,13 @@ import alb.util.assertion.Argument;
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 
-public class UltimoPlazoByCompeticiónId {
+public class UltimoPlazoByCompeticionId {
 	private int id;
 	private Connection c;
 	private static final String FIND_ULTIMO_PLAZO = "SELECT fechaFin from Plazos WHERE idCompeticion=? and fechaFin =( SELECT MAX(fechaFin) FROM Plazos WHERE idCompeticion=?)";
 
-	public UltimoPlazoByCompeticiónId(int competicionId) {
-		Argument.isTrue(competicionId > 0, "El id de la competición no puede ser negativo!");
+	public UltimoPlazoByCompeticionId(int competicionId) {
+		Argument.isTrue(competicionId > 0, "El id de la competiciï¿½n no puede ser negativo!");
 		this.id = competicionId;
 
 	}
@@ -34,7 +34,7 @@ public class UltimoPlazoByCompeticiónId {
 
 				return rs.getDate(1);
 			} else {
-				throw new BusinessException("No se ha encontrado el último plazo.");
+				throw new BusinessException("No se ha encontrado el ï¿½ltimo plazo.");
 			}
 		} catch (SQLException e) {
 			throw new BusinessException(e);

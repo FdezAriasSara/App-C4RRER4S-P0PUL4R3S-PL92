@@ -604,7 +604,7 @@ public class InscripcionController {
 			mainW.getCbCategoria().addItem("ABSOLUTA");
 
 			for(CompeticionCategoriaDto dto :  currentCategoriasInComboBox) {
-				mainW.getCbCategoria().addItem(dto.nombreCategoría);
+				mainW.getCbCategoria().addItem(dto.nombreCategoria);
 
 			}
 

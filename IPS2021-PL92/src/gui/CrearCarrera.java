@@ -170,7 +170,7 @@ public class CrearCarrera extends JFrame {
 			comboBoxTipo = new JComboBox();
 			comboBoxTipo.setBounds(154, 67, 88, 21);
 			comboBoxTipo.addItem("Asfalto");
-			comboBoxTipo.addItem("Montaña");
+			comboBoxTipo.addItem("Montaï¿½a");
 		}
 		return comboBoxTipo;
 	}
@@ -245,7 +245,7 @@ public class CrearCarrera extends JFrame {
 			}
 		});
 
-		JLabel lbMin = new JLabel("Edad mínima");
+		JLabel lbMin = new JLabel("Edad mï¿½nima");
 		JSpinner min = new JSpinner(new SpinnerNumberModel(18, 18, 200, 1));
 		min.addChangeListener(new ChangeListener() {
 
@@ -264,7 +264,7 @@ public class CrearCarrera extends JFrame {
 				}
 			}
 		});
-		JLabel lbMax = new JLabel("Edad máxima");
+		JLabel lbMax = new JLabel("Edad mï¿½xima");
 		JSpinner max = new JSpinner(new SpinnerNumberModel(19, 19, 200, 1));
 
 		max.addChangeListener(new ChangeListener() {
@@ -435,7 +435,7 @@ public class CrearCarrera extends JFrame {
 
 	private JButton getBtnCrearCompeticion() {
 		if (btnCrearCompeticion == null) {
-			btnCrearCompeticion = new JButton("Crear competición");
+			btnCrearCompeticion = new JButton("Crear competiciï¿½n");
 			btnCrearCompeticion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					crearCompeticion();
@@ -472,7 +472,7 @@ public class CrearCarrera extends JFrame {
 			BusinessFactory.forCompeticionCrudService().anadirCompeticion(competicion);
 
 			for (CategoriaDto categoriaDto : categorias) {
-				BusinessFactory.forCategoria().AñadirCategoria(categoriaDto, competicion.idCompeticion);
+				BusinessFactory.forCategoria().aÃ±adirCategoria(categoriaDto, competicion.idCompeticion);
 			}
 
 			for (PlazoDto plazo : plazos) {
@@ -480,7 +480,7 @@ public class CrearCarrera extends JFrame {
 				BusinessFactory.forPlazo().addPlazo(plazo);
 			}
 
-			JOptionPane.showMessageDialog(this, "Competición creada correctamente");
+			JOptionPane.showMessageDialog(this, "Competiciï¿½n creada correctamente");
 			dispose();
 		} catch (BusinessException e) {
 			getLblError().setText(e.getMessage());
@@ -579,12 +579,12 @@ public class CrearCarrera extends JFrame {
 			}
 		}
 		if (getPnFilas().getComponents().length == 0) {
-			getLblError().setText("Tienes que añadir al menos una categoria");
+			getLblError().setText("Tienes que aï¿½adir al menos una categoria");
 			return false;
 		}
 
 		if (getPnFilasPlazos().getComponents().length == 0) {
-			getLblError().setText("Tienes que añadir al menos un plazo");
+			getLblError().setText("Tienes que aï¿½adir al menos un plazo");
 			return false;
 		}
 		return true;
@@ -642,19 +642,19 @@ public class CrearCarrera extends JFrame {
 		List<CategoriaDto> ordenadas = new ArrayList<CategoriaDto>(createCategories());
 		ordenadas.sort(Comparator.comparing(c -> c.edadMin));
 		if(!ordenadas.stream().anyMatch(c -> c.sexo.contentEquals("Masculino") && c.edadMin == 18)) {
-			getLblError().setText("Es necesaria al menos una categoria Masculina con mínimo de edad de 18");
+			getLblError().setText("Es necesaria al menos una categoria Masculina con mï¿½nimo de edad de 18");
 			return false;
 		}
 		
 		if(!ordenadas.stream().anyMatch(c -> c.sexo.contentEquals("Femenino") && c.edadMin == 18)) {
-			getLblError().setText("Es necesaria al menos una categoria Femenina con mínimo de edad de 18");
+			getLblError().setText("Es necesaria al menos una categoria Femenina con mï¿½nimo de edad de 18");
 			return false;
 		}
 		
 		
 		
 		if (ordenadas.get(0).edadMin != 18) {
-			getLblError().setText("Es necesario que una categoria tenda edad minima de 18 años");
+			getLblError().setText("Es necesario que una categoria tenda edad minima de 18 aï¿½os");
 			return false;
 		}
 		
@@ -698,7 +698,7 @@ public class CrearCarrera extends JFrame {
 			}
 			if (plazoDto.fechaFin
 					.isAfter(getCalendar().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
-				getLblError().setText("El plazo no puede acabar despues de la competición");
+				getLblError().setText("El plazo no puede acabar despues de la competiciï¿½n");
 				return false;
 			}
 		}

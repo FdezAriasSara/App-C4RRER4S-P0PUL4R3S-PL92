@@ -11,7 +11,7 @@ import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.categoria.CategoriaDto;
 import uo.ips.application.business.competicion.CompeticionDto;
 
-public class AñadirCategoria {
+public class AÃ±adirCategoria {
 
 	private String SQL = "INSERT INTO Categoria (nombreCategoria,edadMin,edadMax,sexo) VALUES (?,?,?,?)";
 	private String SQL_CONTIENE = "INSERT INTO ContieneCategoria (idCompeticion,idCategoria) VALUES (?,?)";
@@ -19,7 +19,7 @@ public class AñadirCategoria {
 	private CategoriaDto categoria;
 	private int competicionId;
 	
-	public AñadirCategoria(CategoriaDto categoria, int competicionId) {
+	public AÃ±adirCategoria(CategoriaDto categoria, int competicionId) {
 		Argument.isNotNull(categoria);
 		this.categoria = categoria;
 		this.competicionId = competicionId;

@@ -11,7 +11,7 @@ public class PlazoCrudServiceImpl implements PlazoCrudService {
 	@Override
 	public Date getUltimoPlazoByCompeticionId(int competicionId) throws BusinessException {
 
-		return new UltimoPlazoByCompeticiónId(competicionId).execute();
+		return new UltimoPlazoByCompeticionId(competicionId).execute();
 	}
 
 	@Override

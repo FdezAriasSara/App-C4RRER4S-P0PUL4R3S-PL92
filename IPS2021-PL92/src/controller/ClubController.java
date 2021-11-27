@@ -31,7 +31,7 @@ public class ClubController {
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 	
 	private List<AtletaDto> allAtletas;
-	private List<AtletaDto> añadidosPorAhora = new ArrayList<AtletaDto>();
+	private List<AtletaDto> aÃ±adidosPorAhora = new ArrayList<AtletaDto>();
 	String[] columnNames = { "Nombre", "Apellido", "Email", "Sexo", "Fecha de Nacimiento", "DNI" };
 	String[][] valuesToTable;
 	Connection c ;
@@ -154,7 +154,7 @@ public class ClubController {
 			
 			boolean found = false;
 			
-			for(AtletaDto atleta : añadidosPorAhora) {
+			for(AtletaDto atleta : aÃ±adidosPorAhora) {
 				found = false;
 				atleta.club = mainW.getTxtFNombreClub().getText();
 				for(AtletaDto registrado : this.allAtletas) {
@@ -177,11 +177,11 @@ public class ClubController {
 			
 			int idCompeticion = Integer.parseInt(mainW.getTableCompeticion().
 					getModel().getValueAt(mainW.getTableCompeticion().getSelectedRow(), 0).toString());
-			String club = añadidosPorAhora.get(0).club;
+			String club = aÃ±adidosPorAhora.get(0).club;
 			c = Jdbc.getConnection();
-			String[] emails = new String[añadidosPorAhora.size()];
-			for(int i = 0; i < añadidosPorAhora.size(); i++) {
-				emails[i] = añadidosPorAhora.get(i).email;
+			String[] emails = new String[aÃ±adidosPorAhora.size()];
+			for(int i = 0; i < aÃ±adidosPorAhora.size(); i++) {
+				emails[i] = aÃ±adidosPorAhora.get(i).email;
 				
 			}
 			
@@ -227,9 +227,9 @@ public class ClubController {
 			getModel().getValueAt(mainW.getTableFormulario().getSelectedRow(), columnNames.length - 1);
 			
 			
-			for(int i = 0; i < añadidosPorAhora.size() ; i++) {
-				if(añadidosPorAhora.get(i).dni.equals(dni)) {
-					añadidosPorAhora.remove(i);
+			for(int i = 0; i < aÃ±adidosPorAhora.size() ; i++) {
+				if(aÃ±adidosPorAhora.get(i).dni.equals(dni)) {
+					aÃ±adidosPorAhora.remove(i);
 					currPlazasDisp++;
 				}
 			}
@@ -251,8 +251,8 @@ public class ClubController {
 
 		
 		int counter = 0;
-		valuesToTable = new String[añadidosPorAhora.size()][columnNames.length];
-		for (AtletaDto c : añadidosPorAhora) {
+		valuesToTable = new String[aÃ±adidosPorAhora.size()][columnNames.length];
+		for (AtletaDto c : aÃ±adidosPorAhora) {
 			int col = 0;
 			valuesToTable[counter][col++] = "" + c.nombre;
 			valuesToTable[counter][col++] = "" + c.apellido;
@@ -293,7 +293,7 @@ public class ClubController {
 		mainW.getTxtFApellido().setText("");
 		mainW.getFechaFinal().setDate(null);
 		
-		this.añadidosPorAhora = new ArrayList<AtletaDto>();
+		this.aÃ±adidosPorAhora = new ArrayList<AtletaDto>();
 		this.valuesToTable = null;
 		
 	}
@@ -322,9 +322,9 @@ public class ClubController {
 		Date formDate = mainW.getFechaFinal().getDate();
 		Date currDate = new Date(System.currentTimeMillis());
 		
-		long milliseconds18Años = 18*365*24*60*60*1000;
+		long milliseconds18AÃ±os = 18*365*24*60*60*1000;
 		
-		if(currDate.getTime() - formDate.getTime() < milliseconds18Años) {
+		if(currDate.getTime() - formDate.getTime() < milliseconds18AÃ±os) {
 			mainW.getLblErrorForm().setText("Error: menores de 18 no pueden inscribirse");
 			return;
 		}
@@ -343,14 +343,14 @@ public class ClubController {
 		atleta.fechaNacimiento = new java.sql.Date( mainW.getFechaFinal().getDate().getTime());
 		atleta.sexo = mainW.getCBoxSexo().getSelectedItem().toString();
 		
-		for(AtletaDto atl : añadidosPorAhora) {
+		for(AtletaDto atl : aÃ±adidosPorAhora) {
 			if(atl.dni.equals(atleta.dni)) {
-				mainW.getLblErrorForm().setText("Error: atleta con mismo dni ya añadido");
+				mainW.getLblErrorForm().setText("Error: atleta con mismo dni ya aï¿½adido");
 				return;
 			}
 		}
 		
-		añadidosPorAhora.add(atleta);
+		aÃ±adidosPorAhora.add(atleta);
 		currPlazasDisp--;
 		mainW.getTxtPlazasDispnibles().setEditable(true);
 		mainW.getTxtPlazasDispnibles().setText(""+currPlazasDisp);

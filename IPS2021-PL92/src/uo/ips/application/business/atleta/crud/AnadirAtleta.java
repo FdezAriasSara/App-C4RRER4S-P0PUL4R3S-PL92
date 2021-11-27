@@ -11,7 +11,7 @@ import uo.ips.application.business.atleta.AtletaDto;
 
 public class AnadirAtleta {
 
-	private String AÑADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname,idAtleta) VALUES (?,?,?,?,?,?,?)";
+	private String AÃ‘ADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname,idAtleta) VALUES (?,?,?,?,?,?,?)";
 	private String BUSCAR_ATLETA_POR_DNI = "SELECT * FROM Atleta WHERE dni = ?";
 	private String BUSCAR_ATLETA_POR_EMAIL = "SELECT * FROM Atleta WHERE email = ?";
 	private String ID_MAXIMO="select max(idAtleta) from Atleta";
@@ -33,7 +33,7 @@ public class AnadirAtleta {
 			checkEmail();
 			c = Jdbc.getConnection();
 
-			pst = c.prepareStatement(AÑADIR_ATLETA);
+			pst = c.prepareStatement(AÃ‘ADIR_ATLETA);
 			pst.setString(1, atleta.dni);
 			pst.setString(2, atleta.email);
 			pst.setDate(3, atleta.fechaNacimiento);
@@ -81,8 +81,8 @@ public class AnadirAtleta {
 	}
 
 	/**
-	 * IMPORTANTE separar el chequeo del dni , de el del email. Así se comprueba
-	 * también que el email no esté registrado en el sistema ya, pero con otro
+	 * IMPORTANTE separar el chequeo del dni , de el del email. Asï¿½ se comprueba
+	 * tambiï¿½n que el email no estï¿½ registrado en el sistema ya, pero con otro
 	 * atleta con dni diferente.
 	 * 
 	 * @throws BusinessException
@@ -102,7 +102,7 @@ public class AnadirAtleta {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				throw new BusinessException(String.format("El correo %s ya está registrado.", atleta.email));
+				throw new BusinessException(String.format("El correo %s ya estï¿½ registrado.", atleta.email));
 			}
 			pst.close();
 		} catch (SQLException e) {
@@ -133,7 +133,7 @@ public class AnadirAtleta {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				throw new BusinessException(String.format("El atleta con dni %s ya está registrado.", atleta.dni));
+				throw new BusinessException(String.format("El atleta con dni %s ya estï¿½ registrado.", atleta.dni));
 			}
 			pst.close();
 		} catch (SQLException e) {
