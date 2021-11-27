@@ -10,7 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.toedter.calendar.IDateEditor;
+
+import uo.ips.application.business.BusinessFactory;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
+import uo.ips.application.business.arco.ArcoDto;
+
+
 
 /**
  * 
@@ -40,40 +46,42 @@ public class ParseadorTiempos {
 		
 		InscripcionDto dto;
 		String[] elems;
+		Time[] times;
 		int dorsal;
 		String initTime;
 		String finalTime;
 		Time initialTime;
 		Time endTime;
+		int idCompeticion;
+		int numeroDeArcos;
 		try {
 		   
 		    String line = br.readLine();
+		    idCompeticion = Integer.parseInt(line);
+		    numeroDeArcos = BusinessFactory.forArco().getArcos(idCompeticion).size();
+		    line = br.readLine();
 
 		    while (line != null) {
 		    	
 		    	 elems = line.split(";");
+		    	 times = new Time[numeroDeArcos+2];
 		    	 
-		    	 if(isValid(elems)) {
+		    	 
+		    	 if(isValid(elems,idCompeticion)) {
 		    		 
 		    		 dorsal = Integer.parseInt(elems[0]);
 		    		 initTime = elems[1];
-		    		 finalTime = elems[2];
+		    		 finalTime = elems[elems.length-1];
 		    		 
-		    		if(initTime.toUpperCase().equals("DNS")) {
-		    			initialTime = null;
-		    			
-		    		}else {
-		    			initialTime = Time.valueOf(elems[1]);
-		    			
-		    		}
-		    		
-		    		if(initTime.toUpperCase().equals("DNS") || finalTime.toUpperCase().equals("DNF")) {
-	    				endTime = null;
-	    			}
-	    			else {
-	    				endTime = Time.valueOf(elems[2]);
-	    			}
-		    		
+		    		 for (int i = 1; i < elems.length; i++) {
+		    			 if(elems[i].toUpperCase().equals("DNS") || elems[i].toUpperCase().equals("DNF"))
+		    				 times[i-1] = null;
+		    			 else {
+		    				 times[i-1] = Time.valueOf(elems[i]);
+		    				 
+		    			 }
+		    			 
+					}
 		    		
 		    		
 		    		if(dorsales.contains(dorsal)) {
@@ -83,11 +91,12 @@ public class ParseadorTiempos {
 		    			dorsales.add(dorsal);
 		    			
 		    			dto = new InscripcionDto();
-			    		dto.tiempoQueTarda = calcularDiferencia(endTime, initialTime);
+			    		dto.tiempoQueTarda = calcularDiferencia(times[times.length-1], times[0]);
 		    			dto.dorsal = dorsal;
-		    			dto.idCompeticion = Integer.parseInt(fileName.split("\\.")[0].split("-")[1]);
-		    			dto.tiempoInicio = initialTime;
-		    			dto.tiempoFinal = endTime;
+		    			dto.idCompeticion = idCompeticion;
+		    			dto.tiempoInicio = times[0];
+		    			dto.tiempoFinal = times[times.length-1];
+		    			dto.tiempos = times;
 		    			inscripciones.add(dto);
 		    		}
 		    		
@@ -108,16 +117,19 @@ public class ParseadorTiempos {
 	}
 	
 	
-	private static boolean isValid(String[] elems) {
-		
-		if(elems.length != 3) {
+	private static boolean isValid(String[] elems,int idCompeticion) {
+		List<ArcoDto> arcos = BusinessFactory.forArco().getArcos(idCompeticion);
+		if(elems.length != arcos.size()+3) {
    		 wrongParseInLastExe = getWrongParseInLastExe() + 1;
    		 return false;
 	   	 }
-	   	 else if(elems[0].isBlank() || elems[1].isBlank() || elems[2].isBlank()){
-	   		 wrongParseInLastExe = getWrongParseInLastExe() + 1;
-	   		 return false;
-	   	 }
+		for (String string : elems) {
+			if(string.isBlank()) {
+				wrongParseInLastExe = getWrongParseInLastExe() + 1;
+				return false;
+				
+			}
+		}
 	   	 
 		try {
 			Integer.parseInt(elems[0]);
@@ -125,16 +137,17 @@ public class ParseadorTiempos {
 			wrongParseInLastExe = getWrongParseInLastExe() + 1;
 			return false;
 		}
-		
-		
-		
-		return canParse(elems[1],"DNS") && canParse(elems[2],"DNF");
+		for (int i = 1; i < elems.length; i++) {
+			if(!canParse(elems[i]))
+				return false;			
+		}
+		return true;
 	}
 	
 	
-	private static boolean canParse(String time, String status) {
+	private static boolean canParse(String time) {
 		
-		if(time.toUpperCase().equals(status)) {
+		if(time.toUpperCase().equals("DNF")|| time.toUpperCase().equals("DNS")) {
 			return true;
 		}else{
 			try {

@@ -16,7 +16,7 @@ public class DorsalesReservadosPorCompeticion {
 	private Connection c;
 
 	public DorsalesReservadosPorCompeticion(int competicionId) {
-		Argument.isTrue(competicionId>0,"El id de la competiciÛn no puede ser negativo");
+		Argument.isTrue(competicionId>0,"El id de la competici√ën no puede ser negativo");
 		this.id=competicionId;
 	}
 

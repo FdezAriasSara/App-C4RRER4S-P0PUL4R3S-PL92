@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.List;
 
 import alb.util.assertion.Argument;
@@ -14,7 +15,7 @@ import uo.ips.application.business.Inscripcion.InscripcionDto;
 public class RegistrarTiempos {
 	
 	private String SQL_RegsitrarTiempos = "UPDATE Inscripcion set estado = 'TERMINADA' , tiempoQueTarda = ? where dorsal = ? and idCompeticion = ?";
-	
+	private String SQL_INSERT_ARCOTIEMPO = "INSERT INTO ArcoTiempo (idArco,tiempo,idCompeticion,dorsal) VALUES (?,?,?,?)";
 	private List<InscripcionDto> inscripciones;
 	Connection c = null;
 	ResultSet rs = null;
@@ -43,6 +44,16 @@ public class RegistrarTiempos {
 					pst.setInt(2, dto.dorsal);
 					pst.setInt(3, dto.idCompeticion);
 					pst.executeUpdate();
+					
+					for (int i = 1; i < dto.tiempos.length-1; i++) {
+						PreparedStatement apst = c.prepareStatement(SQL_INSERT_ARCOTIEMPO);
+						apst.setInt(1,i);
+						apst.setTime(2,dto.tiempos[i] );
+						apst.setInt(3, dto.idCompeticion);
+						apst.setInt(4,dto.dorsal);
+						apst.executeUpdate();
+						
+					}
 				}catch(SQLException e) {
 					counterNotUpdate++;
 				}

@@ -45,7 +45,7 @@ public class CalcularCategoria {
 	/**
 	 * Busca el atleta con la id que se le pasa y lo devuelve en forma e dto
 	 * 
-	 * @return atletaDto con la informaci�n del atleta buscado
+	 * @return atletaDto con la informaciÑn del atleta buscado
 	 * @throws SQLException
 	 * @throws BusinessException 
 	 */
@@ -118,7 +118,7 @@ public class CalcularCategoria {
 					}
 					
 					if(id <= 0) {
-						throw new BusinessException("No existe categor�a para atleta " + idAtleta + " en competicion " + idCompeticon);
+						throw new BusinessException("No existe categorÑa para atleta " + idAtleta + " en competicion " + idCompeticon);
 					}
 					
 

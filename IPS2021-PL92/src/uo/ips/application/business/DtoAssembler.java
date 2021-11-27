@@ -24,7 +24,7 @@ public class DtoAssembler {
 			dto.fechaNacimiento = m.getDate("fechaNacimiento");
 			dto.sexo = m.getString("sexo");
 		} else {
-			throw new BusinessException("El atleta no est� registrado");
+			throw new BusinessException("El atleta no estÑ registrado");
 
 		}
 

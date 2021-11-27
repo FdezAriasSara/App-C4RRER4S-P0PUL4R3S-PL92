@@ -6,7 +6,7 @@ import uo.ips.application.business.BusinessException;
 
 public interface PlazoCrudService {
 	/**
-	 * Encuentra la fecha final del �ltimo plazo de una competici�n.
+	 * Encuentra la fecha final del Ñltimo plazo de una competiciÑn.
 	 * @param competicionId 
 	 * @return
 	 * @throws BusinessException si no se encuentra la fecha

@@ -5,15 +5,15 @@ import uo.ips.application.business.competicion.CompeticionDto;
 
 public interface PagoCrudService {
 	/**
-	 *  * Permite el pago de la cuota de inscripciÛn con tarjeta.
-	 *  En caso de que el pago dejara de ser una simulaciÛn , deberÌa aÒadirse el par·metro TarjetaDto.
+	 *  * Permite el pago de la cuota de inscripci√ën con tarjeta.
+	 *  En caso de que el pago dejara de ser una simulaci√ën , deber√ëa a√ëadirse el par√ëmetro TarjetaDto.
 	 * @param pago
 	 * @return DTO del pago realizado
-	 * @throws BusinessException cuando no se encuentra la inscripciÛn que buscamos
+	 * @throws BusinessException cuando no se encuentra la inscripci√ën que buscamos
 	 */
 	PagoDto pagarConTarjeta(PagoDto pago,TarjetaDto tarjeta) throws BusinessException ;
 	/**
-	 * Permite el pago de la cuota de inscripciÛn  con transferencia bancaria.
+	 * Permite el pago de la cuota de inscripci√ën  con transferencia bancaria.
 	 * @param pago
 	 * @return DTO del pago realizado
 	 * @throws BusinessException 

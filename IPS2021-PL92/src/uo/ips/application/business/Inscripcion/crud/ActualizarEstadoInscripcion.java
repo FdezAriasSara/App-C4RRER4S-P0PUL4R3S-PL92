@@ -45,7 +45,7 @@ public class ActualizarEstadoInscripcion {
 
 		Optional<CompeticionDto> competicion = buscarCompeticion();
 		if (!competicion.isPresent()) {
-			throw new BusinessException("No existe la competición");
+			throw new BusinessException("No existe la competiciÃ‘n");
 		}
 
 		cargaPagos();
@@ -58,11 +58,11 @@ public class ActualizarEstadoInscripcion {
 				throw new BusinessException("Atleta no existente en fichero de pagos");
 			Optional<InscripcionDto> oi = findInscripcionByIds(idAtleta);
 			if (!oi.isPresent())
-				throw new BusinessException("Hay pago de atleta no inscrito para la competición seleccionada");
+				throw new BusinessException("Hay pago de atleta no inscrito para la competiciÃ‘n seleccionada");
 			InscripcionDto inscripcion = oi.get();
 			Optional<PlazoDto> op = findPlazo(inscripcion.fechaInscripcion);
 			if (!op.isPresent())
-				throw new BusinessException("Hay pago de atleta no inscrito para la competición seleccionada");
+				throw new BusinessException("Hay pago de atleta no inscrito para la competiciÃ‘n seleccionada");
 			PlazoDto plazo = op.get();
 
 			compruebaPago(plazo.cuota, inscripcion.fechaInscripcion, transferenciaDto, idAtleta);

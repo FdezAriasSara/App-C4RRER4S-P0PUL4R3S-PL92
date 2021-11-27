@@ -3,10 +3,10 @@ package uo.ips.application.business.registro;
 public interface RegistroCrudService {
 	/**
 	 *
-	 * MÈtodo que comprueba que el atleta que intenta inscribirse estÈ registrado.
-	 * Si no , se emplear· su resultado para darle la posibilidad de hacerlo.
+	 * M√ëtodo que comprueba que el atleta que intenta inscribirse est√ë registrado.
+	 * Si no , se emplear√ë su resultado para darle la posibilidad de hacerlo.
 	 * 
-	 * @return boolean, true si el mail ya est· registrado. Falso si no es asÌ.
+	 * @return boolean, true si el mail ya est√ë registrado. Falso si no es as√ë.
 	 */
 	boolean ComprobarDatosInscripcion(String email);
 }

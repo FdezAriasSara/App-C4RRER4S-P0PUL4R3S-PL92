@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.crud.InscripcionCrudServiceImpl;
+import uo.ips.application.business.arco.ArcoCrudService;
+import uo.ips.application.business.arco.crud.ArcoCrudServiceImpl;
 import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.crud.AtletaCrudServiceImpl;
 import uo.ips.application.business.atleta.crud.CalcularCategoria;
@@ -57,5 +59,10 @@ public class BusinessFactory {
 	public static PlazoCrudService forPlazoCrudService() {
 		
 		return new PlazoCrudServiceImpl() ;
+	}
+
+	public static ArcoCrudService forArco() {
+		return new ArcoCrudServiceImpl();
+		
 	}
 }

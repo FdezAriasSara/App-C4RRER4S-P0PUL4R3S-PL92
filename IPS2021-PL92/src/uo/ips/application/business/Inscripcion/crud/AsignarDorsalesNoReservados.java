@@ -20,7 +20,7 @@ public class AsignarDorsalesNoReservados {
 	private Connection c;
 
 	public AsignarDorsalesNoReservados(int idCompeticion) {
-		Argument.isTrue(idCompeticion > 0, "El id de la competiciÛn no puede ser negativo");
+		Argument.isTrue(idCompeticion > 0, "El id de la competici√ën no puede ser negativo");
 		this.id = idCompeticion;
 	}
 

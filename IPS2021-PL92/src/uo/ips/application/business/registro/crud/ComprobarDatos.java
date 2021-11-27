@@ -31,9 +31,9 @@ public class ComprobarDatos {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				return true;//el atleta est· registrado
+				return true;//el atleta est√ë registrado
 			}
-			return false;//el atleta no est· registrado
+			return false;//el atleta no est√ë registrado
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

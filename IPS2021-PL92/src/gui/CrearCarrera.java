@@ -5,6 +5,27 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
+import uo.ips.application.business.competicion.CompeticionDto;
+import uo.ips.application.business.plazo.Plazo;
+import uo.ips.application.business.plazo.PlazoDto;
+import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.BusinessFactory;
+import uo.ips.application.business.arco.ArcoDto;
+import uo.ips.application.business.categoria.CategoriaDto;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +43,7 @@ import java.util.stream.Collectors;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -74,6 +96,13 @@ public class CrearCarrera extends JFrame {
 	private JLabel lblError;
 	private JLabel lblDorsales;
 	private JSpinner spinnerDorsales;
+	private JLabel lblPlazas;
+	private JSpinner spinnerPlazas;
+	private JCheckBox checkBoxLista;
+	private JPanel pnPuntos;
+	private JScrollPane scrollPanePuntos;
+	private JPanel pnFilasPuntos;
+	private JButton btnCrearPunto;
 
 	/**
 	 * Launch the application.
@@ -97,7 +126,7 @@ public class CrearCarrera extends JFrame {
 	 */
 	public CrearCarrera() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 767, 737);
+		setBounds(100, 100, 767, 782);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -120,6 +149,9 @@ public class CrearCarrera extends JFrame {
 		contentPane.add(getLblError());
 		contentPane.add(getLblDorsales());
 		contentPane.add(getSpinnerDorsales());
+		contentPane.add(getLblPlazas());
+		contentPane.add(getSpinnerPlazas());
+		contentPane.add(getCheckBoxLista());
 		// contentPane.add(getScrollPaneCategorias());
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -130,7 +162,7 @@ public class CrearCarrera extends JFrame {
 		if (lblNombre == null) {
 			lblNombre = new JLabel("Nombre");
 			lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblNombre.setBounds(41, 26, 80, 27);
+			lblNombre.setBounds(41, 13, 80, 27);
 		}
 		return lblNombre;
 	}
@@ -138,7 +170,7 @@ public class CrearCarrera extends JFrame {
 	private JTextField getTxtFieldNombre() {
 		if (txtFieldNombre == null) {
 			txtFieldNombre = new JTextField();
-			txtFieldNombre.setBounds(154, 31, 275, 19);
+			txtFieldNombre.setBounds(154, 18, 275, 19);
 			txtFieldNombre.setColumns(10);
 		}
 		return txtFieldNombre;
@@ -148,7 +180,7 @@ public class CrearCarrera extends JFrame {
 		if (lblTipo == null) {
 			lblTipo = new JLabel("Tipo");
 			lblTipo.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblTipo.setBounds(41, 63, 80, 27);
+			lblTipo.setBounds(41, 50, 80, 27);
 		}
 		return lblTipo;
 	}
@@ -156,9 +188,9 @@ public class CrearCarrera extends JFrame {
 	private JComboBox getComboBoxTipo() {
 		if (comboBoxTipo == null) {
 			comboBoxTipo = new JComboBox();
-			comboBoxTipo.setBounds(154, 67, 88, 21);
+			comboBoxTipo.setBounds(154, 54, 88, 21);
 			comboBoxTipo.addItem("Asfalto");
-			comboBoxTipo.addItem("Monta�a");
+			comboBoxTipo.addItem("Montaña");
 		}
 		return comboBoxTipo;
 	}
@@ -167,16 +199,23 @@ public class CrearCarrera extends JFrame {
 		if (lblDistancia == null) {
 			lblDistancia = new JLabel("Distancia");
 			lblDistancia.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblDistancia.setBounds(41, 103, 80, 27);
+			lblDistancia.setBounds(41, 90, 80, 27);
 		}
 		return lblDistancia;
 	}
 
 	private JSpinner getSpinnerDistancia() {
 		if (spinner == null) {
-			spinner = new JSpinner(
-					new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-			spinner.setBounds(154, 108, 50, 19);
+			spinner = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+			spinner.setBounds(154, 95, 50, 19);
+			spinner.addChangeListener(new ChangeListener() {
+				
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					checkArcosValidity();
+					
+				}
+			});
 		}
 		return spinner;
 	}
@@ -185,7 +224,7 @@ public class CrearCarrera extends JFrame {
 		if (lblFecha == null) {
 			lblFecha = new JLabel("Fecha");
 			lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblFecha.setBounds(556, 13, 80, 27);
+			lblFecha.setBounds(565, 13, 80, 27);
 		}
 		return lblFecha;
 	}
@@ -234,7 +273,7 @@ public class CrearCarrera extends JFrame {
 			}
 		});
 
-		JLabel lbMin = new JLabel("Edad m�nima");
+		JLabel lbMin = new JLabel("Edad mínima");
 		JSpinner min = new JSpinner(new SpinnerNumberModel(18, 18, 200, 1));
 		min.addChangeListener(new ChangeListener() {
 
@@ -255,7 +294,7 @@ public class CrearCarrera extends JFrame {
 				}
 			}
 		});
-		JLabel lbMax = new JLabel("Edad m�xima");
+		JLabel lbMax = new JLabel("Edad máxima");
 		JSpinner max = new JSpinner(new SpinnerNumberModel(19, 19, 200, 1));
 
 		max.addChangeListener(new ChangeListener() {
@@ -364,6 +403,45 @@ public class CrearCarrera extends JFrame {
 		getPnFilasPlazos().add(Box.createRigidArea(new Dimension(0, 10)));
 
 	}
+	
+	
+	private void addPunto() {
+		JPanel pn = new JPanel();
+		JLabel lbNombre = new JLabel("Nombre");
+		JTextField nombre = new JTextField(10);
+		JLabel lbKm = new JLabel("Km");
+		JSpinner km = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		km.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				checkArcosValidity();
+			}
+		});
+		
+		JButton eliminar = new JButton("Eliminar");
+		eliminar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnFilasPuntos.remove(pn);
+				repaint();
+				checkArcosValidity();
+				
+			}
+		});
+		pn.add(lbNombre);
+		pn.add(nombre);
+		pn.add(lbKm);
+		pn.add(km);
+		pn.add(eliminar);
+		
+		pn.setVisible(true);
+		getPanelFilasPuntos().add(pn);
+	}
+	
+	
+	
 
 	private JPanel getPnFilas() {
 		if (pnFilas == null) {
@@ -411,11 +489,29 @@ public class CrearCarrera extends JFrame {
 		});
 		return btnCrearPlazo;
 	}
+	
+	private JButton getBtnCrearPunto() {
+		if (btnCrearPunto == null) {
+			btnCrearPunto = new JButton("Nuevo punto de control");
+		}
+		btnCrearPunto.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addPunto();
+				setVisible(true);
+				checkArcosValidity();
+				System.out.println("Clicado");
+
+			}
+		});
+		return btnCrearPunto;
+	}
 
 	private JCalendar getCalendar() {
 		if (calendar == null) {
 			calendar = new JCalendar();
-			calendar.setBounds(470, 50, 258, 183);
+			calendar.setBounds(468, 41, 258, 183);
 			calendar.addPropertyChangeListener(new PropertyChangeListener() {
 
 				@Override
@@ -430,7 +526,7 @@ public class CrearCarrera extends JFrame {
 
 	private JButton getBtnCrearCompeticion() {
 		if (btnCrearCompeticion == null) {
-			btnCrearCompeticion = new JButton("Crear competici�n");
+			btnCrearCompeticion = new JButton("Crear competición");
 			btnCrearCompeticion.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -438,7 +534,7 @@ public class CrearCarrera extends JFrame {
 				}
 			});
 			btnCrearCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			btnCrearCompeticion.setBounds(565, 634, 163, 37);
+			btnCrearCompeticion.setBounds(565, 698, 163, 37);
 
 		}
 		return btnCrearCompeticion;
@@ -462,31 +558,31 @@ public class CrearCarrera extends JFrame {
 				getCalendar().getDate().getTime());
 		competicion.organizador = getTxtOrganizador().getText();
 		competicion.cuentaBancaria = getTxtCuentaBancaria().getText();
-		competicion.dorsalesReservados = Integer
-				.parseInt(getSpinnerDorsales().getValue().toString());
-		;
-
+		competicion.dorsalesReservados = Integer.parseInt(getSpinnerDorsales().getValue().toString());;
+		competicion.plazasDisponibles = Integer.parseInt(getSpinnerPlazas().getValue().toString());
 		List<CategoriaDto> categorias = createCategories();
 		List<PlazoDto> plazos = createPlazos();
+		List<ArcoDto> arcos = createArcos();
 
 		try {
 			BusinessFactory.forCompeticionCrudService()
 					.anadirCompeticion(competicion);
 
 			for (CategoriaDto categoriaDto : categorias) {
-
 				BusinessFactory.forCategoria().añadirCategoria(categoriaDto, competicion.idCompeticion);
-
 			}
 
 			for (PlazoDto plazo : plazos) {
 				plazo.idCompeticion = competicion.idCompeticion;
 				BusinessFactory.forPlazo().addPlazo(plazo);
 			}
+			
+			for(ArcoDto arco : arcos) {
+				arco.idCompeticion = competicion.idCompeticion;
+				BusinessFactory.forArco().AnadirArco(arco);
+			}
 
-
-			JOptionPane.showMessageDialog(this, "Competicion creada correctamente");
-
+			JOptionPane.showMessageDialog(this, "Competición creada correctamente");
 			dispose();
 		} catch (BusinessException e) {
 			getLblError().setText(e.getMessage());
@@ -498,7 +594,7 @@ public class CrearCarrera extends JFrame {
 		if (lblOrganizador == null) {
 			lblOrganizador = new JLabel("Organizador");
 			lblOrganizador.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblOrganizador.setBounds(41, 145, 80, 27);
+			lblOrganizador.setBounds(41, 132, 80, 27);
 		}
 		return lblOrganizador;
 	}
@@ -507,7 +603,7 @@ public class CrearCarrera extends JFrame {
 		if (txtOrganizador == null) {
 			txtOrganizador = new JTextField();
 			txtOrganizador.setColumns(10);
-			txtOrganizador.setBounds(154, 150, 275, 19);
+			txtOrganizador.setBounds(154, 137, 275, 19);
 		}
 		return txtOrganizador;
 	}
@@ -516,7 +612,7 @@ public class CrearCarrera extends JFrame {
 		if (lblCuentaBancaria == null) {
 			lblCuentaBancaria = new JLabel("Cuenta Bancaria");
 			lblCuentaBancaria.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblCuentaBancaria.setBounds(41, 182, 103, 27);
+			lblCuentaBancaria.setBounds(41, 169, 103, 27);
 		}
 		return lblCuentaBancaria;
 	}
@@ -525,7 +621,7 @@ public class CrearCarrera extends JFrame {
 		if (txtCuentaBancaria == null) {
 			txtCuentaBancaria = new JTextField();
 			txtCuentaBancaria.setColumns(10);
-			txtCuentaBancaria.setBounds(154, 187, 275, 19);
+			txtCuentaBancaria.setBounds(154, 174, 275, 19);
 		}
 		return txtCuentaBancaria;
 	}
@@ -533,12 +629,13 @@ public class CrearCarrera extends JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			tabbedPane.setBounds(41, 243, 687, 361);
+			tabbedPane.setBounds(41, 305, 687, 361);
 
 			tabbedPane.add(getPnCategorias());
 			tabbedPane.add("Categorias", pnCategorias);
 
 			tabbedPane.addTab("Plazos", null, getPnPlazos(), null);
+			tabbedPane.addTab("Puntos de control", null, getPnPuntos(), null);
 		}
 		return tabbedPane;
 	}
@@ -573,7 +670,7 @@ public class CrearCarrera extends JFrame {
 		if (lblError == null) {
 			lblError = new JLabel("");
 			lblError.setForeground(Color.RED);
-			lblError.setBounds(55, 634, 429, 19);
+			lblError.setBounds(51, 685, 429, 19);
 		}
 		return lblError;
 	}
@@ -587,16 +684,34 @@ public class CrearCarrera extends JFrame {
 			}
 		}
 		if (getPnFilas().getComponents().length == 0) {
-			getLblError().setText("Tienes que a�adir al menos una categoria");
+			getLblError().setText("Tienes que añadir al menos una categoria");
 			return false;
 		}
 
 		if (getPnFilasPlazos().getComponents().length == 0) {
-			getLblError().setText("Tienes que a�adir al menos un plazo");
+			getLblError().setText("Tienes que añadir al menos un plazo");
 			return false;
 		}
 		return true;
 	}
+	
+	private List<ArcoDto> createArcos(){
+		List<ArcoDto> lista = new ArrayList<ArcoDto>();
+		for (Component fila : getPanelFilasPuntos().getComponents()) {
+			if(fila instanceof JPanel) {
+				ArcoDto arco = new ArcoDto();
+				JPanel panel = (JPanel) fila;
+				Component[] components = panel.getComponents();
+				arco.name = ((JTextField) components[1]).getText();
+				arco.km = (int) ((JSpinner) components[3]).getValue();
+				lista.add(arco);
+			}
+		}
+		return lista;
+	}
+	
+	
+
 
 	private List<CategoriaDto> createCategories() {
 		List<CategoriaDto> lista = new ArrayList<CategoriaDto>();
@@ -628,9 +743,8 @@ public class CrearCarrera extends JFrame {
 						((JSpinner) components[5]).getValue().toString());
 				Date inicio = ((JDateChooser) components[1]).getDate();
 				if (inicio != null) {
-					plazo.fechaInicio = inicio.toInstant()
-							.atZone(ZoneId.systemDefault()).toLocalDate();
-					;
+					plazo.fechaInicio = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					
 				}
 				Date fin = ((JDateChooser) components[3]).getDate();
 				if (fin != null) {
@@ -657,21 +771,20 @@ public class CrearCarrera extends JFrame {
 		ordenadas.sort(Comparator.comparing(c -> c.edadMin));
 
 		if(!ordenadas.stream().anyMatch(c -> c.sexo.contentEquals("Masculino") && c.edadMin == 18)) {
-			getLblError().setText("Es necesaria al menos una categoria Masculina con minimo de edad de 18");
-
+			getLblError().setText("Es necesaria al menos una categoria Masculina con mínimo de edad de 18");
 			return false;
 		}
 
 		
 		if(!ordenadas.stream().anyMatch(c -> c.sexo.contentEquals("Femenino") && c.edadMin == 18)) {
-			getLblError().setText("Es necesaria al menos una categoria Femenina con m�nimo de edad de 18");
+			getLblError().setText("Es necesaria al menos una categoria Femenina con mínimo de edad de 18");
 			return false;
 		}
 		
 		
 		
 		if (ordenadas.get(0).edadMin != 18) {
-			getLblError().setText("Es necesario que una categoria tenda edad minima de 18 a�os");
+			getLblError().setText("Es necesario que una categoria tenda edad minima de 18 años");
 			return false;
 		}
 		
@@ -717,9 +830,31 @@ public class CrearCarrera extends JFrame {
 		}
 		return true;
 	}
+	
+	private boolean checkArcosValidity() {
+		List<ArcoDto> ordenadas = new ArrayList<ArcoDto>(createArcos());
+		
+		ordenadas.sort(Comparator.comparing(c->c.km));
+		for (int i = 0; i < ordenadas.size() - 1; i++) {
+			if(ordenadas.get(i).km == ordenadas.get(i+1).km) {
+				getLblError().setVisible(true);
+				getLblError().setText("No puedes poner dos puntos de control en el mismo km");
+				return false;
+			}
+		}
+		
+		for (ArcoDto arcoDto : ordenadas) {
+			if(arcoDto.km>=Integer.parseInt(getSpinnerDistancia().getValue().toString())){
+				getLblError().setText("Un punto de control no puede estar despues de la meta");
+				return false;
+			}
+					
+		}
+		getLblError().setText("");
+		return true;
+	}
 
 	private boolean checkPlazosVality() {
-		System.out.println("Checkeando plazos");
 		List<PlazoDto> ordenadas = new ArrayList<PlazoDto>(createPlazos());
 
 		ordenadas.sort(Comparator.comparing(c -> c.fechaInicio));
@@ -733,8 +868,7 @@ public class CrearCarrera extends JFrame {
 
 			if (plazoDto.fechaFin
 					.isAfter(getCalendar().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
-				getLblError().setText("El plazo no puede acabar despues de la competicion");
-
+				getLblError().setText("El plazo no puede acabar despues de la competición");
 				return false;
 			}
 		}
@@ -767,17 +901,60 @@ public class CrearCarrera extends JFrame {
 		if (lblDorsales == null) {
 			lblDorsales = new JLabel("Dorsales Reservados");
 			lblDorsales.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblDorsales.setBounds(41, 216, 134, 27);
+			lblDorsales.setBounds(41, 206, 134, 27);
 		}
 		return lblDorsales;
 	}
 
 	private JSpinner getSpinnerDorsales() {
 		if (spinnerDorsales == null) {
-			spinnerDorsales = new JSpinner(
-					new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-			spinnerDorsales.setBounds(181, 221, 50, 19);
+			spinnerDorsales = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+			spinnerDorsales.setBounds(181, 211, 50, 19);
 		}
 		return spinnerDorsales;
+	}
+	private JLabel getLblPlazas() {
+		if (lblPlazas == null) {
+			lblPlazas = new JLabel("Plazas");
+			lblPlazas.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			lblPlazas.setBounds(41, 243, 134, 27);
+		}
+		return lblPlazas;
+	}
+	private JSpinner getSpinnerPlazas() {
+		if (spinnerPlazas == null) {
+			spinnerPlazas = new JSpinner();
+			spinnerPlazas.setBounds(181, 248, 50, 19);
+		}
+		return spinnerPlazas;
+	}
+	private JCheckBox getCheckBoxLista() {
+		if (checkBoxLista == null) {
+			checkBoxLista = new JCheckBox("Lista de espera");
+			checkBoxLista.setBounds(41, 278, 134, 21);
+		}
+		return checkBoxLista;
+	}
+	private JPanel getPnPuntos() {
+		if (pnPuntos == null) {
+			pnPuntos = new JPanel();
+			pnPuntos.setLayout(new BorderLayout(0, 0));
+			pnPuntos.add(getBtnCrearPunto(),BorderLayout.SOUTH);
+			pnPuntos.add(getScrollPanePuntos(),BorderLayout.CENTER);
+		}
+		return pnPuntos;
+	}
+	private JScrollPane getScrollPanePuntos() {
+		if (scrollPanePuntos == null) {
+			scrollPanePuntos = new JScrollPane(getPanelFilasPuntos());
+		}
+		return scrollPanePuntos;
+	}
+	private JPanel getPanelFilasPuntos() {
+		if (pnFilasPuntos == null) {
+			pnFilasPuntos = new JPanel();
+			pnFilasPuntos.setLayout(new BoxLayout(pnFilasPuntos, BoxLayout.Y_AXIS));
+		}
+		return pnFilasPuntos;
 	}
 }
