@@ -61,10 +61,10 @@ public class InscribirAtleta {
 
 
 			if(yaEstaInscrito()) {
-				throw new BusinessException("El atleta ya est· inscrito en la competiciÛn");				
+				throw new BusinessException("El atleta ya est√ë inscrito en la competici√ën");				
 			}
 			if(!haySitio()) {
-				throw new BusinessException("La competiciÛn est· llena");				
+				throw new BusinessException("La competici√ën est√ë llena");				
 			}
 			if(this.club.isBlank()) {
 				pst = c.prepareStatement(SQL);

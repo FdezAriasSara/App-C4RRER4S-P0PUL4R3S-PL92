@@ -50,7 +50,7 @@ public class PagarConTarjeta {
 	}
 	private void comprobarTarjeta(TarjetaDto tarjeta) throws BusinessException {
 		if(tarjeta.fechaCaducidad.isBefore(LocalDate.now())) {
-			throw new BusinessException("La tarjeta est· caducada.");
+			throw new BusinessException("La tarjeta est√ë caducada.");
 		}
 		
 	}
@@ -66,21 +66,21 @@ public class PagarConTarjeta {
 
 		try {
 			c = Jdbc.getConnection();
-			// Para realizar el pago primero debo comprobar que existe la inscripciÛn, al
+			// Para realizar el pago primero debo comprobar que existe la inscripci√ën, al
 			// igual que para cambiar el estado de la misma.
 			comprobarTarjeta(tarjeta);
 			if (!existeInscripcion()) {
 
-				throw new BusinessException("La inscripciÛn del atleta con id :" + pago.idAtleta
-						+ " para la competiciÛn con id: " + pago.idCompeticion + " no existe.");
+				throw new BusinessException("La inscripci√ën del atleta con id :" + pago.idAtleta
+						+ " para la competici√ën con id: " + pago.idCompeticion + " no existe.");
 
 			}
-			// Si la inscripciÛn ya ha sido marcada como pagada , tenemos que evitar el pago
-			// la inscripciÛn que no tiene pago es aquella que esta en estado pre-inscrito
+			// Si la inscripci√ën ya ha sido marcada como pagada , tenemos que evitar el pago
+			// la inscripci√ën que no tiene pago es aquella que esta en estado pre-inscrito
 			if (!estadoPreInscrito()) {
 
-				throw new BusinessException("La inscripciÛn del atleta con id :" + pago.idAtleta
-						+ " para la competiciÛn con id: " + pago.idCompeticion + " ya est· pagada.");
+				throw new BusinessException("La inscripci√ën del atleta con id :" + pago.idAtleta
+						+ " para la competici√ën con id: " + pago.idCompeticion + " ya est√ë pagada.");
 
 			}
 			pstCuota = c.prepareStatement(IMPORTE_PAGO);
@@ -91,7 +91,7 @@ public class PagarConTarjeta {
 			}
 			
 
-			// RealizaciÛn del pago una vez sabemos que existe la inscripciÛn
+			// Realizaci√ën del pago una vez sabemos que existe la inscripci√ën
 			pagoPst = c.prepareStatement(REALIZAR_PAGO);
 			pago.pagoId = UUID.randomUUID().toString();
 			pagoPst.setInt(1, pago.idAtleta);
@@ -99,7 +99,7 @@ public class PagarConTarjeta {
 			pago.fechaPago = LocalDate.now();
 			Date fechaPago = Date.valueOf(pago.fechaPago);
 			pagoPst.setDate(3, fechaPago);
-			pagoPst.setDouble(4, pago.importe);// el importe sale de la cuota de la inscripiciÛn
+			pagoPst.setDouble(4, pago.importe);// el importe sale de la cuota de la inscripici√ën
 			pagoPst.setInt(5, pago.idCompeticion);
 			pagoPst.executeUpdate();
 
@@ -128,7 +128,7 @@ public class PagarConTarjeta {
 	}
 
 	/**
-	 * Comprueba el estado de la inscripciÛn.
+	 * Comprueba el estado de la inscripci√ën.
 	 * 
 	 * @return true si el estado es "pre-inscrito". Falso si no.
 	 */
@@ -153,9 +153,9 @@ public class PagarConTarjeta {
 	}
 
 	/**
-	 * Comprueba la existencia de la inscripciÛn.
+	 * Comprueba la existencia de la inscripci√ën.
 	 * 
-	 * @return true si existe una inscripciÛn. Falso si no.
+	 * @return true si existe una inscripci√ën. Falso si no.
 	 */
 	private boolean existeInscripcion() {
 		PreparedStatement encontrarIdPst = null;

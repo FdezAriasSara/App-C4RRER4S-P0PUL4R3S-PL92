@@ -11,10 +11,10 @@ import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 
 public class ListarInscripcionesAtleta {
-	private final String FORMATO_INFORMACION = "Competición:%s \n\t-Estado de la inscripción:%s\n\t-Fecha del último cambio :%s\n";
+	private final String FORMATO_INFORMACION = "CompeticiÃ‘n:%s \n\t-Estado de la inscripciÃ‘n:%s\n\t-Fecha del Ã‘ltimo cambio :%s\n";
 	private final String INSCRIPCIONES_ASOCIADAS = "SELECT estado, idCompeticion, fechaUltimoCambio FROM Inscripcion WHERE idAtleta=? ORDER BY fechaUltimoCambio DESC";
-	// El nombre de la competición a la que pertenece la inscripción está en la
-	// tabla competición, no en Inscripción. Por ello:
+	// El nombre de la competiciÃ‘n a la que pertenece la inscripciÃ‘n estÃ‘ en la
+	// tabla competiciÃ‘n, no en InscripciÃ‘n. Por ello:
 	private final String NOMBRE_COMPETICION = "SELECT nombre FROM Competicion WHERE idCompeticion=?";
 	private final String EXISTE_COMPETICION = "SELECT * FROM Competicion WHERE idCompeticion=?";
 	private final String EXISTE_ATLETA = "SELECT * FROM Atleta WHERE idAtleta=?";
@@ -46,27 +46,27 @@ public class ListarInscripcionesAtleta {
 			String estado, fechaCambios, nombreCompeticion, actual;
 			int idCompeticion;
 			while (rsInscripciones.next()) {
-				// recogemos los datos de Inscripción que necesitamos
+				// recogemos los datos de InscripciÃ‘n que necesitamos
 
 				estado = rsInscripciones.getString(1);
-				// necesitamos el id de la competición para poder acceder al nombre.
+				// necesitamos el id de la competiciÃ‘n para poder acceder al nombre.
 				idCompeticion = Integer.parseInt(rsInscripciones.getString(2));
 				fechaCambios = rsInscripciones.getString(3);
 
 				if (!competicionExiste(idCompeticion)) {
-					throw new BusinessException(String.format("No existe competición con  id (%d). ", idCompeticion));
+					throw new BusinessException(String.format("No existe competiciÃ‘n con  id (%d). ", idCompeticion));
 				} else if(!atletaExiste(idAtleta)){
 					throw new BusinessException(String.format("No existe el atleta con  id (%d). ", idAtleta));
-				}else {// por cada inscripción , necesitamos encontrar también el nombre de la
+				}else {// por cada inscripciÃ‘n , necesitamos encontrar tambiÃ‘n el nombre de la
 				
-						// competición.
+						// competiciÃ‘n.
 					pstNombresComp.setInt(1, idCompeticion);
 					rsNombres = pstNombresComp.executeQuery();
 					if(rsNombres.next()) {
 						nombreCompeticion=	rsNombres.getString(1);
 						actual = String.format(FORMATO_INFORMACION, nombreCompeticion, estado, fechaCambios);// Creamos la
 						// string
-						this.inscripciones.add(actual);// la añadimos a la lista de datos.
+						this.inscripciones.add(actual);// la aÃ‘adimos a la lista de datos.
 					}
 						
 				}
@@ -83,7 +83,7 @@ public class ListarInscripcionesAtleta {
 
 		}
 
-		return this.inscripciones;// devolvemos la lista con los "toString" de cada inscripción.
+		return this.inscripciones;// devolvemos la lista con los "toString" de cada inscripciÃ‘n.
 	}
 
 	private boolean competicionExiste(int idCompeticion) {

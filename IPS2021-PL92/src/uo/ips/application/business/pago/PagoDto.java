@@ -39,7 +39,7 @@ public class PagoDto {
 	@Override
 	public String toString() {
 		return "fecha: " + fechaPago + "\n" + " importe:" + importe + "$\n" + " ID pago:" + pagoId + "\n"
-				+ " ID atleta:" + idAtleta + "\n" + " ID Competición:" + idCompeticion + "\n";
+				+ " ID atleta:" + idAtleta + "\n" + " ID CompeticiÃ‘n:" + idCompeticion + "\n";
 	}
 
 }

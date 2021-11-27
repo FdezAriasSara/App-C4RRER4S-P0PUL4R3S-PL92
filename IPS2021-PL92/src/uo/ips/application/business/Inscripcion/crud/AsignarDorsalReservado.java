@@ -17,10 +17,10 @@ public class AsignarDorsalReservado {
 	private Connection c;
 	private int idCompeticion;
 	public AsignarDorsalReservado(String email, int dorsal,int idCompeticion) {
-		Argument.isNotEmpty(email,"El email no puede estar vacÌo");
+		Argument.isNotEmpty(email,"El email no puede estar vac√ëo");
 		Argument.isNotNull(email,"El email no puede ser nulo");
 		Argument.isTrue(dorsal>0,"El dorsal no puede ser negativo");
-		Argument.isTrue(idCompeticion>0,"El id de la competiciÛn no puede ser negativo");
+		Argument.isTrue(idCompeticion>0,"El id de la competici√ën no puede ser negativo");
 		this.email=email;
 		this.dorsal=dorsal;
 		this.idCompeticion=idCompeticion;

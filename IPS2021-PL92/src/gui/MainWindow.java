@@ -282,15 +282,14 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnImportarDatos());
 
 			panel_organizador.add(getTxtArchivoTiempos());
-
 			panel_organizador.add(getBtnCargarCategorias());
-
 			panel_organizador.add(getBtCargarPagos());
 
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
 			panel_organizador.add(getBtnMostrarTodasComp());
 			panel_organizador.add(getPanel());
+			panel_organizador.add(getPnFiltro());
 
 			panel_organizador.add(getBtInformacionContable());
 
@@ -1867,5 +1866,12 @@ public class MainWindow extends JFrame {
 		((CardLayout) getPanel_perfilAtleta().getLayout()).show(getPanel_perfilAtleta(), "perfil");
 
 
+	}
+	public JPanel getPnFiltro() {
+		if (pnFiltro == null) {
+			pnFiltro = new JPanel();
+			pnFiltro.setBounds(700, 10, 168, 294);
+		}
+		return pnFiltro;
 	}
 }

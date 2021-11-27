@@ -405,6 +405,17 @@ public class ClubController {
 					emails[i] = dtos.get(i).email;
 
 				}
+				
+				int alre = incCrud.inscribirClusterEmails(idCompeticion, c,club, emails);
+				
+				
+				
+				JOptionPane.showMessageDialog(
+						   mainW,
+						   "Atletas registrados con exito.\nSe han registrado " 
+						   + noRegistrados.size() 
+						   + " atletas \nque no estaban registrados previamente.\nHabÑa " 
+						   + alre + " atletas ya inscritos.");
 
 				incCrud.inscribirClusterEmails(idCompeticion, c, club, emails);
 

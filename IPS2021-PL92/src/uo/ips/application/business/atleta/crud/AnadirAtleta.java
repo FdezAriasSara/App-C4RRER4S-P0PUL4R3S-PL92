@@ -79,8 +79,8 @@ public class AnadirAtleta {
 	}
 
 	/**
-	 * IMPORTANTE separar el chequeo del dni , de el del email. As� se comprueba
-	 * tambi�n que el email no est� registrado en el sistema ya, pero con otro
+	 * IMPORTANTE separar el chequeo del dni , de el del email. AsÑ se comprueba
+	 * tambiÑn que el email no estÑ registrado en el sistema ya, pero con otro
 	 * atleta con dni diferente.
 	 * 
 	 * @throws BusinessException

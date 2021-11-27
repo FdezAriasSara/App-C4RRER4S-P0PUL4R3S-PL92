@@ -66,7 +66,7 @@ public class ObtenerClasificaciones {
 				throw new BusinessException("La competicion no existe");
 			}
 			if(!competicionHaTerminado()) {
-				throw new BusinessException("La competicion aun no terminó, importa los datos de final de carrera.");
+				throw new BusinessException("La competicion aun no terminÃ‘, importa los datos de final de carrera.");
 			}
 			
 			
@@ -78,11 +78,12 @@ public class ObtenerClasificaciones {
 			pst.setInt(2,idCompeticion);
 			
 			rs = pst.executeQuery();
-			
 			while(rs.next()) {
+				InscripcionDto ins = new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
+						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8), rs.getString("nombreCategoria"));
+				ins.club = rs.getString("club");
+				inscripciones.add(ins);
 				
-				inscripciones.add(new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
-						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8), rs.getString("nombreCategoria")));
 				
 			}
 			

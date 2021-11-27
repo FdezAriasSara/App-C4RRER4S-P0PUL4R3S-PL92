@@ -16,8 +16,10 @@ public class InscripcionDto {
 	public int tiempoQueTardaEnSegundos;
 	public Estado estado;
 	public int dorsal;
+	public Time[] tiempos;
+	public String club;
 
-	// Esto no est· en la bd pero no los borreis porfas que los uso
+	// Esto no est√ë en la bd pero no los borreis porfas que los uso
 	public Time tiempoInicio;
 	public Time tiempoFinal;
 
@@ -118,6 +120,7 @@ public class InscripcionDto {
 		}
 
 	}
+		
 
 	public InscripcionDto() {
 		this.fechaInscripcion = null;

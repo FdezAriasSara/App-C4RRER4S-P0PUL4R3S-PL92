@@ -41,7 +41,7 @@ public class AnadirCompeticion {
 //		rs = pst.executeQuery();
 //		
 //		while(rs.next()) {
-//			throw new BusinessException("Ya existe la competición");
+//			throw new BusinessException("Ya existe la competiciÃ‘n");
 //		}
 //		pst.close();
 		pst = c.prepareStatement(SQL,pst.RETURN_GENERATED_KEYS);

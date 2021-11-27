@@ -29,6 +29,9 @@ public class CompeticionController {
 
 	private CompeticionCrudService competicionModel = BusinessFactory.forCompeticionCrudService();
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public CompeticionController(MainWindow main) {
 		this.mainW = main;
 

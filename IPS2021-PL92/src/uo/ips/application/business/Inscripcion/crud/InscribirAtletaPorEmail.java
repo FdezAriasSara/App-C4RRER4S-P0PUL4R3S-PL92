@@ -58,7 +58,7 @@ public class InscribirAtletaPorEmail {
 			ResultSet competicionRs = pst.executeQuery();
 			
 			if(!competicionRs.next())
-				throw new BusinessException("La competición no existe");
+				throw new BusinessException("La competiciÃ‘n no existe");
 			
 			pst = c.prepareStatement(SQLGetId);
 			pst.setString(1, email);
