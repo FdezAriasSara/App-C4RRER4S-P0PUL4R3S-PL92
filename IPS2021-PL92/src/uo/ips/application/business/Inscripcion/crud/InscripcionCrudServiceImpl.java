@@ -25,7 +25,9 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	}
 
 	@Override
+
 	public InscripcionDto anadirInscripcion(InscripcionDto solicitud) {
+
 		return null;
 	}
 

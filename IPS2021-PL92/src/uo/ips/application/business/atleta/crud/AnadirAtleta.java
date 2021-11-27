@@ -14,7 +14,7 @@ public class AnadirAtleta {
 	private String AÑADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname,idAtleta) VALUES (?,?,?,?,?,?,?)";
 	private String BUSCAR_ATLETA_POR_DNI = "SELECT * FROM Atleta WHERE dni = ?";
 	private String BUSCAR_ATLETA_POR_EMAIL = "SELECT * FROM Atleta WHERE email = ?";
-	private String ID_MAXIMO="select max(idAtleta) from Atleta";
+	private String ID_MAXIMO = "select max(idAtleta) from Atleta";
 
 	private AtletaDto atleta;
 
@@ -40,7 +40,7 @@ public class AnadirAtleta {
 			pst.setString(4, atleta.nombre);
 			pst.setString(5, atleta.sexo);
 			pst.setString(6, atleta.apellido);
-			int id=getId();
+			int id = getId();
 			pst.setInt(7, id);
 
 			pst.executeUpdate();
@@ -57,25 +57,23 @@ public class AnadirAtleta {
 	private int getId() {
 		Connection c = null;
 		PreparedStatement pst = null;
-		ResultSet rs=null;
+		ResultSet rs = null;
 		try {
-			
+
 			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(ID_MAXIMO);
-			
-		
 
-			rs=pst.executeQuery();
-			if(rs.next()) {
-				return rs.getInt(1)+1;
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1) + 1;
 			}
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rs,pst,c);
-			
+			Jdbc.close(rs, pst, c);
+
 		}
 		return 0;
 	}
@@ -102,7 +100,9 @@ public class AnadirAtleta {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				throw new BusinessException(String.format("El correo %s ya est� registrado.", atleta.email));
+
+				throw new BusinessException(String.format("El correo %s ya esta registrado.", atleta.email));
+
 			}
 			pst.close();
 		} catch (SQLException e) {
@@ -112,8 +112,10 @@ public class AnadirAtleta {
 		}
 
 	}
+
 	/**
 	 * Comprueba que no hay un atleta con el mismo dni.
+	 * 
 	 * @throws BusinessException
 	 */
 
@@ -133,7 +135,10 @@ public class AnadirAtleta {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				throw new BusinessException(String.format("El atleta con dni %s ya est� registrado.", atleta.dni));
+
+				throw new BusinessException(String.format(
+						"El atleta con dni %s ya esta registrado.",
+						atleta.dni));
 			}
 			pst.close();
 		} catch (SQLException e) {

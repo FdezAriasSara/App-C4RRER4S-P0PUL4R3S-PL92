@@ -1,34 +1,16 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDateChooser;
-
-import uo.ips.application.business.competicion.CompeticionDto;
-import uo.ips.application.business.plazo.Plazo;
-import uo.ips.application.business.plazo.PlazoDto;
-import uo.ips.application.business.BusinessException;
-import uo.ips.application.business.BusinessFactory;
-import uo.ips.application.business.categoria.CategoriaDto;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,26 +19,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.JTextField;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
-
-import java.awt.Choice;
-import java.awt.Dimension;
-
-import javax.swing.JSpinner;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
-import java.awt.GridLayout;
-import javax.swing.JTabbedPane;
-import java.awt.Color;
-import java.awt.Component;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
+import uo.ips.application.business.BusinessException;
+import uo.ips.application.business.BusinessFactory;
+import uo.ips.application.business.categoria.CategoriaDto;
+import uo.ips.application.business.competicion.CompeticionDto;
+import uo.ips.application.business.plazo.PlazoDto;
 
 public class CrearCarrera extends JFrame {
 
@@ -93,6 +80,7 @@ public class CrearCarrera extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					CrearCarrera frame = new CrearCarrera();
@@ -133,7 +121,7 @@ public class CrearCarrera extends JFrame {
 		contentPane.add(getLblDorsales());
 		contentPane.add(getSpinnerDorsales());
 		// contentPane.add(getScrollPaneCategorias());
-		
+
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 	}
@@ -186,7 +174,8 @@ public class CrearCarrera extends JFrame {
 
 	private JSpinner getSpinnerDistancia() {
 		if (spinner == null) {
-			spinner = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+			spinner = new JSpinner(
+					new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 			spinner.setBounds(154, 108, 50, 19);
 		}
 		return spinner;
@@ -238,7 +227,7 @@ public class CrearCarrera extends JFrame {
 		sexo.addItem("Masculino");
 		sexo.addItem("Femenino");
 		sexo.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				checkCategoriasVality();
@@ -251,8 +240,10 @@ public class CrearCarrera extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if ((int) min.getValue() >= (int) ((JSpinner) min.getParent().getComponents()[7]).getValue()) {
-					((JSpinner) min.getParent().getComponents()[7]).setValue((int) min.getValue() + 1);
+				if ((int) min.getValue() >= (int) ((JSpinner) min.getParent()
+						.getComponents()[7]).getValue()) {
+					((JSpinner) min.getParent().getComponents()[7])
+							.setValue((int) min.getValue() + 1);
 				} else {
 					try {
 						min.commitEdit();
@@ -271,8 +262,10 @@ public class CrearCarrera extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if ((int) max.getValue() <= (int) ((JSpinner) max.getParent().getComponents()[5]).getValue()) {
-					max.setValue((int) ((JSpinner) max.getParent().getComponents()[5]).getValue() + 1);
+				if ((int) max.getValue() <= (int) ((JSpinner) max.getParent()
+						.getComponents()[5]).getValue()) {
+					max.setValue((int) ((JSpinner) max.getParent()
+							.getComponents()[5]).getValue() + 1);
 				} else {
 					try {
 						max.commitEdit();
@@ -285,18 +278,17 @@ public class CrearCarrera extends JFrame {
 
 			}
 		});
-		
+
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pnFilas.remove(pn);
 				repaint();
-				
+
 			}
 		});
-		
 
 		pn.add(lbNombre);
 		pn.add(nombre);
@@ -317,41 +309,44 @@ public class CrearCarrera extends JFrame {
 		JPanel pn = new JPanel();
 
 		JLabel lblcuota = new JLabel("Cuota");
-		JSpinner cuota = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		JSpinner cuota = new JSpinner(
+				new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 
 		JLabel lblFechaInicio = new JLabel("Fecha incio");
 		JDateChooser inicio = new JDateChooser();
 		inicio.setPreferredSize(new Dimension(120, 20));
 		inicio.setDate(new Date());
-		inicio.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+		inicio.getDateEditor()
+				.addPropertyChangeListener(new PropertyChangeListener() {
 
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				checkPlazosVality();
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						checkPlazosVality();
 
-			}
-		});
+					}
+				});
 
 		JLabel lblFechaFinal = new JLabel("Fecha final");
 		JDateChooser fechaFinal = new JDateChooser();
 		fechaFinal.setDate(new Date());
 		fechaFinal.setPreferredSize(new Dimension(120, 20));
-		fechaFinal.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+		fechaFinal.getDateEditor()
+				.addPropertyChangeListener(new PropertyChangeListener() {
 
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				checkPlazosVality();
-			}
-		});
-		
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						checkPlazosVality();
+					}
+				});
+
 		JButton eliminar = new JButton("Eliminar");
 		eliminar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pnFilasPlazos.remove(pn);
 				repaint();
-				
+
 			}
 		});
 
@@ -422,11 +417,11 @@ public class CrearCarrera extends JFrame {
 			calendar = new JCalendar();
 			calendar.setBounds(470, 50, 258, 183);
 			calendar.addPropertyChangeListener(new PropertyChangeListener() {
-				
+
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					checkPlazosVality();
-					
+
 				}
 			});
 		}
@@ -437,6 +432,7 @@ public class CrearCarrera extends JFrame {
 		if (btnCrearCompeticion == null) {
 			btnCrearCompeticion = new JButton("Crear competici�n");
 			btnCrearCompeticion.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					crearCompeticion();
 				}
@@ -458,21 +454,29 @@ public class CrearCarrera extends JFrame {
 		CompeticionDto competicion = new CompeticionDto();
 		competicion.idCompeticion = -1;
 		competicion.nombre = getTxtFieldNombre().getText();
-		competicion.tipoCompeticion = getComboBoxTipo().getSelectedItem().toString();
-		competicion.distanciaKm = Integer.parseInt(getSpinnerDistancia().getValue().toString());
-		competicion.fechaCompeticion = new java.sql.Date(getCalendar().getDate().getTime());
+		competicion.tipoCompeticion = getComboBoxTipo().getSelectedItem()
+				.toString();
+		competicion.distanciaKm = Integer
+				.parseInt(getSpinnerDistancia().getValue().toString());
+		competicion.fechaCompeticion = new java.sql.Date(
+				getCalendar().getDate().getTime());
 		competicion.organizador = getTxtOrganizador().getText();
 		competicion.cuentaBancaria = getTxtCuentaBancaria().getText();
-		competicion.dorsalesReservados = Integer.parseInt(getSpinnerDorsales().getValue().toString());;
+		competicion.dorsalesReservados = Integer
+				.parseInt(getSpinnerDorsales().getValue().toString());
+		;
 
 		List<CategoriaDto> categorias = createCategories();
 		List<PlazoDto> plazos = createPlazos();
 
 		try {
-			BusinessFactory.forCompeticionCrudService().anadirCompeticion(competicion);
+			BusinessFactory.forCompeticionCrudService()
+					.anadirCompeticion(competicion);
 
 			for (CategoriaDto categoriaDto : categorias) {
+
 				BusinessFactory.forCategoria().añadirCategoria(categoriaDto, competicion.idCompeticion);
+
 			}
 
 			for (PlazoDto plazo : plazos) {
@@ -480,7 +484,9 @@ public class CrearCarrera extends JFrame {
 				BusinessFactory.forPlazo().addPlazo(plazo);
 			}
 
-			JOptionPane.showMessageDialog(this, "Competici�n creada correctamente");
+
+			JOptionPane.showMessageDialog(this, "Competicion creada correctamente");
+
 			dispose();
 		} catch (BusinessException e) {
 			getLblError().setText(e.getMessage());
@@ -557,7 +563,8 @@ public class CrearCarrera extends JFrame {
 	private JPanel getPnFilasPlazos() {
 		if (pnFilasPlazos == null) {
 			pnFilasPlazos = new JPanel();
-			pnFilasPlazos.setLayout(new BoxLayout(pnFilasPlazos, BoxLayout.Y_AXIS));
+			pnFilasPlazos
+					.setLayout(new BoxLayout(pnFilasPlazos, BoxLayout.Y_AXIS));
 		}
 		return pnFilasPlazos;
 	}
@@ -573,7 +580,8 @@ public class CrearCarrera extends JFrame {
 
 	private boolean checkAllFields() {
 		for (Component component : contentPane.getComponents()) {
-			if (component instanceof JTextField && ((JTextField) component).getText().isEmpty()) {
+			if (component instanceof JTextField
+					&& ((JTextField) component).getText().isEmpty()) {
 				getLblError().setText("Tienes que rellenar todos los campos");
 				return false;
 			}
@@ -597,8 +605,10 @@ public class CrearCarrera extends JFrame {
 				CategoriaDto categoria = new CategoriaDto();
 				JPanel panel = (JPanel) fila;
 				Component[] components = panel.getComponents();
-				categoria.nombreCategoria = ((JTextField) components[1]).getText();
-				categoria.sexo = (String) ((JComboBox<String>) components[3]).getSelectedItem();
+				categoria.nombreCategoria = ((JTextField) components[1])
+						.getText();
+				categoria.sexo = (String) ((JComboBox<String>) components[3])
+						.getSelectedItem();
 				categoria.edadMin = (int) ((JSpinner) components[5]).getValue();
 				categoria.edadMax = (int) ((JSpinner) components[7]).getValue();
 				lista.add(categoria);
@@ -614,15 +624,18 @@ public class CrearCarrera extends JFrame {
 				PlazoDto plazo = new PlazoDto();
 				JPanel panel = (JPanel) fila;
 				Component[] components = panel.getComponents();
-				plazo.cuota = Double.parseDouble(((JSpinner) components[5]).getValue().toString());
+				plazo.cuota = Double.parseDouble(
+						((JSpinner) components[5]).getValue().toString());
 				Date inicio = ((JDateChooser) components[1]).getDate();
 				if (inicio != null) {
-					plazo.fechaInicio = inicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					plazo.fechaInicio = inicio.toInstant()
+							.atZone(ZoneId.systemDefault()).toLocalDate();
 					;
 				}
 				Date fin = ((JDateChooser) components[3]).getDate();
 				if (fin != null) {
-					plazo.fechaFin = fin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					plazo.fechaFin = fin.toInstant()
+							.atZone(ZoneId.systemDefault()).toLocalDate();
 					;
 				}
 				lista.add(plazo);
@@ -633,18 +646,22 @@ public class CrearCarrera extends JFrame {
 
 	private void logLista(List<CategoriaDto> lista) {
 		for (CategoriaDto categoriaDto : lista) {
-			System.out.println(
-					categoriaDto.nombreCategoria + categoriaDto.sexo + categoriaDto.edadMin + categoriaDto.edadMax);
+			System.out.println(categoriaDto.nombreCategoria + categoriaDto.sexo
+					+ categoriaDto.edadMin + categoriaDto.edadMax);
 		}
 	}
 
 	private boolean checkCategoriasVality() {
-		List<CategoriaDto> ordenadas = new ArrayList<CategoriaDto>(createCategories());
+		List<CategoriaDto> ordenadas = new ArrayList<CategoriaDto>(
+				createCategories());
 		ordenadas.sort(Comparator.comparing(c -> c.edadMin));
+
 		if(!ordenadas.stream().anyMatch(c -> c.sexo.contentEquals("Masculino") && c.edadMin == 18)) {
-			getLblError().setText("Es necesaria al menos una categoria Masculina con m�nimo de edad de 18");
+			getLblError().setText("Es necesaria al menos una categoria Masculina con minimo de edad de 18");
+
 			return false;
 		}
+
 		
 		if(!ordenadas.stream().anyMatch(c -> c.sexo.contentEquals("Femenino") && c.edadMin == 18)) {
 			getLblError().setText("Es necesaria al menos una categoria Femenina con m�nimo de edad de 18");
@@ -661,23 +678,40 @@ public class CrearCarrera extends JFrame {
 		List<CategoriaDto> masculino = ordenadas.stream().filter(c -> c.sexo.contentEquals("Masculino")).collect(Collectors.toList());
 		List<CategoriaDto> femenino = ordenadas.stream().filter(c -> c.sexo.contentEquals("Femenino")).collect(Collectors.toList());
 
-		if(!checkSpaces(masculino))
+
+		if (!ordenadas.stream().anyMatch(
+				c -> c.sexo.contentEquals("Femenino") && c.edadMin == 18)) {
+			getLblError().setText(
+					"Es necesaria al menos una categoria Femenina con m�nimo de edad de 18");
 			return false;
-		if(!checkSpaces(femenino))
+		}
+
+		if (ordenadas.get(0).edadMin != 18) {
+			getLblError().setText(
+					"Es necesario que una categoria tenda edad minima de 18 a�os");
+			return false;
+		}
+
+
+		if (!checkSpaces(masculino))
+			return false;
+		if (!checkSpaces(femenino))
 			return false;
 		getLblError().setText("");
 		return true;
 
 	}
-	
+
 	private boolean checkSpaces(List<CategoriaDto> ordenadas) {
 		for (int i = 0; i < ordenadas.size() - 1; i++) {
-			int result = (ordenadas.get(i).edadMax - ordenadas.get(i + 1).edadMin);
+			int result = (ordenadas.get(i).edadMax
+					- ordenadas.get(i + 1).edadMin);
 			if (result >= 0) {
 				getLblError().setText("Las categorias no se pueden solapar");
 				return false;
 			} else if (result < -1) {
-				getLblError().setText("No puedes dejar huecos entre las categorias");
+				getLblError()
+						.setText("No puedes dejar huecos entre las categorias");
 				return false;
 			}
 		}
@@ -687,34 +721,40 @@ public class CrearCarrera extends JFrame {
 	private boolean checkPlazosVality() {
 		System.out.println("Checkeando plazos");
 		List<PlazoDto> ordenadas = new ArrayList<PlazoDto>(createPlazos());
-		
-		
-		
+
 		ordenadas.sort(Comparator.comparing(c -> c.fechaInicio));
 		for (PlazoDto plazoDto : ordenadas) {
-			if (plazoDto.fechaFin.isBefore(plazoDto.fechaInicio) || plazoDto.fechaFin.isEqual(plazoDto.fechaInicio)) {
-				getLblError().setText("La fecha de fin debe ser posterior a la de inicio");
+			if (plazoDto.fechaFin.isBefore(plazoDto.fechaInicio)
+					|| plazoDto.fechaFin.isEqual(plazoDto.fechaInicio)) {
+				getLblError().setText(
+						"La fecha de fin debe ser posterior a la de inicio");
 				return false;
 			}
+
 			if (plazoDto.fechaFin
 					.isAfter(getCalendar().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
-				getLblError().setText("El plazo no puede acabar despues de la competici�n");
+				getLblError().setText("El plazo no puede acabar despues de la competicion");
+
 				return false;
 			}
 		}
 
 		for (int i = 0; i < ordenadas.size() - 1; i++) {
 			if (ordenadas.get(i).fechaFin.isBefore(ordenadas.get(i).fechaInicio)
-					|| ordenadas.get(i).fechaFin.isEqual(ordenadas.get(i).fechaInicio)) {
-				getLblError().setText("La fecha de fin debe ser posterior a la de inicio");
+					|| ordenadas.get(i).fechaFin
+							.isEqual(ordenadas.get(i).fechaInicio)) {
+				getLblError().setText(
+						"La fecha de fin debe ser posterior a la de inicio");
 				return false;
 			}
-			long result = ChronoUnit.DAYS.between(ordenadas.get(i).fechaFin, ordenadas.get(i + 1).fechaInicio);
+			long result = ChronoUnit.DAYS.between(ordenadas.get(i).fechaFin,
+					ordenadas.get(i + 1).fechaInicio);
 			if (result < 1) {
 				getLblError().setText("Los plazos no se pueden solapar");
 				return false;
 			} else if (result > 1) {
-				getLblError().setText("No puedes dejar huecos entre los plazos");
+				getLblError()
+						.setText("No puedes dejar huecos entre los plazos");
 				return false;
 			}
 		}
@@ -722,6 +762,7 @@ public class CrearCarrera extends JFrame {
 		return true;
 
 	}
+
 	private JLabel getLblDorsales() {
 		if (lblDorsales == null) {
 			lblDorsales = new JLabel("Dorsales Reservados");
@@ -730,9 +771,11 @@ public class CrearCarrera extends JFrame {
 		}
 		return lblDorsales;
 	}
+
 	private JSpinner getSpinnerDorsales() {
 		if (spinnerDorsales == null) {
-			spinnerDorsales = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+			spinnerDorsales = new JSpinner(
+					new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 			spinnerDorsales.setBounds(181, 221, 50, 19);
 		}
 		return spinnerDorsales;

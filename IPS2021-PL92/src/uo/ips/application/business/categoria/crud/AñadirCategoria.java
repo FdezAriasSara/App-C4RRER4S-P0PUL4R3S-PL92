@@ -9,7 +9,6 @@ import alb.util.assertion.Argument;
 import alb.util.jdbc.Jdbc;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.categoria.CategoriaDto;
-import uo.ips.application.business.competicion.CompeticionDto;
 
 public class AñadirCategoria {
 
@@ -18,7 +17,7 @@ public class AñadirCategoria {
 	private String SQLGetCompeticion = "SELECT * FROM Categoria WHERE idCategoria = ?";
 	private CategoriaDto categoria;
 	private int competicionId;
-	
+
 	public AñadirCategoria(CategoriaDto categoria, int competicionId) {
 		Argument.isNotNull(categoria);
 		this.categoria = categoria;
@@ -26,51 +25,48 @@ public class AñadirCategoria {
 	}
 
 	public CategoriaDto execute() throws BusinessException {
-	// Process
-	Connection c = null;
-	ResultSet rs = null;
-	PreparedStatement pst = null;
-	
-	
+		// Process
+		Connection c = null;
+		ResultSet rs = null;
+		PreparedStatement pst = null;
 
-	try {
-		c = Jdbc.getConnection();
-		
-		pst = c.prepareStatement(SQLGetCompeticion);
-		pst.setString(1, categoria.idCategoria);
-		
-		rs = pst.executeQuery();
-		
-		while(rs.next()) {
-			throw new BusinessException("Ya existe la categoria");
-		}
-		pst.close();
-		pst = c.prepareStatement(SQL,new String[]{"idCompeticion"});
-		pst.setString(1, categoria.nombreCategoria);
-		pst.setInt(2, categoria.edadMin);
-		pst.setInt(3, categoria.edadMax);
-		pst.setString(4, categoria.sexo);
-		pst.executeUpdate();	
-		
-		ResultSet rsId = pst.getGeneratedKeys();
-		if(rsId.next()) {
-			int id = rsId.getInt(1);
+		try {
+			c = Jdbc.getConnection();
+
+			pst = c.prepareStatement(SQLGetCompeticion);
+			pst.setString(1, categoria.idCategoria);
+
+			rs = pst.executeQuery();
+
+			while (rs.next()) {
+				throw new BusinessException("Ya existe la categoria");
+			}
 			pst.close();
-			pst = c.prepareStatement(SQL_CONTIENE);
-			pst.setInt(1, competicionId);
-			pst.setString(2, Integer.toString(id));
+			pst = c.prepareStatement(SQL, new String[] { "idCompeticion" });
+			pst.setString(1, categoria.nombreCategoria);
+			pst.setInt(2, categoria.edadMin);
+			pst.setInt(3, categoria.edadMax);
+			pst.setString(4, categoria.sexo);
 			pst.executeUpdate();
-			
+
+			ResultSet rsId = pst.getGeneratedKeys();
+			if (rsId.next()) {
+				int id = rsId.getInt(1);
+				pst.close();
+				pst = c.prepareStatement(SQL_CONTIENE);
+				pst.setInt(1, competicionId);
+				pst.setString(2, Integer.toString(id));
+				pst.executeUpdate();
+
+			}
+			rsId.close();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Jdbc.close(rs, pst, c);
 		}
-		rsId.close();
-		
-	} catch (SQLException e) {
-		throw new RuntimeException(e);
+		return categoria;
 	}
-	finally {
-		Jdbc.close(rs, pst, c);
-	}
-	return categoria;
-}
 
 }

@@ -12,7 +12,9 @@ public interface InscripcionCrudService {
 	 * @param solicitud
 	 * @return
 	 */
+
 	InscripcionDto anadirInscripcion(InscripcionDto solicitud);
+
 
 	public void inscribirAtleta(int idCompeticion, int idAtleta,
 			int idCategoria) throws BusinessException;
