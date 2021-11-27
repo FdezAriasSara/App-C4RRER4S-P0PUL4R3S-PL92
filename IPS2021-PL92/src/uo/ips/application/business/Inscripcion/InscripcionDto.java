@@ -20,12 +20,13 @@ public class InscripcionDto {
 	// Esto no está en la bd pero no los borreis porfas que los uso
 	public Time tiempoInicio;
 	public Time tiempoFinal;
-	
-	public String nombreCategoria; //No me lo borreis que lo uso (Martin)
+
+	public String nombreCategoria; // No me lo borreis que lo uso (Martin)
 
 	@SuppressWarnings("deprecation")
-	public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion, Date fechaUltimoCambio,
-			int idCategoria, int posicionFinal, Time tiempoQueTarda) {
+	public InscripcionDto(int idCompeticion, int idAtleta, String estado,
+			Date fechaInscripcion, Date fechaUltimoCambio, int idCategoria,
+			int posicionFinal, Time tiempoQueTarda) {
 
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
@@ -34,7 +35,8 @@ public class InscripcionDto {
 		this.idCategoria = idCategoria;
 		this.posicionFinal = posicionFinal;
 		this.tiempoQueTarda = tiempoQueTarda;
-		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds() + tiempoQueTarda.getMinutes() * 60
+		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds()
+				+ tiempoQueTarda.getMinutes() * 60
 				+ tiempoQueTarda.getHours() * 60 * 60;
 
 		switch (estado) {
@@ -47,39 +49,43 @@ public class InscripcionDto {
 		case ("TERMINADA"):
 			this.estado = Estado.TERMINADA;
 			break;
+		case ("CANCELADA"):
+			this.estado = Estado.CANCELADA;
+			break;
+		case ("ANULADA"):
+			this.estado = Estado.ANULADA;
+			break;
 		}
 
-		
 	}
-		
 
-		public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion,
-				Date fechaUltimoCambio, int idCategoria, int posicionFinal, Time tiempoQueTarda, String nombreCategoria) {
-			this(idCompeticion, idAtleta,estado,fechaInscripcion,fechaUltimoCambio,idCategoria,posicionFinal,tiempoQueTarda);
-			this.nombreCategoria = nombreCategoria;
-			
-		
+	public InscripcionDto(int idCompeticion, int idAtleta, String estado,
+			Date fechaInscripcion, Date fechaUltimoCambio, int idCategoria,
+			int posicionFinal, Time tiempoQueTarda, String nombreCategoria) {
+		this(idCompeticion, idAtleta, estado, fechaInscripcion,
+				fechaUltimoCambio, idCategoria, posicionFinal, tiempoQueTarda);
+		this.nombreCategoria = nombreCategoria;
+
 	}
-	
-	
+
 	public String toStringParaClasificacion() {
-		String res =  "ID Atleta: " + idAtleta + 
-				" - ID Competicion: " + idCompeticion;
-		
-		String pos = (posicionFinal < 0) ? " - Posicion: No terminada " : (" - Posicion: " + posicionFinal);
-		String time = (tiempoQueTardaEnSegundos > 0) ? 	(" - Tiempo de carrera: " + tiempoQueTarda) : " - Tiempo de carrera: --"	;
-		
-		
-		return res + pos + time;
-		
-				
+		String res = "ID Atleta: " + idAtleta + " - ID Competicion: "
+				+ idCompeticion;
 
+		String pos = (posicionFinal < 0) ? " - Posicion: No terminada "
+				: (" - Posicion: " + posicionFinal);
+		String time = (tiempoQueTardaEnSegundos > 0)
+				? (" - Tiempo de carrera: " + tiempoQueTarda)
+				: " - Tiempo de carrera: --";
+
+		return res + pos + time;
 
 	}
 
 	@SuppressWarnings("deprecation")
-	public InscripcionDto(int idCompeticion, int idAtleta, String estado, Date fechaInscripcion, Date fechaUltimoCambio,
-			int idCategoria, int posicionFinal, Time tiempoQueTarda, int dorsal) {
+	public InscripcionDto(int idCompeticion, int idAtleta, String estado,
+			Date fechaInscripcion, Date fechaUltimoCambio, int idCategoria,
+			int posicionFinal, Time tiempoQueTarda, int dorsal) {
 
 		this.idCompeticion = idCompeticion;
 		this.idAtleta = idAtleta;
@@ -88,7 +94,8 @@ public class InscripcionDto {
 		this.idCategoria = idCategoria;
 		this.posicionFinal = posicionFinal;
 		this.tiempoQueTarda = tiempoQueTarda;
-		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds() + tiempoQueTarda.getMinutes() * 60
+		this.tiempoQueTardaEnSegundos = tiempoQueTarda.getSeconds()
+				+ tiempoQueTarda.getMinutes() * 60
 				+ tiempoQueTarda.getHours() * 60 * 60;
 		this.dorsal = dorsal;
 
@@ -102,10 +109,15 @@ public class InscripcionDto {
 		case ("TERMINADA"):
 			this.estado = Estado.TERMINADA;
 			break;
+		case ("CANCELADA"):
+			this.estado = Estado.CANCELADA;
+			break;
+		case ("ANULADA"):
+			this.estado = Estado.ANULADA;
+			break;
 		}
 
 	}
-
 
 	public InscripcionDto() {
 		this.fechaInscripcion = null;

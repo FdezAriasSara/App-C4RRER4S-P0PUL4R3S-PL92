@@ -1,12 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import java.awt.Button;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -25,24 +23,23 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
-import java.awt.ScrollPane;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class MainWindow extends JFrame {
 
 	/**
 	 * 
 	 */
-	
+
 	private static final long serialVersionUID = 1L;
 	private JDateChooser fechaFinal;
 	private JPanel contentPane;
@@ -79,7 +76,6 @@ public class MainWindow extends JFrame {
 	private JLabel lblFechaDeCaducidad;
 	private JLabel lblCvc;
 	private JButton btnPagarTarjeta2;
-	private JButton btnListarInscripciones;
 	private JPanel panel_sesion;
 	private JLabel lblRegistro;
 	private JTextField textFieldIniciarSesion;
@@ -101,12 +97,6 @@ public class MainWindow extends JFrame {
 	private JTextArea ErrorTextAreaSesion;
 
 	private JButton btnCargarCategorias;
-	
-	
-	
-	
-	
-
 
 	@SuppressWarnings("unused")
 	private CustomDialogRegistro registroDialog;
@@ -127,12 +117,9 @@ public class MainWindow extends JFrame {
 	private JComboBox<String> comboSexo;
 	private JButton btCargarPagos;
 
-	private JButton btMostrarCompeticiones;
-
 	private JButton btnAsignacionDorsales;
 	private JPanel panel_asignarDorsales;
 	private JScrollPane scrollPaneDorsales;
-	private JTable tableAsignar;
 	private JButton btnAsignar;
 	private JButton btNuevaCompeticion;
 	private JButton btnMostrarTodasComp;
@@ -165,7 +152,40 @@ public class MainWindow extends JFrame {
 	private JTextField txtPlazasDispnibles;
 	private JLabel lblPlazasDisponiblesForm;
 
+	private JButton btInformacionContable;
+	private JPanel panel_contabilidad;
+	private JLabel lbNombeCompeticion;
+	private JLabel lbNombeNombreCompeticion;
+	private JLabel lbFecha;
+	private JScrollPane scrollPane_2;
+	private JTable tablaContabilidad;
 
+	private JPanel panel_perfilAtleta;
+	private JPanel panel_perfil;
+	private JPanel panel_comparar;
+	private JPanel panel_Comparativa;
+	private JScrollPane scrollPane_inscripciones;
+	private JTable tableAsignar;
+	private JButton btnMisInscripciones;
+	private JButton btnCambiarUsuario;
+	private JLabel lblCompeticionSeleccionada;
+	private JLabel lblMostrarAtletas;
+	private JButton btnMostrarAtletas;
+	private JLabel lblCancelarInscripcion;
+	private JButton btnCancelarInscripcion;
+	private JLabel lblErrorPerfil;
+	private JScrollPane scrollPane_AtletasCompSeleccionada;
+	private JTable tableAtletasDeCompSeleccionada;
+	private JScrollPane scrollPane_comparativa;
+	private JTable tableComparativa;
+	private JTable tableInscripciones;
+	private JButton btnVolverPerfil;
+	private JLabel lblNombreCompeticion;
+	private JLabel lblNombreCompeticion2;
+	private JButton btnVolverPerfil2;
+	private JLabel lblCompara;
+	private JLabel lblAtletaSeleccionado;
+	private JButton btnCompararse;
 
 	/**
 	 * Create the frame.
@@ -185,9 +205,10 @@ public class MainWindow extends JFrame {
 		 
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			
+
 			e.printStackTrace();
 		}
 	}
@@ -223,6 +244,10 @@ public class MainWindow extends JFrame {
 			panel_card.add(getPanel_asignarDorsales(), "dorsales");
 			panel_card.add(getPanel_formularioClub(), "formulario");
 
+			panel_card.add(getPanel_contabilidad(), "contabilidad");
+
+			panel_card.add(getPanel_perfilAtleta(), "perfil");
+
 		}
 		return panel_card;
 	}
@@ -238,7 +263,6 @@ public class MainWindow extends JFrame {
 			panel_atleta.add(getBtnInscribirse());
 			panel_atleta.add(getLblError());
 			panel_atleta.add(getBtnIniciarSesion());
-			panel_atleta.add(getBtnListarInscripciones());
 			panel_atleta.add(getBtnInscribirClubArch());
 			panel_atleta.add(getBtnInscribirClubFormulario());
 		}
@@ -256,20 +280,19 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
-			
+
 			panel_organizador.add(getTxtArchivoTiempos());
 
 			panel_organizador.add(getBtnCargarCategorias());
 
 			panel_organizador.add(getBtCargarPagos());
 
-			panel_organizador.add(getBtMostrarCompeticiones());
-
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
 			panel_organizador.add(getBtnMostrarTodasComp());
 			panel_organizador.add(getPanel());
 
+			panel_organizador.add(getBtInformacionContable());
 
 		}
 		return panel_organizador;
@@ -322,6 +345,7 @@ public class MainWindow extends JFrame {
 			btnAtletaBienvenida = new JButton("Atleta");
 			btnAtletaBienvenida.addActionListener(new ActionListener() {
 
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
 					((CardLayout) getPanel_card().getLayout()).show(getPanel_card(), "Pg2");
@@ -339,6 +363,7 @@ public class MainWindow extends JFrame {
 		if (btnOrganizadorBienvenida == null) {
 			btnOrganizadorBienvenida = new JButton("Organizador");
 			btnOrganizadorBienvenida.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					btnVolverBienvenida.setEnabled(true);
 					((CardLayout) getPanel_card().getLayout()).show(getPanel_card(), "Pg3");
@@ -648,16 +673,6 @@ public class MainWindow extends JFrame {
 		return btnPagarTarjeta2;
 	}
 
-	public JButton getBtnListarInscripciones() {
-		if (btnListarInscripciones == null) {
-			btnListarInscripciones = new JButton("Mis inscripciones");
-			btnListarInscripciones.setEnabled(false);
-			btnListarInscripciones.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btnListarInscripciones.setBounds(225, 10, 166, 34);
-		}
-		return btnListarInscripciones;
-	}
-
 	public void vaciarCamposPago() {
 		getTxtNum().setText("");
 		getTxtCVC().setText("");
@@ -699,7 +714,14 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!checkFormatoEmail(getTextFieldIniciarSesion().getText())) {
 						mostrarErrorInicioSesion("El formato del correo es incorrecto.");
+
 						getTextFieldIniciarSesion().setText("");// vacï¿½o el campo para evitar que proceda con la
+				getTextFieldIniciarSesion().setText("");// vacï¿½o el
+																// campo para
+																// evitar que
+																// proceda con
+																// la
+
 																// inscripciï¿½n
 					}
 				}
@@ -709,7 +731,8 @@ public class MainWindow extends JFrame {
 				public void focusGained(FocusEvent e) {
 
 					vaciarErrorInicioSesion();
-					// para que el mensaje desaparezca cuando el usuario vuelve a intentarlo
+					// para que el mensaje desaparezca cuando el usuario vuelve
+					// a intentarlo
 				}
 			});
 			textFieldIniciarSesion.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -762,6 +785,7 @@ public class MainWindow extends JFrame {
 			btnCancelar.setFont(new Font("Dialog", Font.PLAIN, 21));
 			btnCancelar.setForeground(new Color(0, 0, 0));
 			btnCancelar.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					vaciarCampoIniciarSesion();
 				}
@@ -792,7 +816,7 @@ public class MainWindow extends JFrame {
 	public JTable getTablaClasificacion() {
 		if (tablaClasificacion == null) {
 			tablaClasificacion = new JTable();
-			
+
 			tablaClasificacion.setBounds(10, 10, 858, 294);
 		}
 		return tablaClasificacion;
@@ -865,9 +889,11 @@ public class MainWindow extends JFrame {
 		ErrorTextAreaPago.setVisible(true);
 		ErrorTextAreaPago.setEnabled(true);
 	}
-	private boolean compruebaIDCompeticion(String text) {
-		return text.matches("[0-9]+");
-	}
+
+//	private boolean compruebaIDCompeticion(String text) {
+//		return text.matches("[0-9]+");
+//	}
+
 	private boolean compruebaCVC(String text) {
 
 		return text.matches("[0-9]{3}");
@@ -945,7 +971,9 @@ public class MainWindow extends JFrame {
 				public void focusLost(FocusEvent e) {
 					if (!comprobarSoloTexto(getTxtRegApellido().getText())) {
 						mostrarErrorRegistro(
+
 								"El nombre solo puede tener letras. Si tu nombre es compuesto emplea el simbolo -.");
+
 						getTxtRegNombre().setText("");
 					}
 				}
@@ -976,7 +1004,8 @@ public class MainWindow extends JFrame {
 	}
 
 	protected boolean comprobarSoloTexto(String text) {
-		// Comprueba que solo sea un nombre/apellido o un apellido/nombre compuesto
+		// Comprueba que solo sea un nombre/apellido o un apellido/nombre
+		// compuesto
 		return text.matches("[a-zA-Z]{2,50}|([a-zA-Z]{2,25} -[a-zA-Z]{2,25})");
 		// Evita que se introduzcan muchos caracteres
 	}
@@ -1014,7 +1043,8 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusGained(FocusEvent e) {
 					borrarErrorRegistro();
-					// para que al intentar arreglar el mail, se borre el mensaje de error y no se
+					// para que al intentar arreglar el mail, se borre el
+					// mensaje de error y no se
 					// confunda el usuario
 				}
 
@@ -1071,7 +1101,8 @@ public class MainWindow extends JFrame {
 				@Override
 				public void focusGained(FocusEvent e) {
 					borrarErrorRegistro();
-					// para que al intentar arreglar el mail, se borre el mensaje de error y no se
+					// para que al intentar arreglar el mail, se borre el
+					// mensaje de error y no se
 					// confunda el usuario
 				}
 			});
@@ -1132,14 +1163,11 @@ public class MainWindow extends JFrame {
 		return comboSexo;
 	}
 
-	
-
 	public void vaciarCamposRegistro() {
 		getTxtRegApellido().setText("");
 		getTxtRegNombre().setText("");
 		getTextFieldCorreo().setText("");
 		getTextFieldDNI().setText("");
-
 
 	}
 
@@ -1152,63 +1180,61 @@ public class MainWindow extends JFrame {
 		}
 		return btCargarPagos;
 	}
-
-
-	public JButton getBtMostrarCompeticiones() {
-		if (btMostrarCompeticiones == null) {
-			btMostrarCompeticiones = new JButton("Mostrar competiciones");
-			btMostrarCompeticiones.setMnemonic('M');
-			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
-		}
-		return btMostrarCompeticiones;
-	}
+// 25-11-21-> lo quit� por los conlfictos-> btnMostrarTodasComp;
+//	public JButton getBtMostrarCompeticiones() {
+//		if (btMostrarCompeticiones == null) {
+//			btMostrarCompeticiones = new JButton("Mostrar competiciones");
+//			btMostrarCompeticiones.setMnemonic('M');
+//			btMostrarCompeticiones.setFont(new Font("Tahoma", Font.PLAIN, 15));
+//			btMostrarCompeticiones.setBounds(414, 495, 190, 35);
+//		}
+//		return btMostrarCompeticiones;
+//	}
 
 	public JButton getBtnAsignacionDorsales() {
 		if (btnAsignacionDorsales == null) {
 			btnAsignacionDorsales = new JButton("Asignar dorsales");
 			btnAsignacionDorsales.setEnabled(false);
-			btnAsignacionDorsales.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+
+			btnAsignacionDorsales
+					.setToolTipText("Pulsa aqu\u00ED para generar los dorsales de la competicion seleccionada");
+
 			btnAsignacionDorsales.setFont(new Font("Tahoma", Font.PLAIN, 19));
 			btnAsignacionDorsales.setBounds(525, 314, 324, 40);
 		}
 		return btnAsignacionDorsales;
 	}
+
 	private JPanel getPanel_asignarDorsales() {
 		if (panel_asignarDorsales == null) {
 			panel_asignarDorsales = new JPanel();
 			panel_asignarDorsales.setLayout(null);
-			panel_asignarDorsales.add(getTableAsignar());
 			panel_asignarDorsales.add(getScrollPaneDorsales());
 			panel_asignarDorsales.add(getBtnAsignar());
 		}
 		return panel_asignarDorsales;
 	}
+
 	public void setErrorOrgPlazosSinTerminar() {
 		getLblErrorOrg().setText("Error: Aún no han finalizado los plazos de inscripción.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
+
 	public void setErrorOrgID() {
 		getLblErrorOrg().setText("Error: El ID de competición solo puede tener dígitos.");
 		getLblErrorOrg().setForeground(Color.RED);
 		getLblErrorOrg().setVisible(true);
 	}
-	private JScrollPane getScrollPaneDorsales() { 
+
+	private JScrollPane getScrollPaneDorsales() {
 		if (scrollPaneDorsales == null) {
 			scrollPaneDorsales = new JScrollPane(getTableAsignar());
 			scrollPaneDorsales.setBounds(173, 108, 514, 201);
 		}
 		return scrollPaneDorsales;
 	}
-	public JTable getTableAsignar() {
-		if (tableAsignar == null) {
-			tableAsignar = new JTable();
-			tableAsignar.setBounds(681, 108, -510, 201);
-			
-		}
-		return tableAsignar;
-	}
+
 	public JButton getBtnAsignar() {
 		if (btnAsignar == null) {
 			btnAsignar = new JButton("Asignar");
@@ -1217,7 +1243,6 @@ public class MainWindow extends JFrame {
 		}
 		return btnAsignar;
 	}
-	
 
 	public JButton getBtNuevaCompeticion() {
 		if (btNuevaCompeticion == null) {
@@ -1227,15 +1252,18 @@ public class MainWindow extends JFrame {
 		}
 		return btNuevaCompeticion;
 	}
+
 	public JButton getBtnMostrarTodasComp() {
 		if (btnMostrarTodasComp == null) {
+
 			btnMostrarTodasComp = new JButton("Mostrar todas las competiciones");
-			
+
 			btnMostrarTodasComp.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnMostrarTodasComp.setBounds(10, 314, 294, 35);
 		}
 		return btnMostrarTodasComp;
 	}
+
 	public JButton getBtnInscribirClubArch() {
 		if (btnInscribirClubArch == null) {
 			btnInscribirClubArch = new JButton("Inscribir a club con archivo");
@@ -1245,6 +1273,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnInscribirClubArch;
 	}
+
 	public JButton getBtnInscribirClubFormulario() {
 		if (btnInscribirClubFormulario == null) {
 			btnInscribirClubFormulario = new JButton("Inscribir a club con formulario");
@@ -1255,6 +1284,7 @@ public class MainWindow extends JFrame {
 		}
 		return btnInscribirClubFormulario;
 	}
+
 	public JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
@@ -1494,5 +1524,348 @@ public class MainWindow extends JFrame {
 			lblPlazasDisponiblesForm.setBounds(391, 45, 239, 24);
 		}
 		return lblPlazasDisponiblesForm;
+		
+	}
+
+
+	public JButton getBtInformacionContable() {
+		if (btInformacionContable == null) {
+			btInformacionContable = new JButton("Ver estado contable");
+			btInformacionContable.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btInformacionContable.setBounds(460, 495, 170, 35);
+		}
+		return btInformacionContable;
+	}
+
+	private JPanel getPanel_contabilidad() {
+		if (panel_contabilidad == null) {
+			panel_contabilidad = new JPanel();
+			panel_contabilidad.setLayout(null);
+			panel_contabilidad.add(getLbNombeCompeticion());
+			panel_contabilidad.add(getLbNombeNombreCompeticion());
+			panel_contabilidad.add(getLbFecha());
+			panel_contabilidad.add(getScrollPane_2());
+		}
+		return panel_contabilidad;
+	}
+
+	private JLabel getLbNombeCompeticion() {
+		if (lbNombeCompeticion == null) {
+			lbNombeCompeticion = new JLabel("Balance carrera: ");
+			lbNombeCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lbNombeCompeticion.setBounds(32, 11, 173, 35);
+		}
+		return lbNombeCompeticion;
+	}
+
+	public JLabel getLbNombeNombreCompeticion() {
+		if (lbNombeNombreCompeticion == null) {
+			lbNombeNombreCompeticion = new JLabel("");
+			lbNombeNombreCompeticion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			lbNombeNombreCompeticion.setBounds(232, 11, 584, 35);
+		}
+		return lbNombeNombreCompeticion;
+	}
+
+	public JLabel getLbFecha() {
+		if (lbFecha == null) {
+			lbFecha = new JLabel("");
+			lbFecha.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			lbFecha.setBounds(32, 73, 173, 28);
+		}
+		return lbFecha;
+	}
+
+	private JScrollPane getScrollPane_2() {
+		if (scrollPane_2 == null) {
+			scrollPane_2 = new JScrollPane((Component) null);
+			scrollPane_2.setBounds(10, 118, 846, 411);
+			scrollPane_2.setViewportView(getTablaContabilidad());
+		}
+		return scrollPane_2;
+	}
+
+	public JTable getTablaContabilidad() {
+		if (tablaContabilidad == null) {
+			tablaContabilidad = new JTable();
+		}
+		return tablaContabilidad;
+	}
+
+	public JPanel getPanel_perfilAtleta() {
+		if (panel_perfilAtleta == null) {
+			panel_perfilAtleta = new JPanel();
+			panel_perfilAtleta.setLayout(new CardLayout(0, 0));
+			panel_perfilAtleta.add(getPanel_perfil(), "perfil");
+			panel_perfilAtleta.add(getPanel_comparar(), "otrosAtletas");
+			panel_perfilAtleta.add(getPanel_Comparativa(), "comparacion");
+		}
+		return panel_perfilAtleta;
+	}
+
+	private JPanel getPanel_perfil() {
+		if (panel_perfil == null) {
+			panel_perfil = new JPanel();
+			panel_perfil.setLayout(null);
+			panel_perfil.add(getScrollPane_inscripciones());
+
+			panel_perfil.add(getBtnMisInscripciones());
+			panel_perfil.add(getBtnCambiarUsuario());
+			panel_perfil.add(getLblCompeticionSeleccionada());
+			panel_perfil.add(getLblMostrarAtletas());
+			panel_perfil.add(getBtnMostrarAtletas());
+			panel_perfil.add(getLblCancelarInscripcion());
+			panel_perfil.add(getBtnCancelarInscripcion());
+			panel_perfil.add(getLblErrorPerfil());
+		}
+		return panel_perfil;
+	}
+
+	private JPanel getPanel_comparar() {
+		if (panel_comparar == null) {
+			panel_comparar = new JPanel();
+			panel_comparar.setLayout(null);
+
+			panel_comparar.add(getScrollPane_AtletasCompSeleccionada());
+			panel_comparar.add(getBtnVolverPerfil());
+			panel_comparar.add(getLblNombreCompeticion());
+			panel_comparar.add(getLblCompara());
+			panel_comparar.add(getLblAtletaSeleccionado());
+			panel_comparar.add(getBtnCompararse());
+		}
+		return panel_comparar;
+	}
+
+	private JPanel getPanel_Comparativa() {
+		if (panel_Comparativa == null) {
+			panel_Comparativa = new JPanel();
+			panel_Comparativa.setLayout(null);
+			panel_Comparativa.add(getScrollPane_comparativa());
+			panel_Comparativa.add(getLblNombreCompeticion2());
+			panel_Comparativa.add(getBtnVolverPerfil2());
+
+		}
+		return panel_Comparativa;
+	}
+
+	private JScrollPane getScrollPane_inscripciones() {
+		if (scrollPane_inscripciones == null) {
+			scrollPane_inscripciones = new JScrollPane(getTableInscripciones());
+			scrollPane_inscripciones.setBounds(10, 83, 846, 280);
+		}
+		return scrollPane_inscripciones;
+	}
+
+	public JTable getTableAsignar() {
+		if (tableAsignar == null) {
+			tableAsignar = new JTable();
+			tableAsignar.setBounds(681, 108, -510, 201);
+
+		}
+		return tableAsignar;
+	}
+
+	public JButton getBtnMisInscripciones() {
+		if (btnMisInscripciones == null) {
+			btnMisInscripciones = new JButton("Mostrar mis inscricpiones");
+			btnMisInscripciones.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			btnMisInscripciones.setBounds(10, 32, 196, 37);
+		}
+		return btnMisInscripciones;
+	}
+
+	public JButton getBtnCambiarUsuario() {
+		if (btnCambiarUsuario == null) {
+			btnCambiarUsuario = new JButton("Cambiar usuario");
+			btnCambiarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			btnCambiarUsuario.setBounds(693, 32, 163, 37);
+		}
+		return btnCambiarUsuario;
+	}
+
+	public JLabel getLblCompeticionSeleccionada() {
+		if (lblCompeticionSeleccionada == null) {
+			lblCompeticionSeleccionada = new JLabel("");
+			lblCompeticionSeleccionada.setForeground(new Color(51, 153, 255));
+			lblCompeticionSeleccionada.setFont(new Font("Tahoma", Font.ITALIC, 23));
+			lblCompeticionSeleccionada.setBounds(10, 374, 433, 37);
+		}
+		return lblCompeticionSeleccionada;
+	}
+
+	private JLabel getLblMostrarAtletas() {
+		if (lblMostrarAtletas == null) {
+			lblMostrarAtletas = new JLabel("Mostrar atletas de la competici\u00F3n seleccionada:");
+			lblMostrarAtletas.setFont(new Font("Tahoma", Font.PLAIN, 17));
+			lblMostrarAtletas.setBounds(10, 414, 383, 51);
+		}
+		return lblMostrarAtletas;
+	}
+
+	public JButton getBtnMostrarAtletas() {
+		if (btnMostrarAtletas == null) {
+			btnMostrarAtletas = new JButton("Mostrar");
+			btnMostrarAtletas.setEnabled(false);
+			btnMostrarAtletas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			btnMostrarAtletas.setBounds(424, 422, 117, 29);
+		}
+		return btnMostrarAtletas;
+	}
+
+	private JLabel getLblCancelarInscripcion() {
+		if (lblCancelarInscripcion == null) {
+			lblCancelarInscripcion = new JLabel("Cancelar inscripci\u00F3n de la competici\u00F3n seleccionada:");
+			lblCancelarInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 17));
+			lblCancelarInscripcion.setBounds(10, 476, 394, 40);
+		}
+		return lblCancelarInscripcion;
+	}
+
+	public JButton getBtnCancelarInscripcion() {
+		if (btnCancelarInscripcion == null) {
+			btnCancelarInscripcion = new JButton("Cancelar");
+			btnCancelarInscripcion.setEnabled(false);
+			btnCancelarInscripcion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			btnCancelarInscripcion.setBounds(424, 482, 117, 29);
+		}
+		return btnCancelarInscripcion;
+	}
+
+	public JLabel getLblErrorPerfil() {
+		if (lblErrorPerfil == null) {
+			lblErrorPerfil = new JLabel("Error:");
+			lblErrorPerfil.setForeground(new Color(255, 0, 0));
+			lblErrorPerfil.setBackground(new Color(204, 0, 0));
+			lblErrorPerfil.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lblErrorPerfil.setBounds(10, 527, 612, 19);
+		}
+		return lblErrorPerfil;
+	}
+
+	private JScrollPane getScrollPane_AtletasCompSeleccionada() {
+		if (scrollPane_AtletasCompSeleccionada == null) {
+			scrollPane_AtletasCompSeleccionada = new JScrollPane(getTableAtletasDeCompSeleccionada());
+			scrollPane_AtletasCompSeleccionada.setBounds(10, 62, 846, 280);
+		}
+		return scrollPane_AtletasCompSeleccionada;
+	}
+
+	public JTable getTableAtletasDeCompSeleccionada() {
+		if (tableAtletasDeCompSeleccionada == null) {
+			tableAtletasDeCompSeleccionada = new JTable();
+			tableAtletasDeCompSeleccionada.setBounds(10, 62, 846, 280);
+		}
+		return tableAtletasDeCompSeleccionada;
+	}
+
+	private JScrollPane getScrollPane_comparativa() {
+		if (scrollPane_comparativa == null) {
+			scrollPane_comparativa = new JScrollPane(getTableComparativa());
+			scrollPane_comparativa.setBounds(10, 68, 846, 280);
+		}
+		return scrollPane_comparativa;
+	}
+
+	public JTable getTableComparativa() {
+		if (tableComparativa == null) {
+			tableComparativa = new JTable();
+			tableComparativa.setBounds(10, 82, 846, 280);
+		}
+		return tableComparativa;
+	}
+
+	public JTable getTableInscripciones() {
+		if (tableInscripciones == null) {
+			tableInscripciones = new JTable();
+			tableInscripciones.setBounds(0, 0, 1, 1);
+		}
+		return tableInscripciones;
+	}
+
+	public JButton getBtnVolverPerfil() {
+		if (btnVolverPerfil == null) {
+			btnVolverPerfil = new JButton("Volver");
+			btnVolverPerfil.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			btnVolverPerfil.setBounds(731, 490, 96, 26);
+		}
+		return btnVolverPerfil;
+	}
+
+	public JLabel getLblNombreCompeticion() {
+		if (lblNombreCompeticion == null) {
+			lblNombreCompeticion = new JLabel("NOMBRE COMPETICION");
+			lblNombreCompeticion.setForeground(new Color(51, 153, 255));
+			lblNombreCompeticion.setFont(new Font("Tahoma", Font.ITALIC, 26));
+			lblNombreCompeticion.setBounds(10, 11, 493, 45);
+		}
+		return lblNombreCompeticion;
+	}
+
+	public JLabel getLblNombreCompeticion2() {
+		if (lblNombreCompeticion2 == null) {
+			lblNombreCompeticion2 = new JLabel("NOMBRE COMPETICI\u00D3N");
+			lblNombreCompeticion2.setForeground(new Color(51, 153, 255));
+			lblNombreCompeticion2.setFont(new Font("Tahoma", Font.ITALIC, 27));
+			lblNombreCompeticion2.setBounds(10, 23, 400, 36);
+		}
+		return lblNombreCompeticion2;
+	}
+
+	public JButton getBtnVolverPerfil2() {
+		if (btnVolverPerfil2 == null) {
+			btnVolverPerfil2 = new JButton("Volver ");
+			btnVolverPerfil2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			btnVolverPerfil2.setBounds(697, 484, 141, 36);
+		}
+		return btnVolverPerfil2;
+	}
+
+	private JLabel getLblCompara() {
+		if (lblCompara == null) {
+			lblCompara = new JLabel("Compararse con");
+			lblCompara.setFont(new Font("Dialog", Font.PLAIN, 30));
+			lblCompara.setBounds(10, 371, 231, 45);
+		}
+		return lblCompara;
+	}
+
+	public JLabel getLblAtletaSeleccionado() {
+		if (lblAtletaSeleccionado == null) {
+			lblAtletaSeleccionado = new JLabel("nombre atleta");
+			lblAtletaSeleccionado.setForeground(new Color(102, 153, 255));
+			lblAtletaSeleccionado.setFont(new Font("Dialog", Font.PLAIN, 25));
+			lblAtletaSeleccionado.setBounds(239, 371, 264, 45);
+		}
+		return lblAtletaSeleccionado;
+	}
+
+	public JButton getBtnCompararse() {
+		if (btnCompararse == null) {
+			btnCompararse = new JButton("Comparar");
+			btnCompararse.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			btnCompararse.setBounds(508, 379, 124, 38);
+		}
+		return btnCompararse;
+	}
+
+	public void resetearCamposYVistasPerfilAtleta() {
+
+		getLblCompeticionSeleccionada().setText("");
+		getLblAtletaSeleccionado().setText("");
+		getLblNombreCompeticion().setText("");
+		getLblNombreCompeticion2().setText("");
+		getBtnMisInscripciones().setVisible(true);
+
+		((DefaultTableModel) getTableInscripciones().getModel()).setRowCount(0);
+		((DefaultTableModel) getTableAtletasDeCompSeleccionada().getModel()).setRowCount(0);
+		((DefaultTableModel) getTableComparativa().getModel()).setRowCount(0);
+		getTableInscripciones().setVisible(false);
+		getTableAtletasDeCompSeleccionada().setVisible(false);
+		getTableComparativa().setVisible(false);
+		// para que la próxima vez que se abra un perfil se vea la visión de
+		// perfil
+		((CardLayout) getPanel_perfilAtleta().getLayout()).show(getPanel_perfilAtleta(), "perfil");
+
+
 	}
 }
