@@ -16,7 +16,6 @@ import uo.ips.application.business.DtoAssembler;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.Inscripcion.PlazoDto;
 import uo.ips.application.business.competicion.CompeticionDto;
-import uo.ips.application.business.pago.PagoDto;
 import uo.ips.application.business.pago.TransferenciaDto;
 import uo.ips.application.business.pago.crud.CargaPagos;
 
@@ -25,8 +24,7 @@ public class ActualizarEstadoInscripcion {
 	private String SQL_BUSCAR_INSCRIPCION = "SELECT * from Inscripcion where idCompeticion = ? and idAtleta = ?";
 	private String SQL_BUSCAR_ID_ATLETA = "SELECT idAtleta from Atleta where dni = ?";
 	private String SQL_BUSCAR_PLAZO = "select * from Plazos where idCompeticion = ? and ? >= fechaInicio and ? <= fechaFin";
-	private String SQL_ADD_PAGO = "insert into Pago(idAtleta, idPago, fechaPago, importe, idCompeticion, importe_devolver) values(?,?,?,?,?,?)";
-	private String SQL_UPDATE_INSCRIPCION = "update Inscripcion set estado = ? where idAtleta = ? and idCompeticion = ?";
+	private String SQL_UPDATE_INSCRIPCION = "update Inscripcion set estado = ?, fecha_pago = ?, importe_pago = ?, importe_devolver = ? where idAtleta = ? and idCompeticion = ?";
 
 	private int idCompeticion;
 	private List<TransferenciaDto> datosPagos;
@@ -36,6 +34,11 @@ public class ActualizarEstadoInscripcion {
 
 	public ActualizarEstadoInscripcion(int idCompeticion) {
 		this.idCompeticion = idCompeticion;
+		try {
+			c = Jdbc.getConnection();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void execute() throws BusinessException {
@@ -63,6 +66,8 @@ public class ActualizarEstadoInscripcion {
 			PlazoDto plazo = op.get();
 
 			compruebaPago(plazo.cuota, inscripcion.fechaInscripcion, transferenciaDto, idAtleta);
+
+			Jdbc.close(c);
 		}
 	}
 
@@ -72,19 +77,15 @@ public class ActualizarEstadoInscripcion {
 
 		if (isInPlazo(localFechaInscripcion, transferenciaDto.fecha)) {
 			if (Math.abs(transferenciaDto.importe - cuota) < PRECISION) {
-				updateInscripcion("INSCRITO", idAtleta);
-				addPago(new PagoDto(transferenciaDto.fecha, idAtleta, idCompeticion, transferenciaDto.importe, 0));
+				updateInscripcion("INSCRITO", transferenciaDto.fecha, transferenciaDto.importe, 0, idAtleta);
 			} else if ((transferenciaDto.importe - cuota) > 0.001) {
-				updateInscripcion("INSCRITO", idAtleta);
-				addPago(new PagoDto(transferenciaDto.fecha, idAtleta, idCompeticion, cuota,
-						(transferenciaDto.importe - cuota)));
+				updateInscripcion("INSCRITO", transferenciaDto.fecha, cuota, (transferenciaDto.importe - cuota),
+						idAtleta);
 			} else if ((transferenciaDto.importe - cuota) < 0.001) {
-				updateInscripcion("ANULADA", idAtleta);
-				addPago(new PagoDto(transferenciaDto.fecha, idAtleta, idCompeticion, 0, transferenciaDto.importe));
+				updateInscripcion("ANULADA", transferenciaDto.fecha, 0, transferenciaDto.importe, idAtleta);
 			}
 		} else {
-			updateInscripcion("ANULADA", idAtleta);
-			addPago(new PagoDto(transferenciaDto.fecha, idAtleta, idCompeticion, 0, transferenciaDto.importe));
+			updateInscripcion("ANULADA", transferenciaDto.fecha, 0, transferenciaDto.importe, idAtleta);
 		}
 	}
 
@@ -93,43 +94,20 @@ public class ActualizarEstadoInscripcion {
 		return !fechaTransferencia.isAfter(fechaLimite);
 	}
 
-	private void addPago(PagoDto pago) throws BusinessException {
-		// Process
+	private void updateInscripcion(String estado, LocalDate fecha, double importe_pago, double importe_devolver,
+			int idAtleta) {
 
 		PreparedStatement pst = null;
 
 		try {
-			c = Jdbc.getConnection();
-
-			pst = c.prepareStatement(SQL_ADD_PAGO);
-			pst.setInt(1, pago.idAtleta);
-			pst.setString(2, pago.pagoId);
-			pst.setDate(3, Date.valueOf(pago.fechaPago));
-			pst.setDouble(4, pago.importe);
-			pst.setInt(5, idCompeticion);
-			pst.setDouble(6, pago.importe_devolver);
-
-			pst.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new BusinessException("Fichero de pagos ya cargado con anterioridad");
-		} finally {
-			Jdbc.close(pst);
-			Jdbc.close(c);
-		}
-	}
-
-	private void updateInscripcion(String estado, int idAtleta) {
-		// Process
-		PreparedStatement pst = null;
-
-		try {
-			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(SQL_UPDATE_INSCRIPCION);
 			pst.setString(1, estado);
-			pst.setInt(2, idAtleta);
-			pst.setInt(3, idCompeticion);
+			pst.setDate(2, Date.valueOf(fecha));
+			pst.setDouble(3, importe_pago);
+			pst.setDouble(4, importe_devolver);
+			pst.setInt(5, idAtleta);
+			pst.setInt(6, idCompeticion);
 
 			pst.executeUpdate();
 
@@ -137,7 +115,6 @@ public class ActualizarEstadoInscripcion {
 			throw new RuntimeException(e);
 		} finally {
 			Jdbc.close(pst);
-			Jdbc.close(c);
 		}
 	}
 
@@ -156,7 +133,6 @@ public class ActualizarEstadoInscripcion {
 		Optional<CompeticionDto> competicion = null;
 
 		try {
-			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(SQL_BUSCAR_COMPETICION);
 			pst.setInt(1, idCompeticion);
@@ -167,7 +143,6 @@ public class ActualizarEstadoInscripcion {
 			throw new RuntimeException(e);
 		} finally {
 			Jdbc.close(pst);
-			Jdbc.close(c);
 		}
 
 		return competicion;
@@ -178,7 +153,6 @@ public class ActualizarEstadoInscripcion {
 		Optional<InscripcionDto> inscripcion = null;
 
 		try {
-			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(SQL_BUSCAR_INSCRIPCION);
 			pst.setInt(1, idCompeticion);
@@ -190,7 +164,6 @@ public class ActualizarEstadoInscripcion {
 			throw new RuntimeException(e);
 		} finally {
 			Jdbc.close(pst);
-			Jdbc.close(c);
 		}
 
 		return inscripcion;
@@ -202,7 +175,6 @@ public class ActualizarEstadoInscripcion {
 		int id = -1;
 
 		try {
-			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(SQL_BUSCAR_ID_ATLETA);
 			pst.setString(1, dni);
@@ -217,7 +189,6 @@ public class ActualizarEstadoInscripcion {
 			throw new RuntimeException(e);
 		} finally {
 			Jdbc.close(pst);
-			Jdbc.close(c);
 		}
 
 		return id;
@@ -228,7 +199,6 @@ public class ActualizarEstadoInscripcion {
 		Optional<PlazoDto> plazo = null;
 
 		try {
-			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(SQL_BUSCAR_PLAZO);
 			pst.setInt(1, idCompeticion);
@@ -241,7 +211,6 @@ public class ActualizarEstadoInscripcion {
 			throw new RuntimeException(e);
 		} finally {
 			Jdbc.close(pst);
-			Jdbc.close(c);
 		}
 
 		return plazo;
