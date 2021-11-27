@@ -7,9 +7,9 @@ import uo.ips.application.business.categoria.CategoriaDto;
 public class CategoriaCrudServiceImpl implements CategoriaCrudService {
 
 	@Override
-	public void AñadirCategoria(CategoriaDto categoria, int competicionId)
+	public void AÃ±adirCategoria(CategoriaDto categoria, int competicionId)
 			throws BusinessException {
-		new AñadirCategoria(categoria, competicionId).execute();
+		new AÃ±adirCategoria(categoria, competicionId).execute();
 
 	}
 

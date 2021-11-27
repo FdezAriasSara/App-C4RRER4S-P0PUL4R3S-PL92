@@ -11,10 +11,10 @@ import uo.ips.application.business.atleta.AtletaDto;
 
 public class AnadirAtleta {
 
-	private String AÑADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname,idAtleta) VALUES (?,?,?,?,?,?,?)";
+	private String AÃ‘ADIR_ATLETA = "INSERT INTO Atleta (DNI,Email,fechaNacimiento,Name,sexo,Surname,idAtleta) VALUES (?,?,?,?,?,?,?)";
 	private String BUSCAR_ATLETA_POR_DNI = "SELECT * FROM Atleta WHERE dni = ?";
 	private String BUSCAR_ATLETA_POR_EMAIL = "SELECT * FROM Atleta WHERE email = ?";
-	private String ID_MAXIMO="select max(idAtleta) from Atleta";
+	private String ID_MAXIMO = "select max(idAtleta) from Atleta";
 
 	private AtletaDto atleta;
 
@@ -33,14 +33,14 @@ public class AnadirAtleta {
 			checkEmail();
 			c = Jdbc.getConnection();
 
-			pst = c.prepareStatement(AÑADIR_ATLETA);
+			pst = c.prepareStatement(AÃ‘ADIR_ATLETA);
 			pst.setString(1, atleta.dni);
 			pst.setString(2, atleta.email);
 			pst.setDate(3, atleta.fechaNacimiento);
 			pst.setString(4, atleta.nombre);
 			pst.setString(5, atleta.sexo);
 			pst.setString(6, atleta.apellido);
-			int id=getId();
+			int id = getId();
 			pst.setInt(7, id);
 
 			pst.executeUpdate();
@@ -57,32 +57,30 @@ public class AnadirAtleta {
 	private int getId() {
 		Connection c = null;
 		PreparedStatement pst = null;
-		ResultSet rs=null;
+		ResultSet rs = null;
 		try {
-			
+
 			c = Jdbc.getConnection();
 
 			pst = c.prepareStatement(ID_MAXIMO);
-			
-		
 
-			rs=pst.executeQuery();
-			if(rs.next()) {
-				return rs.getInt(1)+1;
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1) + 1;
 			}
 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			Jdbc.close(rs,pst,c);
-			
+			Jdbc.close(rs, pst, c);
+
 		}
 		return 0;
 	}
 
 	/**
-	 * IMPORTANTE separar el chequeo del dni , de el del email. Así se comprueba
-	 * también que el email no esté registrado en el sistema ya, pero con otro
+	 * IMPORTANTE separar el chequeo del dni , de el del email. Asï¿½ se comprueba
+	 * tambiï¿½n que el email no estï¿½ registrado en el sistema ya, pero con otro
 	 * atleta con dni diferente.
 	 * 
 	 * @throws BusinessException
@@ -102,7 +100,8 @@ public class AnadirAtleta {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				throw new BusinessException(String.format("El correo %s ya está registrado.", atleta.email));
+				throw new BusinessException(String.format(
+						"El correo %s ya estï¿½ registrado.", atleta.email));
 			}
 			pst.close();
 		} catch (SQLException e) {
@@ -112,8 +111,10 @@ public class AnadirAtleta {
 		}
 
 	}
+
 	/**
 	 * Comprueba que no hay un atleta con el mismo dni.
+	 * 
 	 * @throws BusinessException
 	 */
 
@@ -133,7 +134,9 @@ public class AnadirAtleta {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				throw new BusinessException(String.format("El atleta con dni %s ya está registrado.", atleta.dni));
+				throw new BusinessException(String.format(
+						"El atleta con dni %s ya estï¿½ registrado.",
+						atleta.dni));
 			}
 			pst.close();
 		} catch (SQLException e) {

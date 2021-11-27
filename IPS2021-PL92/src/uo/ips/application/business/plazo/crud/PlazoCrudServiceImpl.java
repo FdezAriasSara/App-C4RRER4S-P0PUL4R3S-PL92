@@ -9,16 +9,16 @@ import uo.ips.application.business.plazo.PlazoDto;
 public class PlazoCrudServiceImpl implements PlazoCrudService {
 
 	@Override
-	public Date getUltimoPlazoByCompeticionId(int competicionId) throws BusinessException {
+	public Date getUltimoPlazoByCompeticionId(int competicionId)
+			throws BusinessException {
 
-		return new UltimoPlazoByCompeticiónId(competicionId).execute();
+		return new UltimoPlazoByCompeticiÃ³nId(competicionId).execute();
 	}
 
 	@Override
 	public void addPlazo(PlazoDto plazo) {
-		 new AddPlazo(plazo).execute();
-		
+		new AddPlazo(plazo).execute();
+
 	}
-	
 
 }

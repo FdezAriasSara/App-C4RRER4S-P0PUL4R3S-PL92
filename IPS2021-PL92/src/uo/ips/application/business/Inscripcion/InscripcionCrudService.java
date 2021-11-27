@@ -7,12 +7,12 @@ import uo.ips.application.business.BusinessException;
 
 public interface InscripcionCrudService {
 	/**
-	 * Permite realizar la inscripción en la competición
+	 * Permite realizar la inscripciï¿½n en la competiciï¿½n
 	 * 
 	 * @param solicitud
 	 * @return
 	 */
-	InscripcionDto anadirInscripción(InscripcionDto solicitud);
+	InscripcionDto anadirInscripciÃ³n(InscripcionDto solicitud);
 
 	public void inscribirAtleta(int idCompeticion, int idAtleta,
 			int idCategoria) throws BusinessException;
@@ -44,9 +44,9 @@ public interface InscripcionCrudService {
 			throws BusinessException;
 
 	/**
-	 * Para cada inscripcion perteneciente a una competición cuyos plazos han
-	 * terminado, se asignará un dorsal a aquellos competidores que no lo tengan
-	 * asignado aún.
+	 * Para cada inscripcion perteneciente a una competiciï¿½n cuyos plazos han
+	 * terminado, se asignarï¿½ un dorsal a aquellos competidores que no lo tengan
+	 * asignado aï¿½n.
 	 * 
 	 * @throws BusinessException
 	 */
@@ -67,7 +67,7 @@ public interface InscripcionCrudService {
 			String... email) throws BusinessException;
 
 	/**
-	 * Busca todos los datos deun atleta usando su dorsal y la competición en la
+	 * Busca todos los datos deun atleta usando su dorsal y la competiciï¿½n en la
 	 * que ha participado
 	 * 
 	 * @param idAtleta
