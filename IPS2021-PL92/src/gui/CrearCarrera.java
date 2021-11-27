@@ -74,6 +74,7 @@ public class CrearCarrera extends JFrame {
 	private JLabel lblError;
 	private JLabel lblDorsales;
 	private JSpinner spinnerDorsales;
+	private JPanel pnCancelaciones;
 
 	/**
 	 * Launch the application.
@@ -138,7 +139,7 @@ public class CrearCarrera extends JFrame {
 	private JTextField getTxtFieldNombre() {
 		if (txtFieldNombre == null) {
 			txtFieldNombre = new JTextField();
-			txtFieldNombre.setBounds(154, 31, 275, 19);
+			txtFieldNombre.setBounds(174, 30, 275, 19);
 			txtFieldNombre.setColumns(10);
 		}
 		return txtFieldNombre;
@@ -156,7 +157,7 @@ public class CrearCarrera extends JFrame {
 	private JComboBox getComboBoxTipo() {
 		if (comboBoxTipo == null) {
 			comboBoxTipo = new JComboBox();
-			comboBoxTipo.setBounds(154, 67, 88, 21);
+			comboBoxTipo.setBounds(174, 67, 88, 21);
 			comboBoxTipo.addItem("Asfalto");
 			comboBoxTipo.addItem("Monta�a");
 		}
@@ -176,7 +177,7 @@ public class CrearCarrera extends JFrame {
 		if (spinner == null) {
 			spinner = new JSpinner(
 					new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-			spinner.setBounds(154, 108, 50, 19);
+			spinner.setBounds(174, 107, 50, 19);
 		}
 		return spinner;
 	}
@@ -506,7 +507,7 @@ public class CrearCarrera extends JFrame {
 		if (txtOrganizador == null) {
 			txtOrganizador = new JTextField();
 			txtOrganizador.setColumns(10);
-			txtOrganizador.setBounds(154, 150, 275, 19);
+			txtOrganizador.setBounds(174, 149, 275, 19);
 		}
 		return txtOrganizador;
 	}
@@ -524,7 +525,7 @@ public class CrearCarrera extends JFrame {
 		if (txtCuentaBancaria == null) {
 			txtCuentaBancaria = new JTextField();
 			txtCuentaBancaria.setColumns(10);
-			txtCuentaBancaria.setBounds(154, 187, 275, 19);
+			txtCuentaBancaria.setBounds(174, 186, 275, 19);
 		}
 		return txtCuentaBancaria;
 	}
@@ -532,12 +533,14 @@ public class CrearCarrera extends JFrame {
 	private JTabbedPane getTabbedPane() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			tabbedPane.setBounds(41, 243, 687, 361);
+			tabbedPane.setBounds(41, 254, 687, 361);
 
 			tabbedPane.add(getPnCategorias());
 			tabbedPane.add("Categorias", pnCategorias);
 
 			tabbedPane.addTab("Plazos", null, getPnPlazos(), null);
+			tabbedPane.addTab("Cancelaciones", null, getPnCancelaciones(),
+					null);
 		}
 		return tabbedPane;
 	}
@@ -763,8 +766,15 @@ public class CrearCarrera extends JFrame {
 		if (spinnerDorsales == null) {
 			spinnerDorsales = new JSpinner(
 					new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-			spinnerDorsales.setBounds(181, 221, 50, 19);
+			spinnerDorsales.setBounds(174, 214, 50, 19);
 		}
 		return spinnerDorsales;
+	}
+
+	private JPanel getPnCancelaciones() {
+		if (pnCancelaciones == null) {
+			pnCancelaciones = new JPanel();
+		}
+		return pnCancelaciones;
 	}
 }

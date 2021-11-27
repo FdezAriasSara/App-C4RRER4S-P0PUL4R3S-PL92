@@ -2,6 +2,7 @@ package main;
 
 import java.awt.EventQueue;
 
+import controller.CancelacionController;
 import controller.ClubController;
 import controller.ComparacionController;
 import controller.CompeticionController;
@@ -25,6 +26,7 @@ public class Main {
 					new InscripcionController(frame);
 					new ClubController(frame);
 					new ComparacionController(frame);
+					new CancelacionController(frame);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
