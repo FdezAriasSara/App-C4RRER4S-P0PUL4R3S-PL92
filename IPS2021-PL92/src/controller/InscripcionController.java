@@ -71,11 +71,10 @@ public class InscripcionController {
 			public void actionPerformed(ActionEvent e) {
 
 				iniciarSesion(null);
-<<<<<<< HEAD
-				mainW.getBtnListarInscripciones().setEnabled(false);// una vez haya iniciado sesión , el atleta puede
+
+				mainW.getBtnMisInscripciones().setEnabled(false);// una vez haya iniciado sesión , el atleta puede
 																	// acceder a sus inscripciones.
-=======
->>>>>>> refs/remotes/origin/master
+
 				mainW.vaciarCampoIniciarSesion();
 
 				((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg1");
@@ -126,45 +125,12 @@ public class InscripcionController {
 
 			}
 		});
-<<<<<<< HEAD
-		/**
-		 * Implementa la funcionalidad de inicio de sesión necesaria para listar las
-		 * inscripciones.
-		 */
-		mainW.getBtnSesion().addActionListener(new ActionListener() {
-=======
->>>>>>> refs/remotes/origin/master
 
-<<<<<<< HEAD
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String email = mainW.getTextFieldIniciarSesion().getText();
-				if (email.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Debes rellenar tu email para iniciar sesion.");
-				} else {
-					iniciarSesion(new Sesion(email));
-					if (sesion.getIdAtleta() == Sesion.NO_INICIADO) {
-						mainW.mostrarErrorInicioSesion(
-								"No se ha encontrado un usuario asociado al correo electrónico.\n Inténtalo de nuevo.");
-						mainW.vaciarCampoIniciarSesion();
-					} else {
-						mainW.getBtnListarInscripciones().setEnabled(true);// una vez haya iniciado sesión , el atleta
-																			// puede
-						// acceder a sus inscripciones.
-						((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg2");
-
-						mainW.vaciarCampoIniciarSesion();
-					}
-
-				}
-
-			}
-		});
 
 		/*
 		 * Boton que despliega las inscripciones que corresponden al atleta.
 		 */
-		mainW.getBtnListarInscripciones().addActionListener(new ActionListener() {
+		mainW.getBtnMisInscripciones().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -214,8 +180,7 @@ public class InscripcionController {
 			}
 
 		});
-=======
->>>>>>> refs/remotes/origin/master
+
 		/*
 		 * Metodo para cambiar al panel de pago con tarjeta.
 		 */
@@ -307,12 +272,9 @@ public class InscripcionController {
 						// añadir a la base de datos.
 						atlCrud.anadirAtleta(dto);
 
-<<<<<<< HEAD
-						// una vez que el atleta se registra se le inscribe en la competición que había
-=======
 						// una vez que el atleta se registra se le inscribe en
 						// la competición que había
->>>>>>> refs/remotes/origin/master
+
 						// seleccionado.
 
 						inscribirse(dto.email, mainW.getTableCompeticion().getModel()
@@ -341,12 +303,9 @@ public class InscripcionController {
 						.getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString());
 
 				try {
-<<<<<<< HEAD
+
 					// si la competición no tiene los plazos terminados-> mostrar error y no enseñar
-=======
-					// si la competición no tiene los plazos terminados-> mostrar error y no
-					// enseñar
->>>>>>> refs/remotes/origin/master
+
 					// panel dorsales
 					Date ultimoPlazo = plazoCrud.getUltimoPlazoByCompeticionId(idCompeticion);
 					if (ultimoPlazo.after(Date.valueOf(LocalDate.now()))) {
@@ -358,25 +317,18 @@ public class InscripcionController {
 							// reservados
 							// esto lo hago aquiporque sino, aunque se aborte la asignacion manual de
 							// dorsales la automatica seguía
-<<<<<<< HEAD
-							incCrud.asignarDorsalesNoReservados(Integer.parseInt( mainW.getTablaClasificacion().getModel().getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString()));
-=======
+
 							incCrud.asignarDorsalesNoReservados(
 									Integer.parseInt(mainW.getTablaClasificacion().getModel()
 											.getValueAt(mainW.getTablaClasificacion().getSelectedRow(), 0).toString()));
->>>>>>> refs/remotes/origin/master
+
 							JOptionPane.showMessageDialog(null,
 									"Se han asignado los dorsales de la competición con id " + idCompeticion);
 							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg3");
 						} else {
-<<<<<<< HEAD
 
 							// si la competición teen dorsales reservados-> mostrar panel para reservarlos
-=======
-							// si la competici�n teen dorsales
-							// reservados-> mostrar panel para
-							// reservarlos
->>>>>>> refs/remotes/origin/master
+
 							inicializarTablaAsignacionReservas(dorsalesReservados);
 							((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "dorsales");
 						}
@@ -488,11 +440,7 @@ public class InscripcionController {
 				if (mainW.getTableCompeticion().getSelectedRow() >= 0) {
 					mainW.getLblErrorOrg().setVisible(true);
 					mainW.getLblErrorOrg().setText("Error: ID vacío");
-<<<<<<< HEAD
-					
-=======
 
->>>>>>> refs/remotes/origin/master
 					mainW.getBtnCargarCategorias().setEnabled(false);
 					mainW.getBtnGenerarClasificacion().setEnabled(false);
 					mainW.getBtnObtenerAtletas().setEnabled(false);
@@ -512,14 +460,9 @@ public class InscripcionController {
 					mainW.getBtnObtenerAtletas().setEnabled(true);
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					mainW.getLblErrorOrg().setVisible(true);
-<<<<<<< HEAD
-					mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
-					
-=======
 
 					mainW.getLblErrorOrg().setText("Error: ID de competicion no numerico, vacío o menor que 0");
 
->>>>>>> refs/remotes/origin/master
 					mainW.getBtnCargarCategorias().setEnabled(false);
 					mainW.getBtnGenerarClasificacion().setEnabled(false);
 					mainW.getBtnObtenerAtletas().setEnabled(false);
@@ -562,13 +505,11 @@ public class InscripcionController {
 				}
 
 				mainW.getLblError().setVisible(false);
-<<<<<<< HEAD
-				int catSelectedCB = mainW.getCbCategoria().getSelectedIndex() - 1; //Resto 1 porque primera categoría es ABSOLUTA (generar todas las clasi)
-=======
+
 				int catSelectedCB = mainW.getCbCategoria().getSelectedIndex() - 1; // Resto 1 porque primera categoría
 																					// es ABSOLUTA (generar todas las
 																					// clasi)
->>>>>>> refs/remotes/origin/master
+
 				int idCategoriaSelected;
 
 				if (catSelectedCB < 0) {
@@ -602,16 +543,12 @@ public class InscripcionController {
 						mainW.getLblErrorOrg().setEnabled(true);
 					}
 				} else {
-<<<<<<< HEAD
-					mainW.getLblErrorOrg().setText("Error: selecciona competición para cargar pagos");
-					mainW.getLblErrorOrg().setVisible(true);
-					mainW.getLblErrorOrg().setEnabled(true);
-=======
+
 
 					JOptionPane.showMessageDialog(mainW, "Selecciona competición para cargar pagos", null,
 							JOptionPane.ERROR_MESSAGE);
 
->>>>>>> refs/remotes/origin/master
+
 				}
 			}
 		});
@@ -652,32 +589,23 @@ public class InscripcionController {
 
 	}
 
-<<<<<<< HEAD
-	
-	
+
 	
 
 	
 	private void añadirCategoriasAComboBox(int idCompeticion) {
 		
 		
-		
-=======
-	private void a�adirCategoriasAComboBox(int idCompeticion) {
 
->>>>>>> refs/remotes/origin/master
 		try {
 
 			this.currentCategoriasInComboBox = compCrud.listarCompeticionesConSusCategorias(idCompeticion);
 
 			mainW.getCbCategoria().addItem("ABSOLUTA");
-<<<<<<< HEAD
+
 			for(CompeticionCategoriaDto dto :  currentCategoriasInComboBox) {
 				mainW.getCbCategoria().addItem(dto.nombreCategoría);
-=======
-			for (CompeticionCategoriaDto dto : currentCategoriasInComboBox) {
-				mainW.getCbCategoria().addItem(dto.nombreCategor�a);
->>>>>>> refs/remotes/origin/master
+
 			}
 
 		} catch (BusinessException e) {
@@ -830,19 +758,12 @@ public class InscripcionController {
 					sesion = new Sesion(emailAtleta, idCompeticion);
 
 					((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "Pg4");
-<<<<<<< HEAD
-					
-=======
 
->>>>>>> refs/remotes/origin/master
 				} else {// si el atleta no está registrado.
 					mainW.getTextFieldCorreo().setText(mainW.getTxtFEmail().getText());
-<<<<<<< HEAD
+
 					// si el atleta decide registrarse, se habrá introducido ya el correo para su
-=======
-					// si el atleta decide registrarse, se habrá introducido ya
-					// el correo para su
->>>>>>> refs/remotes/origin/master
+
 					// comodidad
 					mainW.getRegistroDialog().setVisible(true);
 				}
