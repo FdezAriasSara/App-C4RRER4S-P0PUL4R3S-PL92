@@ -107,7 +107,7 @@ public class ClubController {
 				}
 				
 				reiniciarValoresFormulario();
-				
+				mostrarAtletasEnTabla();
 				
 				((CardLayout) mainW.getPanel_card().getLayout()).show(mainW.getPanel_card(), "formulario");
 				
