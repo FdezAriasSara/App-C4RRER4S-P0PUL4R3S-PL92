@@ -103,6 +103,7 @@ public class CrearCarrera extends JFrame {
 	private JScrollPane scrollPanePuntos;
 	private JPanel pnFilasPuntos;
 	private JButton btnCrearPunto;
+	private JPanel pnCancelaciones;
 
 	/**
 	 * Launch the application.
@@ -126,7 +127,7 @@ public class CrearCarrera extends JFrame {
 	 */
 	public CrearCarrera() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 767, 782);
+		setBounds(100, 100, 767, 737);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -162,7 +163,7 @@ public class CrearCarrera extends JFrame {
 		if (lblNombre == null) {
 			lblNombre = new JLabel("Nombre");
 			lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblNombre.setBounds(41, 13, 80, 27);
+			lblNombre.setBounds(41, 26, 80, 27);
 		}
 		return lblNombre;
 	}
@@ -170,7 +171,7 @@ public class CrearCarrera extends JFrame {
 	private JTextField getTxtFieldNombre() {
 		if (txtFieldNombre == null) {
 			txtFieldNombre = new JTextField();
-			txtFieldNombre.setBounds(154, 18, 275, 19);
+			txtFieldNombre.setBounds(174, 30, 275, 19);
 			txtFieldNombre.setColumns(10);
 		}
 		return txtFieldNombre;
@@ -188,7 +189,7 @@ public class CrearCarrera extends JFrame {
 	private JComboBox getComboBoxTipo() {
 		if (comboBoxTipo == null) {
 			comboBoxTipo = new JComboBox();
-			comboBoxTipo.setBounds(154, 54, 88, 21);
+			comboBoxTipo.setBounds(174, 54, 88, 21);
 			comboBoxTipo.addItem("Asfalto");
 			comboBoxTipo.addItem("Montaña");
 		}
@@ -199,7 +200,7 @@ public class CrearCarrera extends JFrame {
 		if (lblDistancia == null) {
 			lblDistancia = new JLabel("Distancia");
 			lblDistancia.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblDistancia.setBounds(41, 90, 80, 27);
+			lblDistancia.setBounds(41, 103, 80, 27);
 		}
 		return lblDistancia;
 	}
@@ -215,7 +216,7 @@ public class CrearCarrera extends JFrame {
 					checkArcosValidity();
 					
 				}
-			});
+			});		
 		}
 		return spinner;
 	}
@@ -582,7 +583,8 @@ public class CrearCarrera extends JFrame {
 				BusinessFactory.forArco().AnadirArco(arco);
 			}
 
-			JOptionPane.showMessageDialog(this, "Competición creada correctamente");
+			JOptionPane.showMessageDialog(this,
+					"Competici�n creada correctamente");
 			dispose();
 		} catch (BusinessException e) {
 			getLblError().setText(e.getMessage());
@@ -612,7 +614,7 @@ public class CrearCarrera extends JFrame {
 		if (lblCuentaBancaria == null) {
 			lblCuentaBancaria = new JLabel("Cuenta Bancaria");
 			lblCuentaBancaria.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblCuentaBancaria.setBounds(41, 169, 103, 27);
+			lblCuentaBancaria.setBounds(41, 182, 103, 27);
 		}
 		return lblCuentaBancaria;
 	}
@@ -621,7 +623,7 @@ public class CrearCarrera extends JFrame {
 		if (txtCuentaBancaria == null) {
 			txtCuentaBancaria = new JTextField();
 			txtCuentaBancaria.setColumns(10);
-			txtCuentaBancaria.setBounds(154, 174, 275, 19);
+			txtCuentaBancaria.setBounds(174, 186, 275, 19);
 		}
 		return txtCuentaBancaria;
 	}
@@ -636,6 +638,8 @@ public class CrearCarrera extends JFrame {
 
 			tabbedPane.addTab("Plazos", null, getPnPlazos(), null);
 			tabbedPane.addTab("Puntos de control", null, getPnPuntos(), null);
+			tabbedPane.addTab("Cancelaciones", null, getPnCancelaciones(),
+					null);
 		}
 		return tabbedPane;
 	}
@@ -956,5 +960,12 @@ public class CrearCarrera extends JFrame {
 			pnFilasPuntos.setLayout(new BoxLayout(pnFilasPuntos, BoxLayout.Y_AXIS));
 		}
 		return pnFilasPuntos;
+	}
+
+	private JPanel getPnCancelaciones() {
+		if (pnCancelaciones == null) {
+			pnCancelaciones = new JPanel();
+		}
+		return pnCancelaciones;
 	}
 }
