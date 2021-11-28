@@ -559,7 +559,7 @@ public class CrearCarrera extends JFrame {
 		competicion.plazasDisponibles = Integer
 				.parseInt(getSpinnerPlazas().getValue().toString());
 		competicion.aDevolver = Integer
-				.parseInt(getSpinnerPorcentajeDevolver().toString());
+				.parseInt(getSpinnerPorcentajeDevolver().getValue().toString());
 		competicion.limiteCancelacion = new java.sql.Date(
 				getLimiteCancelacion().getDate().getTime());
 
@@ -1043,7 +1043,7 @@ public class CrearCarrera extends JFrame {
 					.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			spinnerPorcentajeDevolver
 					.setModel(new SpinnerNumberModel(0, 0, 100, 10));
-			spinnerPorcentajeDevolver.setBounds(238, 113, 35, 20);
+			spinnerPorcentajeDevolver.setBounds(238, 113, 45, 20);
 			spinnerPorcentajeDevolver.setVisible(false);
 		}
 		return spinnerPorcentajeDevolver;
@@ -1054,7 +1054,7 @@ public class CrearCarrera extends JFrame {
 			lblPcntj = new JLabel("%");
 			lblPcntj.setFont(new Font("Tahoma", Font.BOLD, 12));
 			lblPcntj.setVisible(false);
-			lblPcntj.setBounds(274, 113, 28, 23);
+			lblPcntj.setBounds(287, 113, 28, 23);
 		}
 		return lblPcntj;
 	}
@@ -1074,7 +1074,7 @@ public class CrearCarrera extends JFrame {
 
 	private boolean comprobarFechaLimiteCancelacion() {
 		Date fechaCompeticion = getCalendar().getDate();
-		if (getLimiteCancelacion().getDate().before(fechaCompeticion)) {
+		if (getLimiteCancelacion().getDate().after(fechaCompeticion)) {
 			getLblError().setText(
 					"La fecha límite para cancelar inscripciones debe ser antes de la competición.");
 			return false;

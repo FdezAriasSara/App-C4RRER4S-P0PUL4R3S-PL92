@@ -91,4 +91,19 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 		return new ObtenerAtletasParaComparar(dorsal, idCompeticion).execute();
 	}
 
+	@Override
+	public void cancelarInscricpion(int idAtleta, int idCompeticion)
+			throws BusinessException {
+		new CancelarInscripcion(idAtleta, idCompeticion).execute();
+
+	}
+
+	@Override
+	public InscripcionDto encontarInscripcion(int idAtleta,
+			int idCompeticionSeleccionada) throws BusinessException {
+		return new EncontrarInscripcion(idAtleta, idCompeticionSeleccionada)
+				.execute();
+
+	}
+
 }

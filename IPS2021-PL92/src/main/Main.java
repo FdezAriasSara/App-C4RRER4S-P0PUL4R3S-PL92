@@ -26,8 +26,9 @@ public class Main {
 					new CompeticionController(frame);
 					new InscripcionController(frame);
 					new ClubController(frame);
-					new ComparacionController(frame);
-					new CancelacionController(frame);
+					ComparacionController sesion = new ComparacionController(
+							frame);
+					new CancelacionController(frame, sesion);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

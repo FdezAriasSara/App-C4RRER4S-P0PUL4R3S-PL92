@@ -15,7 +15,6 @@ public interface InscripcionCrudService {
 
 	InscripcionDto anadirInscripcion(InscripcionDto solicitud);
 
-
 	public void inscribirAtleta(int idCompeticion, int idAtleta,
 			int idCategoria) throws BusinessException;
 
@@ -79,4 +78,16 @@ public interface InscripcionCrudService {
 	 */
 	AtletaInscritoDto obtenerAtletaParaComparar(int dorsal, int idCompeticion)
 			throws BusinessException;
+
+	/**
+	 * Establece el estado de la inscripción a "CANCELADA"
+	 * 
+	 * @param idAtleta
+	 * @throws BusinessException
+	 */
+	void cancelarInscricpion(int idAtleta, int idCompeticion)
+			throws BusinessException;
+
+	InscripcionDto encontarInscripcion(int idAtleta,
+			int idCompeticionSeleccionada) throws BusinessException;
 }

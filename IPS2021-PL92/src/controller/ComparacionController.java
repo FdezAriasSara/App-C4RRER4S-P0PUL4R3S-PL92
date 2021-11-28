@@ -27,7 +27,8 @@ public class ComparacionController {
 	private MainWindow mainW;
 	private InscripcionCrudService incCrud = BusinessFactory
 			.forInscripcionCrudService();
-	private Sesion sesion;
+	Sesion sesion;// protected para poder acceder a el desde cancelaciÃ³n
+					// controller
 
 	private AtletaCrudService atlCrud = BusinessFactory.forAtletaCrudService();
 	private CompeticionCrudService compCrud = BusinessFactory
@@ -48,6 +49,17 @@ public class ComparacionController {
 	}
 
 	private void initActions() {
+		mainW.getBtnCambiarUsuario().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainW.resetearCamposYVistasPerfilAtleta();
+				((CardLayout) mainW.getPanel_card().getLayout())
+						.show(mainW.getPanel_card(), "Pg5");
+
+			}
+
+		});
 		mainW.getBtnVolverPerfil().addActionListener(new ActionListener() {
 
 			@Override
@@ -69,7 +81,7 @@ public class ComparacionController {
 		});
 
 		/*
-		 * Botón para cambiar de usuario una vez ha iniciado sesión
+		 * Botï¿½n para cambiar de usuario una vez ha iniciado sesiï¿½n
 		 */
 		mainW.getBtnCambiarUsuario().addActionListener(new ActionListener() {
 
@@ -82,19 +94,19 @@ public class ComparacionController {
 		});
 
 		/*
-		 * Botón para que el atleta acceda a sus inscripciones.
+		 * Botï¿½n para que el atleta acceda a sus inscripciones.
 		 */
 		mainW.getBtnIniciarSesion().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) mainW.getPanel_card().getLayout())
-						.show(mainW.getPanel_card(), "perfil");
+						.show(mainW.getPanel_card(), "Pg5");
 
 			}
 		});
 		/**
-		 * Implementa la funcionalidad de inicio de sesión necesaria para listar
+		 * Implementa la funcionalidad de inicio de sesiï¿½n necesaria para listar
 		 * las inscripciones.
 		 */
 		mainW.getBtnSesion().addActionListener(new ActionListener() {
@@ -109,7 +121,7 @@ public class ComparacionController {
 					iniciarSesion(new Sesion(email));
 					if (sesion.getIdAtleta() == Sesion.NO_INICIADO) {
 						mainW.mostrarErrorInicioSesion(
-								"No se ha encontrado un usuario asociado al correo electrónico.\n Inténtalo de nuevo.");
+								"No se ha encontrado un usuario asociado al correo electrï¿½nico.\n Intï¿½ntalo de nuevo.");
 						mainW.vaciarCampoIniciarSesion();
 					} else {
 
@@ -125,7 +137,7 @@ public class ComparacionController {
 			}
 		});
 		/**
-		 * Muestra los atletas de la competición de la inscripción seleccionada
+		 * Muestra los atletas de la competiciï¿½n de la inscripciï¿½n seleccionada
 		 */
 		mainW.getBtnMostrarAtletas().addActionListener(new ActionListener() {
 
@@ -138,17 +150,6 @@ public class ComparacionController {
 
 			}
 		});
-		/**
-		 * Botón para cancelar la inscripción s
-		 */
-		mainW.getBtnCancelarInscripcion()
-				.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						// TODO
-					}
-				});
 
 		/*
 		 * Boton que despliega las inscripciones que corresponden al atleta.
@@ -163,7 +164,7 @@ public class ComparacionController {
 		});
 
 		/**
-		 * Botón para que el atleta se compare con el atleta que ha seleccionado
+		 * Botï¿½n para que el atleta se compare con el atleta que ha seleccionado
 		 */
 		mainW.getBtnCompararse().addActionListener(new ActionListener() {
 
@@ -187,7 +188,7 @@ public class ComparacionController {
 					.listarInscripcionesAtletaConDto(sesion.getIdAtleta());
 
 			// Esta es la lista del nombre de las columnas
-			String[] columnNames = { "ID", "Competición", "Estado Inscripcion",
+			String[] columnNames = { "ID", "Competiciï¿½n", "Estado Inscripcion",
 					"Ultimo Cambio" };
 
 			// Esta es la array que contiene los elementos a
@@ -223,7 +224,7 @@ public class ComparacionController {
 			};
 
 			mainW.getTableInscripciones().setModel(model);
-			// una vez que el atleta hace click en el botón de volver, se hace
+			// una vez que el atleta hace click en el botï¿½n de volver, se hace
 			// invisible las tablas para que no quede feo al borrarles el
 			// modelo. Por eso hago set visible cada vez que creo un modelo
 			// nuevo.
@@ -251,8 +252,9 @@ public class ComparacionController {
 											.toString();
 									rellenarLasLabelDeNombreDeCompeticion();
 									// Solo se permite mostrar los atletas de
-									// una competición terminada.
+									// una competiciï¿½n terminada.
 									evitarMostrarAtletasDeUnaCompeticionNoTerminada();
+									habilitarBotonCancelacion();
 								}
 
 							});
@@ -260,6 +262,24 @@ public class ComparacionController {
 		} catch (BusinessException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
+	}
+
+	/**
+	 * Este mÃ©todo habilita el botÃ³n de cancelar inscripciÃ³n, si y solo si el
+	 * estado de la misma es inscrito o pre_inscrito(pendiente de pago) Esto
+	 * evita el intento de cancelaciÃ³n de inscripciones anuladas, canceladas o
+	 * de competiciones terminadas.
+	 */
+	protected void habilitarBotonCancelacion() {
+		String statusInscripcion = mainW.getTableInscripciones()
+				.getValueAt(mainW.getTableInscripciones().getSelectedRow(), 2)
+				.toString();
+		if (statusInscripcion.equals("PRE_INSCRITO")
+				|| statusInscripcion.equals("INSCRITO")
+				|| statusInscripcion.equals("PENDIENTE_DE_PAGO")) {
+			this.mainW.getBtnCancelarInscripcion().setEnabled(true);
+		}
+
 	}
 
 	private void rellenarLasLabelDeNombreDeCompeticion() {
@@ -288,7 +308,7 @@ public class ComparacionController {
 					.obtenerAtletasParaCompeticion(id);
 
 			String[] columnNames = { "Dorsal", "Nombre", "Apellidos", "sexo",
-					"Categoría" };
+					"Categorï¿½a" };
 
 			String[][] valuesToTable = new String[res
 					.size()][columnNames.length];
@@ -324,7 +344,7 @@ public class ComparacionController {
 			};
 
 			mainW.getTableAtletasDeCompSeleccionada().setModel(model);
-			// una vez que el atleta hace click en el botón de volver, se hace
+			// una vez que el atleta hace click en el botï¿½n de volver, se hace
 			// invisible las tablas para que no quede feo al borrarles el
 			// modelo. Por eso hago set visible cada vez que creo un modelo
 			// nuevo.
@@ -399,7 +419,7 @@ public class ComparacionController {
 					.obtenerAtletaParaComparar(dorsalAtletaSeleccionado, id);
 			AtletaDto selectDto = atlCrud.encontrarPorId(seleccionado.idAtleta);
 			String[] columnNames = { "Nombre", "Apellidos", "Sexo", "Club",
-					"Categoría", "Posición final", "Tiempo", "Ritmo(min/km)" };
+					"Categorï¿½a", "Posiciï¿½n final", "Tiempo", "Ritmo(min/km)" };
 
 			String[][] valuesToTable = new String[2][columnNames.length];
 
@@ -448,7 +468,7 @@ public class ComparacionController {
 			};
 
 			mainW.getTableComparativa().setModel(model);
-			// una vez que el atleta hace click en el botón de volver, se hace
+			// una vez que el atleta hace click en el botï¿½n de volver, se hace
 			// invisible las tablas para que no quede feo al borrarles el
 			// modelo. Por eso hago set visible cada vez que creo un modelo
 			// nuevo.
