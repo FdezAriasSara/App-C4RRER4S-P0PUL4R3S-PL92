@@ -14,6 +14,7 @@ import gui.JustificanteCancelacion;
 import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.BusinessFactory;
+import uo.ips.application.business.Inscripcion.Estado;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
 import uo.ips.application.business.Inscripcion.InscripcionDto;
 import uo.ips.application.business.atleta.AtletaCrudService;
@@ -32,7 +33,7 @@ public class CancelacionController {
 	protected int idCompeticionSeleccionada;
 	private ComparacionController cc;
 	private JustificanteCancelacion justificante;
-	private static final String PAGO_SIN_ABONAR = "El pago por transferencia no fue abonado antes de la cancelación.";
+	private static final String PAGO_SIN_ABONAR = "Usted no había abonado el importe de la cuota. ";
 	private static final String PAGO_ABONADO = "Usted pagó %f euros";
 	private static final String INSCRIPCION_DE_CLUB = "Usted se inscribió através del club '%s'";
 	private static final String ADEVOLVER = "Se le devolverá un %d de dicho importe.";
@@ -81,7 +82,10 @@ public class CancelacionController {
 			Optional<CompeticionDto> optCompDto = c.findFirst();
 			if (optCompDto.isPresent()) {
 				CompeticionDto dto = optCompDto.get();
-				if (inscripcion.estado.equals("PENDIENTE_DE_PAGO"))
+				if (inscripcion.estado.toString()
+						.equals(Estado.PENDIENTE_DE_PAGO.toString())
+						|| inscripcion.estado.toString()
+								.equals(Estado.PRE_INSCRITO.toString()))
 					rellenarTexto(justificante.getLblCuotaDeInscripcion(),
 							PAGO_SIN_ABONAR);
 				else {
