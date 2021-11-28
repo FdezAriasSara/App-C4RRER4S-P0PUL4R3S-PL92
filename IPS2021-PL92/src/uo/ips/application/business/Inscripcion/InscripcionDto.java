@@ -42,6 +42,9 @@ public class InscripcionDto {
 				+ tiempoQueTarda.getHours() * 60 * 60;
 
 		switch (estado) {
+		case ("PENDIENTE DE PAGO "):
+			this.estado = Estado.PENDIENTE_DE_PAGO;
+			break;
 		case ("PRE_INSCRITO"):
 			this.estado = Estado.PRE_INSCRITO;
 			break;
@@ -102,6 +105,9 @@ public class InscripcionDto {
 		this.dorsal = dorsal;
 
 		switch (estado) {
+		case ("PENDIENTE DE PAGO "):
+			this.estado = Estado.PENDIENTE_DE_PAGO;
+			break;
 		case ("PRE_INSCRITO"):
 			this.estado = Estado.PRE_INSCRITO;
 			break;
@@ -120,7 +126,6 @@ public class InscripcionDto {
 		}
 
 	}
-		
 
 	public InscripcionDto() {
 		this.fechaInscripcion = null;

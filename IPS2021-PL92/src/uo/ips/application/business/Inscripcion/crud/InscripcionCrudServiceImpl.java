@@ -90,14 +90,32 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 		return new ObtenerAtletasParaComparar(dorsal, idCompeticion).execute();
 	}
 
-
-	public int inscribirAtletaListaEspera(String emailAtleta, int idCompeticion) throws BusinessException {
-		return new InscribirAtletaListaEspera(emailAtleta, idCompeticion).execute();
+	@Override
+	public int inscribirAtletaListaEspera(String emailAtleta, int idCompeticion)
+			throws BusinessException {
+		return new InscribirAtletaListaEspera(emailAtleta, idCompeticion)
+				.execute();
 	}
 
 	@Override
-	public boolean tieneListaEspera(int idCompeticion) throws BusinessException {
+	public boolean tieneListaEspera(int idCompeticion)
+			throws BusinessException {
 		return new TieneListaEspera(idCompeticion).execute();
+	}
+
+	@Override
+	public void cancelarInscricpion(int idAtleta, int idCompeticion)
+			throws BusinessException {
+		new CancelarInscripcion(idAtleta, idCompeticion).execute();
+
+	}
+
+	@Override
+	public InscripcionDto encontarInscripcion(int idAtleta,
+			int idCompeticionSeleccionada) throws BusinessException {
+		return new EncontrarInscripcion(idAtleta, idCompeticionSeleccionada)
+				.execute();
+
 	}
 
 }
