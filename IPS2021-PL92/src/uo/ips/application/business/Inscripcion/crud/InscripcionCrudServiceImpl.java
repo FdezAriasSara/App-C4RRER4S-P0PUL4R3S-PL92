@@ -74,7 +74,6 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 	public void asignarDorsalReservado(String email, int dorsal,
 			int idCompeticion) throws BusinessException {
 		new AsignarDorsalReservado(email, dorsal, idCompeticion).execute();
-
 	}
 
 	@Override
@@ -89,6 +88,16 @@ public class InscripcionCrudServiceImpl implements InscripcionCrudService {
 			int idCompeticion) throws BusinessException {
 
 		return new ObtenerAtletasParaComparar(dorsal, idCompeticion).execute();
+	}
+
+
+	public int inscribirAtletaListaEspera(String emailAtleta, int idCompeticion) throws BusinessException {
+		return new InscribirAtletaListaEspera(emailAtleta, idCompeticion).execute();
+	}
+
+	@Override
+	public boolean tieneListaEspera(int idCompeticion) throws BusinessException {
+		return new TieneListaEspera(idCompeticion).execute();
 	}
 
 }
