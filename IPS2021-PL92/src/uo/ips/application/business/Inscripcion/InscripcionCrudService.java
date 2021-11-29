@@ -7,14 +7,15 @@ import uo.ips.application.business.BusinessException;
 
 public interface InscripcionCrudService {
 	/**
-	 * Permite realizar la inscripci�n en la competici�n
+	 * <<<<<<< HEAD Permite realizar la inscripci�n en la competici�n =======
+	 * Permite realizar la inscripci�n en la competici�n >>>>>>>
+	 * refs/heads/anadir_lista_espera
 	 * 
 	 * @param solicitud
 	 * @return
 	 */
 
 	InscripcionDto anadirInscripcion(InscripcionDto solicitud);
-
 
 	public void inscribirAtleta(int idCompeticion, int idAtleta,
 			int idCategoria) throws BusinessException;
@@ -62,6 +63,7 @@ public interface InscripcionCrudService {
 	 * @param dorsal a asignar de los reservados
 	 * @throws BusinessException si no encuentra al competidor
 	 */
+
 	void asignarDorsalReservado(String email, int dorsal, int idCompeticion)
 			throws BusinessException;
 
@@ -77,6 +79,24 @@ public interface InscripcionCrudService {
 	 * @return
 	 * @throws BusinessException
 	 */
+
 	AtletaInscritoDto obtenerAtletaParaComparar(int dorsal, int idCompeticion)
 			throws BusinessException;
+
+	int inscribirAtletaListaEspera(String emailAtleta, int idCompeticion)
+			throws BusinessException;
+
+	boolean tieneListaEspera(int idCompeticion) throws BusinessException;
+
+	/**
+	 * Establece el estado de la inscripción a "CANCELADA"
+	 * 
+	 * @param idAtleta
+	 * @throws BusinessException
+	 */
+	void cancelarInscricpion(int idAtleta, int idCompeticion)
+			throws BusinessException;
+
+	InscripcionDto encontarInscripcion(int idAtleta,
+			int idCompeticionSeleccionada) throws BusinessException;
 }
