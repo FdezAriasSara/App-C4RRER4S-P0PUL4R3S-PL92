@@ -31,6 +31,9 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
+import java.awt.GridLayout;
+import javax.swing.JSpinner;
+import javax.swing.Box;
 
 public class MainWindow extends JFrame {
 
@@ -121,9 +124,9 @@ public class MainWindow extends JFrame {
 	private JButton btnAsignar;
 	private JButton btNuevaCompeticion;
 	private JButton btnMostrarTodasComp;
+	private JPanel panel;
 	private JButton btnInscribirClubArch;
 	private JButton btnInscribirClubFormulario;
-	private JPanel panel;
 	private JPanel panel_formularioClub;
 	private JLabel lblNombreClub;
 	private JTextField txtFNombreClub;
@@ -185,8 +188,26 @@ public class MainWindow extends JFrame {
 	private JLabel lblAtletaSeleccionado;
 	private JButton btnCompararse;
 	private JPanel pnFiltro;
+	private JButton btnAplicarFiltros;
+	private JPanel pnFiltroArcos;
+	private JLabel lblPuntosControl;
+	private JLabel lblFiltro;
+	private JLabel lblOrden;
+	private JComboBox<String> cbOrden;
+	private JSpinner spinnerMinRitmo;
+	private JLabel lblRitmoMinimo;
+	private JSpinner spinnerMaxRitmo;
+	private JLabel lblRitmoMaximo;
+	private JLabel lblClub;
+	private JTextField textFieldClub;
+	private JLabel lblTiempoPrimeroMinimo;
+	private JLabel lblTiempoPrimeroMaximo;
+	private JSpinner spinnerMaxTiempoPrimero;
+	private JSpinner spinnerMinTiempoPrimero;
+	private JScrollPane scrollPanFiltros;
 	private JustificanteCancelacion justificanteCancelacionDialog;
 	private JLabel lblPagoInscripcion;
+	private JComboBox<String> cbAscDesc;
 
 	/**
 	 * Create the frame.
@@ -293,10 +314,11 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getBtnAsignacionDorsales());
 			panel_organizador.add(getBtNuevaCompeticion());
 			panel_organizador.add(getBtnMostrarTodasComp());
-			panel_organizador.add(getPanel());
-			panel_organizador.add(getPnFiltro());
+			panel_organizador.add(getScrollPanFiltros());
 
 			panel_organizador.add(getBtInformacionContable());
+			panel_organizador.add(getBtnAplicarFiltros());
+		//	panel_organizador.add(getPnFiltro());
 
 		}
 		return panel_organizador;
@@ -497,7 +519,7 @@ public class MainWindow extends JFrame {
 	public JButton getBtnGenerarClasificacion() {
 		if (btnGenerarClasificacion == null) {
 			btnGenerarClasificacion = new JButton("Generar clasificacion");
-
+	
 			btnGenerarClasificacion.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btnGenerarClasificacion.setBounds(10, 404, 294, 35);
 			btnGenerarClasificacion.setEnabled(false);
@@ -1924,9 +1946,166 @@ public class MainWindow extends JFrame {
 	public JPanel getPnFiltro() {
 		if (pnFiltro == null) {
 			pnFiltro = new JPanel();
-			pnFiltro.setBounds(700, 10, 168, 294);
+			pnFiltro.setBounds(700, 10, 159, 264);
+			pnFiltro.setLayout(new GridLayout(0, 1, 0, 0));
+			pnFiltro.add(getLblPuntosControl());
+			pnFiltro.add(getPnFiltroArcos());
+			pnFiltro.add(getLblFiltro());
+			pnFiltro.add(getLblRitmoMinimo());
+			pnFiltro.add(getSpinnerMinRitmo());
+			pnFiltro.add(getLblRitmoMaximo());
+			pnFiltro.add(getSpinnerMaxRitmo());
+			pnFiltro.add(getLblTiempoPrimeroMinimo());
+			pnFiltro.add(getSpinnerTiempoPrimeroMin());
+			pnFiltro.add(getLblTiempoPrimeroMaximo());
+			pnFiltro.add(getSpinnerTiempoPrimeroMax());
+			pnFiltro.add(getLblClub());
+			pnFiltro.add(getTextFieldClub());
+			pnFiltro.add(getLblOrden());
+			pnFiltro.add(getCbOrden());
+			pnFiltro.add(getCbAscDesc());
 		}
 		return pnFiltro;
+	}
+
+	public JButton getBtnAplicarFiltros() {
+		if (btnAplicarFiltros == null) {
+			btnAplicarFiltros = new JButton("Aplicar Filtros");
+			btnAplicarFiltros.setBounds(726, 285, 123, 21);
+			btnAplicarFiltros.setEnabled(false);
+		}
+		return btnAplicarFiltros;
+	}
+
+	public JPanel getPnFiltroArcos() {
+		if (pnFiltroArcos == null) {
+			pnFiltroArcos = new JPanel();
+			
+		}
+		return pnFiltroArcos;
+	}
+
+	private JLabel getLblPuntosControl() {
+		if (lblPuntosControl == null) {
+			lblPuntosControl = new JLabel("Puntos de control");
+			lblPuntosControl.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblPuntosControl;
+	}
+
+	private JLabel getLblFiltro() {
+		if (lblFiltro == null) {
+			lblFiltro = new JLabel("Filtros     ");
+			lblFiltro.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblFiltro;
+	}
+
+	private JLabel getLblOrden() {
+		if (lblOrden == null) {
+			lblOrden = new JLabel("Orden");
+			lblOrden.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblOrden;
+	}
+
+	public JComboBox<String> getCbOrden() {
+		if (cbOrden == null) {
+			cbOrden = new JComboBox();
+			cbOrden.addItem("Posicion Final");
+			cbOrden.addItem("Dorsal");
+			cbOrden.addItem("Tiempo");
+		}
+		return cbOrden;
+	}
+
+	public JSpinner getSpinnerMinRitmo() {
+		if (spinnerMinRitmo == null) {
+			spinnerMinRitmo = new JSpinner();
+			((JSpinner.DefaultEditor) spinnerMinRitmo.getEditor()).getTextField().setColumns(3);
+		}
+		return spinnerMinRitmo;
+	}
+
+	public JLabel getLblRitmoMinimo() {
+		if (lblRitmoMinimo == null) {
+			lblRitmoMinimo = new JLabel("Ritmo Minimo (min/km)");
+			lblRitmoMinimo.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblRitmoMinimo;
+	}
+	public JSpinner getSpinnerMaxRitmo() {
+		if (spinnerMaxRitmo == null) {
+			spinnerMaxRitmo = new JSpinner();
+			((JSpinner.DefaultEditor) spinnerMaxRitmo.getEditor()).getTextField().setColumns(3);
+		}
+		return spinnerMaxRitmo;
+	}
+	private JLabel getLblRitmoMaximo() {
+		if (lblRitmoMaximo == null) {
+			lblRitmoMaximo = new JLabel("Ritmo Maximo (min/km)");
+			lblRitmoMaximo.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblRitmoMaximo;
+	}
+	private JLabel getLblClub() {
+		if (lblClub == null) {
+			lblClub = new JLabel("\nClub");
+			lblClub.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblClub;
+	}
+	public JTextField getTextFieldClub() {
+		if (textFieldClub == null) {
+			textFieldClub = new JTextField();
+			textFieldClub.setColumns(10);
+		}
+		return textFieldClub;
+	}
+	private JLabel getLblTiempoPrimeroMinimo() {
+		if (lblTiempoPrimeroMinimo == null) {
+			lblTiempoPrimeroMinimo = new JLabel("Tiempo al primero minimo");
+			lblTiempoPrimeroMinimo.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblTiempoPrimeroMinimo;
+	}
+	private JLabel getLblTiempoPrimeroMaximo() {
+		if (lblTiempoPrimeroMaximo == null) {
+			lblTiempoPrimeroMaximo = new JLabel("Tiempo al primero maximo");
+			lblTiempoPrimeroMaximo.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lblTiempoPrimeroMaximo;
+	}
+	public JSpinner getSpinnerTiempoPrimeroMax() {
+		if (spinnerMaxTiempoPrimero == null) {
+			spinnerMaxTiempoPrimero = new JSpinner();
+			((JSpinner.DefaultEditor) spinnerMaxTiempoPrimero.getEditor()).getTextField().setColumns(3);
+
+		}
+		return spinnerMaxTiempoPrimero;
+	}
+	public JSpinner getSpinnerTiempoPrimeroMin() {
+		if (spinnerMinTiempoPrimero == null) {
+			spinnerMinTiempoPrimero = new JSpinner();
+			((JSpinner.DefaultEditor) spinnerMinTiempoPrimero.getEditor()).getTextField().setColumns(3);
+
+		}
+		return spinnerMinTiempoPrimero;
+	}
+	private JScrollPane getScrollPanFiltros() {
+		if (scrollPanFiltros == null) {
+			scrollPanFiltros = new JScrollPane(getPnFiltro());
+			scrollPanFiltros.setBounds(700, 11, 168, 264);
+		}
+		return scrollPanFiltros;
+	}
+	public JComboBox<String> getCbAscDesc() {
+		if (cbAscDesc == null) {
+			cbAscDesc = new JComboBox();
+			cbAscDesc.addItem("Ascendente");
+			cbAscDesc.addItem("Descendente");
+		}
+		return cbAscDesc;
 	}
 
 	public JLabel getLblPagoInscripcion() {
