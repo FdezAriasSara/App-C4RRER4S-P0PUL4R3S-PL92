@@ -33,7 +33,7 @@ public class JustificanteCancelacion extends JDialog {
 		setModal(true);
 		this.mainWindow = main;
 		setTitle("IPS2021-PL92:Justificante cancelacion");
-		setBounds(100, 100, 450, 367);
+		setBounds(100, 100, 461, 358);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -92,7 +92,7 @@ public class JustificanteCancelacion extends JDialog {
 					"Se le devolverá un % de dicho importe.");
 			lblADevolver.setVisible(false);
 			lblADevolver.setFont(new Font("Tahoma", Font.PLAIN, 13));
-			lblADevolver.setBounds(28, 184, 229, 27);
+			lblADevolver.setBounds(28, 184, 350, 27);
 
 		}
 		return lblADevolver;

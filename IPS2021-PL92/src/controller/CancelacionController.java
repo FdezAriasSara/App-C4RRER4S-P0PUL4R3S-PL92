@@ -36,9 +36,9 @@ public class CancelacionController {
 	private JustificanteCancelacion justificante;
 	private PlazoCrudService plazoCrud = BusinessFactory.forPlazoCrudService();
 	private static final String PAGO_SIN_ABONAR = "Usted no había abonado el importe de la cuota. ";
-	private static final String PAGO_ABONADO = "Usted pagó %f euros";
+	private static final String PAGO_ABONADO = "Usted pagó %s euros";
 	private static final String INSCRIPCION_DE_CLUB = "Usted se inscribió através del club '%s'";
-	private static final String ADEVOLVER = "Se le devolverá un %d de dicho importe.";
+	private static final String ADEVOLVER = "Se le devolverá un %s %% de dicho importe.(%s euros)";
 	private static final String NOMBRE_COMPETICION = "Se ha cancelado su inscripción en '%s'";
 	private static final String FECHA = "a dia %d  de %s  de %d";
 	private static final String NOMBRE_APELLIDOS = "%s %s";
@@ -96,7 +96,8 @@ public class CancelacionController {
 								hoy.getMonth().getDisplayName(TextStyle.FULL,
 										new Locale("es", "ES")),
 								hoy.getYear()));
-				if (inscripcion.estado.toString().equals(Estado.LISTA_ESPERA)) {
+				if (inscripcion.estado.toString()
+						.equals(Estado.LISTA_ESPERA.toString())) {
 					rellenarTexto(justificante.getLblCuotaDeInscripcion(),
 							SACAR_LISTA_ESPERA);
 				} else {
@@ -108,9 +109,18 @@ public class CancelacionController {
 								PAGO_SIN_ABONAR);
 					else {
 						rellenarTexto(justificante.getLblCuotaDeInscripcion(),
-								String.format(PAGO_ABONADO, cuota));
-						rellenarTexto(justificante.getLblADevolver(),
-								String.format(ADEVOLVER, dto.aDevolver));
+								String.format(PAGO_ABONADO,
+										String.format("%.2f", cuota)));
+						if (dto.aDevolver > 0) {
+							String devueltoEnEuros = String.format("%.2f",
+									cuota * (dto.aDevolver) / 100);
+							rellenarTexto(justificante.getLblADevolver(),
+									String.format(ADEVOLVER, dto.aDevolver,
+											devueltoEnEuros));
+						} else {
+							rellenarTexto(justificante.getLblADevolver(),
+									"Esta competición no admite devoluciones del importe.");
+						}
 					}
 
 				}
