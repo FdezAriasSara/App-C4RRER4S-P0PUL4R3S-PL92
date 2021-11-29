@@ -7,11 +7,15 @@ import uo.ips.application.business.pago.PagoDto;
 import uo.ips.application.business.pago.TarjetaDto;
 
 public class PagoCrudServiceImpl implements PagoCrudService {
-	public PagoDto pagarConTarjeta(PagoDto pago, TarjetaDto tarjeta) throws BusinessException {
-		return new PagarConTarjeta(pago, tarjeta).execute();
+	@Override
+	public PagoDto pagarConTarjeta(int idAtleta, int idCompeticion,
+			TarjetaDto tarjeta) throws BusinessException {
+		return new PagarConTarjeta(idAtleta, idCompeticion, tarjeta).execute();
 	}
 
-	public CompeticionDto pagarConTransferencia(int idAtleta, int idCompeticion) throws BusinessException {
+	@Override
+	public CompeticionDto pagarConTransferencia(int idAtleta, int idCompeticion)
+			throws BusinessException {
 		return new PagarConTransferencia(idAtleta, idCompeticion).execute();
 	}
 }

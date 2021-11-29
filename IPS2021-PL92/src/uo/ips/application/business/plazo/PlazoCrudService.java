@@ -7,12 +7,17 @@ import uo.ips.application.business.BusinessException;
 public interface PlazoCrudService {
 	/**
 	 * Encuentra la fecha final del Ñltimo plazo de una competiciÑn.
-	 * @param competicionId 
+	 * 
+	 * @param competicionId
 	 * @return
 	 * @throws BusinessException si no se encuentra la fecha
 	 */
-	Date getUltimoPlazoByCompeticionId(int competicionId) throws BusinessException;
-    
-    public void addPlazo(PlazoDto plazo);
-}
+	Date getUltimoPlazoByCompeticionId(int competicionId)
+			throws BusinessException;
 
+	public void addPlazo(PlazoDto plazo);
+
+	public double obtenerCuotaDeInscripcion(int idCompeticion,
+			Date fechaInscripcion) throws BusinessException;
+
+}

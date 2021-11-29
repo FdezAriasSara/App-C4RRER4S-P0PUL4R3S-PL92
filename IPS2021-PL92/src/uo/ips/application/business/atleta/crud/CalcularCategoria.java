@@ -66,8 +66,8 @@ public class CalcularCategoria {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
+			Jdbc.close(c);
 			pst.close();
-			c.close();
 		}
 
 		return atleta;
@@ -118,7 +118,7 @@ public class CalcularCategoria {
 					}
 					
 					if(id <= 0) {
-						throw new BusinessException("No existe categorÑa para atleta " + idAtleta + " en competicion " + idCompeticon);
+						throw new BusinessException("No existe categoria para atleta " + idAtleta + " en competicion " + idCompeticon);
 					}
 					
 

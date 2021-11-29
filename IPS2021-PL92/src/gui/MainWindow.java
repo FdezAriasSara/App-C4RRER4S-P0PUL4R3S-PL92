@@ -186,6 +186,7 @@ public class MainWindow extends JFrame {
 	private JButton btnCompararse;
 	private JPanel pnFiltro;
 	private JustificanteCancelacion justificanteCancelacionDialog;
+	private JLabel lblPagoInscripcion;
 
 	/**
 	 * Create the frame.
@@ -552,6 +553,7 @@ public class MainWindow extends JFrame {
 			pnPagoTarjeta.add(getMonthChooser());
 			pnPagoTarjeta.add(getYearChooser());
 			pnPagoTarjeta.add(getErrorTextAreaPago());
+			pnPagoTarjeta.add(getLblPagoInscripcion());
 		}
 		return pnPagoTarjeta;
 	}
@@ -1925,5 +1927,17 @@ public class MainWindow extends JFrame {
 			pnFiltro.setBounds(700, 10, 168, 294);
 		}
 		return pnFiltro;
+	}
+
+	public JLabel getLblPagoInscripcion() {
+		if (lblPagoInscripcion == null) {
+			lblPagoInscripcion = new JLabel("Inscripción en ''");
+			lblPagoInscripcion.setForeground(new Color(102, 153, 255));
+			lblPagoInscripcion.setHorizontalAlignment(SwingConstants.CENTER);
+			lblPagoInscripcion
+					.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 28));
+			lblPagoInscripcion.setBounds(45, 24, 766, 76);
+		}
+		return lblPagoInscripcion;
 	}
 }
