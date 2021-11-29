@@ -21,6 +21,7 @@ import uo.ips.application.business.atleta.AtletaCrudService;
 import uo.ips.application.business.atleta.AtletaDto;
 import uo.ips.application.business.competicion.CompeticionCrudService;
 import uo.ips.application.business.competicion.CompeticionDto;
+import uo.ips.application.business.plazo.PlazoCrudService;
 
 public class CancelacionController {
 	private InscripcionCrudService inscCrud = BusinessFactory
@@ -33,13 +34,15 @@ public class CancelacionController {
 	protected int idCompeticionSeleccionada;
 	private ComparacionController cc;
 	private JustificanteCancelacion justificante;
+	private PlazoCrudService plazoCrud = BusinessFactory.forPlazoCrudService();
 	private static final String PAGO_SIN_ABONAR = "Usted no había abonado el importe de la cuota. ";
-	private static final String PAGO_ABONADO = "Usted pagó %f euros";
+	private static final String PAGO_ABONADO = "Usted pagó %s euros";
 	private static final String INSCRIPCION_DE_CLUB = "Usted se inscribió através del club '%s'";
-	private static final String ADEVOLVER = "Se le devolverá un %d de dicho importe.";
+	private static final String ADEVOLVER = "Se le devolverá un %s %% de dicho importe.(%s euros)";
 	private static final String NOMBRE_COMPETICION = "Se ha cancelado su inscripción en '%s'";
 	private static final String FECHA = "a dia %d  de %s  de %d";
 	private static final String NOMBRE_APELLIDOS = "%s %s";
+	private static final String SACAR_LISTA_ESPERA = "Se le ha eliminado de la lista de espera.";
 
 	public CancelacionController(MainWindow mainW,
 			ComparacionController sesion) {
@@ -70,10 +73,13 @@ public class CancelacionController {
 
 	protected void mostrarJustificanteDeCancelacion() {
 		try {
+
 			AtletaDto atleta = atletaCrud
 					.encontrarPorId(cc.sesion.getIdAtleta());
 			InscripcionDto inscripcion = inscCrud.encontarInscripcion(
 					cc.sesion.getIdAtleta(), idCompeticionSeleccionada);
+			double cuota = plazoCrud.obtenerCuotaDeInscripcion(
+					idCompeticionSeleccionada, inscripcion.fechaInscripcion);
 			rellenarDatosAtleta(atleta);
 			rellenarDatosClub(inscripcion);// solo se rellenan si hay club
 			Stream<CompeticionDto> c = compCrud.listarTodasCompeticiones()
@@ -82,19 +88,6 @@ public class CancelacionController {
 			Optional<CompeticionDto> optCompDto = c.findFirst();
 			if (optCompDto.isPresent()) {
 				CompeticionDto dto = optCompDto.get();
-				if (inscripcion.estado.toString()
-						.equals(Estado.PENDIENTE_DE_PAGO.toString())
-						|| inscripcion.estado.toString()
-								.equals(Estado.PRE_INSCRITO.toString()))
-					rellenarTexto(justificante.getLblCuotaDeInscripcion(),
-							PAGO_SIN_ABONAR);
-				else {
-					rellenarTexto(justificante.getLblCuotaDeInscripcion(),
-							String.format(PAGO_ABONADO, dto.cuota));
-					rellenarTexto(justificante.getLblADevolver(),
-							String.format(ADEVOLVER, dto.aDevolver));
-				}
-
 				rellenarTexto(justificante.getLblInfoCompeticion(),
 						String.format(NOMBRE_COMPETICION, dto.nombre));
 				LocalDate hoy = LocalDate.now();
@@ -103,6 +96,34 @@ public class CancelacionController {
 								hoy.getMonth().getDisplayName(TextStyle.FULL,
 										new Locale("es", "ES")),
 								hoy.getYear()));
+				if (inscripcion.estado.toString()
+						.equals(Estado.LISTA_ESPERA.toString())) {
+					rellenarTexto(justificante.getLblCuotaDeInscripcion(),
+							SACAR_LISTA_ESPERA);
+				} else {
+					if (inscripcion.estado.toString()
+							.equals(Estado.PENDIENTE_DE_PAGO.toString())
+							|| inscripcion.estado.toString()
+									.equals(Estado.PRE_INSCRITO.toString()))
+						rellenarTexto(justificante.getLblCuotaDeInscripcion(),
+								PAGO_SIN_ABONAR);
+					else {
+						rellenarTexto(justificante.getLblCuotaDeInscripcion(),
+								String.format(PAGO_ABONADO,
+										String.format("%.2f", cuota)));
+						if (dto.aDevolver > 0) {
+							String devueltoEnEuros = String.format("%.2f",
+									cuota * (dto.aDevolver) / 100);
+							rellenarTexto(justificante.getLblADevolver(),
+									String.format(ADEVOLVER, dto.aDevolver,
+											devueltoEnEuros));
+						} else {
+							rellenarTexto(justificante.getLblADevolver(),
+									"Esta competición no admite devoluciones del importe.");
+						}
+					}
+
+				}
 			}
 		} catch (BusinessException e) {
 			mainW.getErrorTextAreaSesion().setText(e.getMessage());

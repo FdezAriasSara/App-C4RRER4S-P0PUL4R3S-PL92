@@ -12,7 +12,6 @@ public class PlazoCrudServiceImpl implements PlazoCrudService {
 	public Date getUltimoPlazoByCompeticionId(int competicionId)
 			throws BusinessException {
 
-
 		return new UltimoPlazoByCompeticionId(competicionId).execute();
 
 	}
@@ -21,6 +20,13 @@ public class PlazoCrudServiceImpl implements PlazoCrudService {
 	public void addPlazo(PlazoDto plazo) {
 		new AddPlazo(plazo).execute();
 
+	}
+
+	@Override
+	public double obtenerCuotaDeInscripcion(int idCompeticion,
+			Date fechaInscripcion) throws BusinessException {
+		return new ObtenerCuotaDeInscripcion(idCompeticion, fechaInscripcion)
+				.execute();
 	}
 
 }

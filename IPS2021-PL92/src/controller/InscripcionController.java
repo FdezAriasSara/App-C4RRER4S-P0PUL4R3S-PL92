@@ -163,9 +163,24 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				int idAtleta = sesion.getIdAtleta();
+				int idCompeticion = Integer.parseInt(mainW.getTableCompeticion()
+						.getModel()
+
+						.getValueAt(
+								mainW.getTableCompeticion().getSelectedRow(), 0)
+						.toString());
+				String nombreCompeticion = mainW.getTableCompeticion()
+						.getModel()
+
+						.getValueAt(
+								mainW.getTableCompeticion().getSelectedRow(), 1)
+						.toString();
 				try {
 
-					PagoDto pagoDto = new PagoDto(LocalDate.now(), sesion.getIdAtleta(), sesion.getIdCompeticion());
+					PagoDto pagoDto = new PagoDto(LocalDate.now(),
+							sesion.getIdAtleta(), sesion.getIdCompeticion());
+
 					// comprobar que no haya campos vacnos
 					if (mainW.getTxtCVC().getText().isBlank() || mainW.getTxtNum().getText().isBlank())
 						JOptionPane.showMessageDialog(null, "Debes rellenar todos los campos");
@@ -177,12 +192,18 @@ public class InscripcionController {
 						LocalDate fechaCaducidad = LocalDate.of(mainW.getYearChooser().getYear(),
 								mainW.getMonthChooser().getMonth() + 1, 1);
 
-						TarjetaDto tarjeta = new TarjetaDto(numeroTarjeta, fechaCaducidad, cvc, sesion.getIdAtleta());
+						TarjetaDto tarjeta = new TarjetaDto(numeroTarjeta,
+								fechaCaducidad, cvc, idAtleta);
 						// Sacar datos de la tarjeta-fin
 
-						pagoDto = pagCrud.pagarConTarjeta(pagoDto, tarjeta);
-						JOptionPane.showMessageDialog(mainW, "Se ha realizado un pago.\n" + pagoDto.toString());
-						((CardLayout) mainW.getPanel_pago().getLayout()).show(mainW.getPanel_pago(), "escogerPago");
+						PagoDto justificante = pagCrud.pagarConTarjeta(idAtleta,
+								idCompeticion, tarjeta);
+						JOptionPane.showMessageDialog(mainW,
+								"Se ha realizado el pago de su inscripción.\n"
+										+ justificante.toString() + "para '"
+										+ nombreCompeticion + "'");
+						((CardLayout) mainW.getPanel_pago().getLayout())
+								.show(mainW.getPanel_pago(), "escogerPago");
 						// restauramos el panel
 
 						mainW.vaciarCamposPago();
@@ -872,6 +893,9 @@ public class InscripcionController {
 			mainW.getLblError().setText("Error: Algún campo está vacio");
 		} else {
 			int idCompeticion = Integer.parseInt(idCompeticionString);
+
+			mostrarParaQueCompeticionEstasInscribiendote();
+
 			try {
 				if (comprobarSiEstaRegistrado(emailAtleta)) {
 
@@ -904,6 +928,7 @@ public class InscripcionController {
 					// el correo para su
 					mainW.getRegistroDialog().setVisible(true);
 					incCrud.inscribirAtleta(emailAtleta, idCompeticion);
+
 					JOptionPane.showMessageDialog(null, "Atleta Inscrito");
 					mainW.getLblError().setVisible(false);
 					sesion = new Sesion(emailAtleta, idCompeticion);
@@ -918,6 +943,15 @@ public class InscripcionController {
 
 		}
 
+	}
+
+	private void mostrarParaQueCompeticionEstasInscribiendote() {
+		String nombreCompeticion = mainW.getTableCompeticion().getModel()
+
+				.getValueAt(mainW.getTableCompeticion().getSelectedRow(), 1)
+				.toString();
+		mainW.getLblPagoInscripcion().setText(
+				String.format("Inscripción en '%s'", nombreCompeticion));
 	}
 
 	private boolean comprobarSiEstaRegistrado(String emailAtleta) {

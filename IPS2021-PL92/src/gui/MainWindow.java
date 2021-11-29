@@ -206,6 +206,7 @@ public class MainWindow extends JFrame {
 	private JSpinner spinnerMinTiempoPrimero;
 	private JScrollPane scrollPanFiltros;
 	private JustificanteCancelacion justificanteCancelacionDialog;
+	private JLabel lblPagoInscripcion;
 	private JComboBox<String> cbAscDesc;
 
 	/**
@@ -574,6 +575,7 @@ public class MainWindow extends JFrame {
 			pnPagoTarjeta.add(getMonthChooser());
 			pnPagoTarjeta.add(getYearChooser());
 			pnPagoTarjeta.add(getErrorTextAreaPago());
+			pnPagoTarjeta.add(getLblPagoInscripcion());
 		}
 		return pnPagoTarjeta;
 	}
@@ -2104,5 +2106,17 @@ public class MainWindow extends JFrame {
 			cbAscDesc.addItem("Descendente");
 		}
 		return cbAscDesc;
+	}
+
+	public JLabel getLblPagoInscripcion() {
+		if (lblPagoInscripcion == null) {
+			lblPagoInscripcion = new JLabel("Inscripción en ''");
+			lblPagoInscripcion.setForeground(new Color(102, 153, 255));
+			lblPagoInscripcion.setHorizontalAlignment(SwingConstants.CENTER);
+			lblPagoInscripcion
+					.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 28));
+			lblPagoInscripcion.setBounds(45, 24, 766, 76);
+		}
+		return lblPagoInscripcion;
 	}
 }
