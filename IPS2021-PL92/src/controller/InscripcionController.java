@@ -468,28 +468,7 @@ public class InscripcionController {
 			}
 		});
 
-		if (currentIdCompeticon < 0) {
-			mainW.getLblErrorOrg().setVisible(true);
-			mainW.getLblErrorOrg().setText("Error: indique el numero de competicion");
-			return;
-		}
-
-		mainW.getLblError().setVisible(false);
-		int catSelectedCB = mainW.getCbCategoria().getSelectedIndex() - 1; // Resto 1 porque
-																			// primera categorna
-																			// es ABSOLUTA
-																			// (generar todas
-																			// las clasi)
-
-		int idCategoriaSelected;
-
-		if (catSelectedCB < 0) {
-			idCategoriaSelected = -1;
-		} else {
-			idCategoriaSelected = currentCategoriasInComboBox.get(catSelectedCB).idCategoria;
-		}
-
-		obtenerClasificacion(currentIdCompeticon, idCategoriaSelected);
+		
 
 		mainW.getBtCargarPagos().addActionListener(new ActionListener() {
 
@@ -764,6 +743,7 @@ public class InscripcionController {
 
 	private List<InscripcionDto> filtrosYorden(List<InscripcionDto> clas, CompeticionDto competicion) {
 		String orden = mainW.getCbOrden().getSelectedItem().toString();
+		
 
 		switch (orden.toLowerCase()) {
 		case "dorsal":
@@ -777,6 +757,9 @@ public class InscripcionController {
 			clas.sort(Comparator.comparingLong(i -> i.tiempoQueTarda.getTime()));
 		default:
 			break;
+		}
+		if(mainW.getCbAscDesc().getSelectedItem().toString().toLowerCase().equals("descendente")) {
+			Collections.reverse(clas);
 		}
 
 		int minimoRitmo = Integer.parseInt(mainW.getSpinnerMinRitmo().getValue().toString());

@@ -206,6 +206,7 @@ public class MainWindow extends JFrame {
 	private JSpinner spinnerMinTiempoPrimero;
 	private JScrollPane scrollPanFiltros;
 	private JustificanteCancelacion justificanteCancelacionDialog;
+	private JComboBox<String> cbAscDesc;
 
 	/**
 	 * Create the frame.
@@ -1960,6 +1961,7 @@ public class MainWindow extends JFrame {
 			pnFiltro.add(getTextFieldClub());
 			pnFiltro.add(getLblOrden());
 			pnFiltro.add(getCbOrden());
+			pnFiltro.add(getCbAscDesc());
 		}
 		return pnFiltro;
 	}
@@ -2094,5 +2096,13 @@ public class MainWindow extends JFrame {
 			scrollPanFiltros.setBounds(700, 11, 168, 264);
 		}
 		return scrollPanFiltros;
+	}
+	public JComboBox<String> getCbAscDesc() {
+		if (cbAscDesc == null) {
+			cbAscDesc = new JComboBox();
+			cbAscDesc.addItem("Ascendente");
+			cbAscDesc.addItem("Descendente");
+		}
+		return cbAscDesc;
 	}
 }
