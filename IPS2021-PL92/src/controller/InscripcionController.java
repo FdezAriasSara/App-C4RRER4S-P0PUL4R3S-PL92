@@ -1,10 +1,16 @@
 package controller;
 
 import java.awt.CardLayout;
+import java.awt.Checkbox;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+
+
+import java.sql.Date;
+import java.sql.Time;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
@@ -13,7 +19,16 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.time.ZoneId;
+
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -21,9 +36,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.junit.runner.manipulation.Sortable;
+
 import gui.MainWindow;
 import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.BusinessFactory;
+import uo.ips.application.business.DtoAssembler;
 import uo.ips.application.business.Sesion;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 import uo.ips.application.business.Inscripcion.InscripcionCrudService;
@@ -57,7 +75,8 @@ public class InscripcionController {
 			.forRegistroCrudService();
 
 	private PlazoCrudService plazoCrud = BusinessFactory.forPlazoCrudService();
-	// reservados
+																							// reservados
+	private List<ArcoDto> arcosSeleccionados = new ArrayList<ArcoDto>();
 
 	private List<CompeticionCategoriaDto> currentCategoriasInComboBox;
 	private int currentIdCompeticon = -1;
@@ -526,17 +545,14 @@ public class InscripcionController {
 				mainW.getBtnGenerarClasificacion().setEnabled(false);
 			}
 		});
-
-		mainW.getBtnGenerarClasificacion()
-				.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (currentCategoriasInComboBox.isEmpty()) {
-							mainW.getLblErrorOrg().setVisible(true);
-							mainW.getLblErrorOrg().setText(
-									"Error:Por favor, pulsa en cargar categorias antes de generar la clasificacion");
-							return;
-						}
+		
+		
+		mainW.getBtnGenerarClasificacion().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				obtenerClasificacionAction();
+				mainW.getBtnAplicarFiltros().setEnabled(true);
+			}
+		});
 
 						if (currentIdCompeticon < 0) {
 							mainW.getLblErrorOrg().setVisible(true);
@@ -600,17 +616,74 @@ public class InscripcionController {
 			}
 		});
 	}
+	
+	private void obtenerClasificacionAction() {
+		if(currentCategoriasInComboBox.isEmpty()) {
+			mainW.getLblErrorOrg().setVisible(true);
+			mainW.getLblErrorOrg().setText("Error:Por favor, pulsa en cargar categorias antes de generar la clasificacion");
+			return;
+		}
+		
+		if(currentIdCompeticon < 0) {
+			mainW.getLblErrorOrg().setVisible(true);
+			mainW.getLblErrorOrg().setText("Error: indique el numero de competicion");
+			return;
+		}
+		
+		mainW.getLblError().setVisible(false);
+		int catSelectedCB = mainW.getCbCategoria().getSelectedIndex() - 1; //Resto 1 porque primera categorÑa es ABSOLUTA (generar todas las clasi)
 
-	public void initFiltro(List<ArcoDto> arcos) {
-		mainW.getPnFiltro().removeAll();
+		int idCategoriaSelected;
+		
+		if(catSelectedCB < 0) {
+			idCategoriaSelected = -1;
+		}else {
+			idCategoriaSelected = currentCategoriasInComboBox.get(catSelectedCB).idCategoria;
+		}
+		
+		
+		obtenerClasificacion(currentIdCompeticon,
+				idCategoriaSelected);
+	}
+	
+	public void initFiltro(List<ArcoDto> arcos){
+		Hashtable<String, ArcoDto> arcoChecbox = new Hashtable<String, ArcoDto>();
+		mainW.getPnFiltroArcos().removeAll();
 		int count = 1;
 		for (ArcoDto arco : arcos) {
-			String name = arco.name != null ? arco.name
-					: "Punto de control " + count;
+			arco.idArco = count;
+			String name = arco.name!=null?arco.name:"Punto de control " + count;
 			count++;
-			JCheckBox ch = new JCheckBox(arco.name);
-			mainW.getPnFiltro().add(ch);
+			JCheckBox ch = new JCheckBox(name);
+			arcoChecbox.put(ch.getText(), arco);
+			mainW.getPnFiltroArcos().add(ch);
+			mainW.getPnFiltro().setVisible(true);
+			mainW.getPnFiltroArcos().setVisible(true);
 			mainW.getPnFiltro().repaint();
+		}
+		
+		if(mainW.getBtnAplicarFiltros().getActionListeners().length==0) {
+			
+			mainW.getBtnAplicarFiltros().addActionListener(new ActionListener() {
+				
+				
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println(mainW.getBtnAplicarFiltros().getActionListeners().length);
+					arcosSeleccionados = new ArrayList<ArcoDto>();
+					for (Component component : mainW.getPnFiltroArcos().getComponents()) {
+						JCheckBox check = (JCheckBox)component;
+						if(check.isSelected())
+							arcosSeleccionados.add(arcoChecbox.get(check.getText()));
+						
+						
+						
+					}
+					obtenerClasificacionAction();
+					
+				}
+			});
 		}
 	}
 
@@ -677,8 +750,7 @@ public class InscripcionController {
 					.setText("Error: indique el numero de competicion");
 			return;
 		}
-		initFiltro(BusinessFactory.forArco().getArcos(idCompeticion));
-
+		
 		List<InscripcionDto> clas = new ArrayList<InscripcionDto>();
 
 		try {
@@ -696,17 +768,26 @@ public class InscripcionController {
 				clas = incCrud.obtenerClasificaciones(idCompeticion,
 						idCategoria);
 			}
+			
+			String[] aux = { "Nombre", "Apellidos", "Posicion", "Tiempo","Ritmo medio (min/km)","Tiempo al primero","Categoria","Club","Dorsal" };
+			List<InscripcionDto> todos = new ArrayList<InscripcionDto>(clas);
+			List<String> columnNames = new ArrayList<String>(Arrays.asList(aux));
+			for (ArcoDto arcoDto: arcosSeleccionados) {
+				columnNames.add(arcoDto.name);
+			}
 
-			String[] columnNames = { "Nombre", "Apellidos", "Posicion",
-					"Tiempo", "Categoria", "Club" };
+			String[][] valuesToTable = new String[clas.size()][columnNames.size()];
 
-			String[][] valuesToTable = new String[clas
-					.size()][columnNames.length];
-
+			CompeticionDto competicion = compCrud.listarTodasCompeticiones().stream().filter(c->c.idCompeticion == idCompeticion).findFirst().get();
+			InscripcionDto primero = new ArrayList<InscripcionDto>(clas).stream()
+					.filter(i->i.posicionFinal!=-1).sorted(Comparator.comparingInt(i->i.tiempoQueTardaEnSegundos)).findFirst().get();
+			clas = filtrosYorden(clas,competicion);
+			List<AtletaDto> atletas = atlCrud.findAll();
+			HashMap<Integer, List<Time>> mapaTiempos = BusinessFactory.forArco().getAllTiempos(idCompeticion);
 			int count = 0;
 			AtletaDto atleta;
 			for (InscripcionDto dto : clas) {
-				atleta = atlCrud.encontrarPorId(dto.idAtleta);
+				atleta = atletas.stream().filter(a->a.idAtleta == dto.idAtleta ).findFirst().get();
 				int col = 0;
 				valuesToTable[count][col++] = atleta.nombre;
 				valuesToTable[count][col++] = atleta.apellido;
@@ -716,21 +797,51 @@ public class InscripcionController {
 				} else {
 					valuesToTable[count][col++] = "" + dto.posicionFinal;
 				}
-
 				if (dto.tiempoQueTardaEnSegundos <= 0) {
 					valuesToTable[count][col++] = "--:--:--";
+					valuesToTable[count][col++] = "--:--:--";
+					valuesToTable[count][col++] = "--:--:--";
+
 				} else {
 					valuesToTable[count][col++] = "" + dto.tiempoQueTarda;
-				}
+					valuesToTable[count][col++] = "" + dto.tiempoQueTardaEnSegundos/60/competicion.distanciaKm;
+					InscripcionDto primeroCategoria = todos.stream().filter(i->i.idCategoria == dto.idCategoria && i.posicionFinal ==1).findFirst().get();
+					long result = dto.tiempoQueTarda.getTime()-primeroCategoria.tiempoQueTarda.getTime();
+					Time resultTime = result==0?new Time(-3600000):new Time(dto.tiempoQueTarda.getTime()-primeroCategoria.tiempoQueTarda.getTime()-3600000);
+					valuesToTable[count][col++] = "" + resultTime;
 
+				}
+				
+				
 				valuesToTable[count][col++] = dto.nombreCategoria;
 				valuesToTable[count][col++] = dto.club;
+				valuesToTable[count][col++] = Integer.toString(dto.dorsal);
+				
+				
+				List<Time> tiempos = new ArrayList<Time>();
+				for (Integer d : mapaTiempos.keySet()) {
+					if(d == dto.dorsal)
+						for (Time tiempo : mapaTiempos.get(d)) {
+							tiempos.add(tiempo);
+						}
+				}
+				List<Integer> arcosIds = arcosSeleccionados.stream().map(a->a.idArco).collect(Collectors.toList());
+				int countArco = 1;
+				for (Time tiempo: tiempos) {
+					if(arcosIds.contains(countArco))
+						valuesToTable[count][col++] = tiempo.toString();
+					countArco++;
+				}
+				
 
 				count++;
 			}
+			String[] auxColumnNames = new String[columnNames.size()];
+			for (int i = 0; i < auxColumnNames.length; i++) {
+				auxColumnNames[i] = columnNames.get(i);
+			}
 
-			TableModel model = new DefaultTableModel(valuesToTable,
-					columnNames) {
+			TableModel model = new DefaultTableModel(valuesToTable, auxColumnNames) {
 				/**
 				 * 
 				 */
@@ -747,7 +858,61 @@ public class InscripcionController {
 			mainW.getLblErrorOrg().setVisible(true);
 			mainW.getLblErrorOrg().setText("Error: " + e.getMessage());
 		}
+		initFiltro(BusinessFactory.forArco().getArcos(idCompeticion));
+		mainW.setVisible(true);
 	}
+
+	private List<InscripcionDto> filtrosYorden(List<InscripcionDto> clas,CompeticionDto competicion) {
+		String orden = mainW.getCbOrden().getSelectedItem().toString();
+		
+		switch (orden.toLowerCase()) {
+		case "dorsal":
+			clas.sort(Comparator.comparing(i->i.dorsal));
+			break;
+		case "posicion final":
+			clas.sort(Comparator.comparing(i->i.posicionFinal));
+			clas.sort(Comparator.comparing(i->i.idCategoria));
+			break;
+		case "tiempo":
+			clas.sort(Comparator.comparingLong(i->i.tiempoQueTarda.getTime()));
+		default:
+			break;
+		}
+		
+		int minimoRitmo = Integer.parseInt(mainW.getSpinnerMinRitmo().getValue().toString());
+		
+		if(minimoRitmo>0)
+			clas = clas.stream().filter(i->((i.tiempoQueTardaEnSegundos)/60/competicion.distanciaKm) >= minimoRitmo).collect(Collectors.toList());
+		
+		int maximoRitmo = Integer.parseInt(mainW.getSpinnerMaxRitmo().getValue().toString());
+		
+		if(maximoRitmo>0)
+			clas = clas.stream().filter(i->((i.tiempoQueTardaEnSegundos)/60/competicion.distanciaKm) <= maximoRitmo).collect(Collectors.toList());
+		
+		String club = mainW.getTextFieldClub().getText().toLowerCase();
+		
+		if(!club.trim().isEmpty()) {
+			clas = clas.stream().filter(i-> i.club!=null && i.club.toLowerCase().contains(club)).collect(Collectors.toList());
+		}
+		
+		int tiempoMinimoPrimero = Integer.parseInt(mainW.getSpinnerTiempoPrimeroMin().getValue().toString());
+		if(tiempoMinimoPrimero>0) {
+			
+			final ArrayList<InscripcionDto> copy = new ArrayList<InscripcionDto>(clas);
+			clas = clas.stream().filter(i->(i.tiempoQueTardaEnSegundos/60 -
+					(copy.stream().filter(a->a.idCategoria==1 && a.posicionFinal == 1).findFirst().get().tiempoQueTardaEnSegundos/60))>=tiempoMinimoPrimero).collect(Collectors.toList());
+		}
+		
+		int tiempoMaximoPrimero = Integer.parseInt(mainW.getSpinnerTiempoPrimeroMax().getValue().toString());
+		if(tiempoMaximoPrimero>0) {
+			
+			final ArrayList<InscripcionDto> copy = new ArrayList<InscripcionDto>(clas);
+			clas = clas.stream().filter(i->(i.tiempoQueTardaEnSegundos/60 -
+					(copy.stream().filter(a->a.idCategoria==1 && a.posicionFinal == 1).findFirst().get().tiempoQueTardaEnSegundos/60))<=tiempoMaximoPrimero).collect(Collectors.toList());
+		}
+		return clas;
+	}
+	
 
 	private void obtenerAtletas(String idCompeticion) {
 		if (idCompeticion.isBlank() || idCompeticion.isEmpty()) {
@@ -761,8 +926,7 @@ public class InscripcionController {
 				List<AtletaInscritoDto> res = incCrud
 						.obtenerAtletasParaCompeticion(id);
 
-				String[] columnNames = { "Nombre", "Apellidos", "Categorna",
-						"Fecha de Inscripcion", "Estado" };
+				String[] columnNames = { "Nombre", "Apellidos", "Categoria", "Fecha de Inscripcion", "Estado" };
 
 				String[][] valuesToTable = new String[res
 						.size()][columnNames.length];

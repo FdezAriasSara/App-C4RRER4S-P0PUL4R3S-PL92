@@ -32,6 +32,8 @@ public class ObtenerClasificaciones {
 	private String SQL_Competicion_Terminada = "SELECT estado FROM Competicion WHERE idCompeticion = ?";
 	private String SQL_Update = "UPDATE Inscripcion set posicionFinal = ? where idAtleta = ? and idCompeticion = ?";
 	private int idCompeticion; 
+	
+	
 	private int idCategoria;
 	
 
@@ -82,6 +84,7 @@ public class ObtenerClasificaciones {
 				InscripcionDto ins = new InscripcionDto(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4),
 						rs.getDate(5), rs.getInt(6), rs.getInt(7), rs.getTime(8), rs.getString("nombreCategoria"));
 				ins.club = rs.getString("club");
+				ins.dorsal = rs.getInt("dorsal");
 				inscripciones.add(ins);
 				
 				
