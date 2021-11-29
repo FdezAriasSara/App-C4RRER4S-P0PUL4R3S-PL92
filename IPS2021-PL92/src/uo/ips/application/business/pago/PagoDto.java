@@ -24,7 +24,8 @@ public class PagoDto {
 		this.idCompeticion = idCompeticion;
 	}
 
-	public PagoDto(LocalDate fechaPago, int idAtleta, int idCompeticion, double importe, double importe_devolver) {
+	public PagoDto(LocalDate fechaPago, int idAtleta, int idCompeticion,
+			double importe, double importe_devolver) {
 		this.fechaPago = fechaPago;
 		this.idAtleta = idAtleta;
 		this.idCompeticion = idCompeticion;
@@ -38,8 +39,7 @@ public class PagoDto {
 	 */
 	@Override
 	public String toString() {
-		return "fecha: " + fechaPago + "\n" + " importe:" + importe + "$\n" + " ID pago:" + pagoId + "\n"
-				+ " ID atleta:" + idAtleta + "\n" + " ID CompeticiÑn:" + idCompeticion + "\n";
+		return "fecha: " + fechaPago + "\n" + " importe:" + importe + "$\n";
 	}
 
 }
