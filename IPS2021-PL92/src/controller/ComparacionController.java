@@ -239,22 +239,27 @@ public class ComparacionController {
 								public void valueChanged(
 
 										ListSelectionEvent event) {
-									nombreComp = mainW.getTableInscripciones()
-											.getValueAt(mainW
-													.getTableInscripciones()
-													.getSelectedRow(), 1)
-											.toString();
-									idCompeticionSeleccionada = mainW
-											.getTableInscripciones()
-											.getValueAt(mainW
-													.getTableInscripciones()
-													.getSelectedRow(), 0)
-											.toString();
-									rellenarLasLabelDeNombreDeCompeticion();
-									// Solo se permite mostrar los atletas de
-									// una competici�n terminada.
-									evitarMostrarAtletasDeUnaCompeticionNoTerminada();
-									habilitarBotonCancelacion();
+									if (mainW.getTableInscripciones()
+											.getSelectedRow() >= 0) {
+										nombreComp = mainW
+												.getTableInscripciones()
+												.getValueAt(mainW
+														.getTableInscripciones()
+														.getSelectedRow(), 1)
+												.toString();
+										idCompeticionSeleccionada = mainW
+												.getTableInscripciones()
+												.getValueAt(mainW
+														.getTableInscripciones()
+														.getSelectedRow(), 0)
+												.toString();
+										rellenarLasLabelDeNombreDeCompeticion();
+										// Solo se permite mostrar los atletas
+										// de
+										// una competici�n terminada.
+										evitarMostrarAtletasDeUnaCompeticionNoTerminada();
+										habilitarBotonCancelacion();
+									}
 								}
 
 							});
@@ -349,6 +354,7 @@ public class ComparacionController {
 			// modelo. Por eso hago set visible cada vez que creo un modelo
 			// nuevo.
 			mainW.getTableAtletasDeCompSeleccionada().setVisible(true);
+
 			mainW.getTableAtletasDeCompSeleccionada().getSelectionModel()
 					.addListSelectionListener(
 
@@ -357,10 +363,13 @@ public class ComparacionController {
 								@Override
 								public void valueChanged(
 										ListSelectionEvent event) {
-									guardarDorsalSeleccionado();
-									evitarCompararseConUnoMismo();
-									rellenarLabelAtletaSeleccionado();
-
+									if (mainW
+											.getTableAtletasDeCompSeleccionada()
+											.getSelectedRow() >= 0) {
+										guardarDorsalSeleccionado();
+										evitarCompararseConUnoMismo();
+										rellenarLabelAtletaSeleccionado();
+									}
 								}
 
 							});
