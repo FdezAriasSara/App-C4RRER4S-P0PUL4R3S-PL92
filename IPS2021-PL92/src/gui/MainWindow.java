@@ -90,7 +90,6 @@ public class MainWindow extends JFrame {
 	private JButton btnNuevaCompeticion;
 
 	private JButton btnImportarDatos;
-	private JTextField txtArchivoTiempos;
 
 	private JMonthChooser monthChooser;
 	private JYearChooser yearChooser;
@@ -306,8 +305,6 @@ public class MainWindow extends JFrame {
 			panel_organizador.add(getScrollPane());
 			panel_organizador.add(getBtnObtenerAtletas());
 			panel_organizador.add(getBtnImportarDatos());
-
-			panel_organizador.add(getTxtArchivoTiempos());
 			panel_organizador.add(getBtnCargarCategorias());
 			panel_organizador.add(getBtCargarPagos());
 
@@ -865,18 +862,9 @@ public class MainWindow extends JFrame {
 		if (btnImportarDatos == null) {
 			btnImportarDatos = new JButton("Importar Datos");
 			btnImportarDatos.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			btnImportarDatos.setBounds(525, 359, 157, 35);
+			btnImportarDatos.setBounds(525, 359, 324, 35);
 		}
 		return btnImportarDatos;
-	}
-
-	public JTextField getTxtArchivoTiempos() {
-		if (txtArchivoTiempos == null) {
-			txtArchivoTiempos = new JTextField();
-			txtArchivoTiempos.setBounds(692, 361, 157, 35);
-			txtArchivoTiempos.setColumns(10);
-		}
-		return txtArchivoTiempos;
 	}
 
 	public JMonthChooser getMonthChooser() {

@@ -392,7 +392,7 @@ public class InscripcionController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String filename = mainW.getTxtArchivoTiempos().getText();
+				String filename = "";
 
 				try {
 					JFileChooser fileChooser = new JFileChooser();
