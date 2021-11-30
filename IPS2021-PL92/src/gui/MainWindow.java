@@ -1940,6 +1940,9 @@ public class MainWindow extends JFrame {
 		// perfil
 		((CardLayout) getPanel_perfilAtleta().getLayout())
 				.show(getPanel_perfilAtleta(), "perfil");
+		getBtnCancelarInscripcion().setEnabled(false);
+		getBtnMostrarAtletas().setEnabled(false);
+		getBtnCompararse().setEnabled(false);
 
 	}
 

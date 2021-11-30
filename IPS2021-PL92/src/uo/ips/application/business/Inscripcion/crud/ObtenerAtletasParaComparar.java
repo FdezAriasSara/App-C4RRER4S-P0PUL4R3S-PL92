@@ -11,7 +11,7 @@ import uo.ips.application.business.BusinessException;
 import uo.ips.application.business.Inscripcion.AtletaInscritoDto;
 
 public class ObtenerAtletasParaComparar {
-	private final String datos = "select c.distanciaKm ,i.idAtleta, i.club , i.idCategoria , i.tiempoQueTarda , i.posicionFinal  from Inscripcion i, Competicion c where ? = i.dorsal and ? = c.idCompeticion";
+	private final String datos = "select c.distanciaKm ,i.idAtleta, i.club , i.idCategoria , i.tiempoQueTarda , i.posicionFinal  from Inscripcion i, Competicion c where ? = i.dorsal and ? = i.idCompeticion";
 
 	private int dorsal;
 	private Connection c;
@@ -53,7 +53,7 @@ public class ObtenerAtletasParaComparar {
 
 				return atl;
 			}
-			throw new BusinessException("No se encontró la inscripcion");
+			throw new BusinessException("No se encontrï¿½ la inscripcion");
 
 		} catch (
 
