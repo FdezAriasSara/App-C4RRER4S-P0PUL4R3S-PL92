@@ -562,6 +562,8 @@ public class CrearCarrera extends JFrame {
 				.parseInt(getSpinnerPorcentajeDevolver().getValue().toString());
 		competicion.limiteCancelacion = new java.sql.Date(
 				getLimiteCancelacion().getDate().getTime());
+		
+		competicion.hasListaDeEspera = getCheckBoxLista().isSelected();
 
 		List<CategoriaDto> categorias = createCategories();
 		List<PlazoDto> plazos = createPlazos();

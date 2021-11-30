@@ -15,6 +15,10 @@ public class AnadirCompeticion {
 	private String SQL = "INSERT INTO Competicion (nombre,fechaCompeticion,organizador,"
 			+ " tipoCompeticion, distanciaKm, plazasDisponibles,estado,cuentaBancaria,dorsalesReservados,limiteCancelacion,aDevolver)"
 			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	
+	private String SQL_lista = "INSERT INTO Competicion (nombre,fechaCompeticion,organizador,"
+			+ " tipoCompeticion, distanciaKm, plazasDisponibles,estado,cuentaBancaria,dorsalesReservados,limiteCancelacion,aDevolver,tieneListaEspera)"
+			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	private String SQLGetCompeticion = "SELECT * FROM Competicion WHERE idCompeticion = ?";
 	private CompeticionDto competicion;
 
@@ -41,7 +45,7 @@ public class AnadirCompeticion {
 //			throw new BusinessException("Ya existe la competiciÑn");
 //		}
 //		pst.close();
-			pst = c.prepareStatement(SQL, pst.RETURN_GENERATED_KEYS);
+			pst = c.prepareStatement(SQL_lista, pst.RETURN_GENERATED_KEYS);
 			pst.setString(1, competicion.nombre);
 			pst.setDate(2, competicion.fechaCompeticion);
 			pst.setString(3, competicion.organizador);
@@ -53,6 +57,7 @@ public class AnadirCompeticion {
 			pst.setInt(9, competicion.dorsalesReservados);
 			pst.setDate(10, competicion.limiteCancelacion);
 			pst.setInt(11, competicion.aDevolver);
+			pst.setBoolean(12, competicion.hasListaDeEspera);
 
 			pst.executeUpdate();
 

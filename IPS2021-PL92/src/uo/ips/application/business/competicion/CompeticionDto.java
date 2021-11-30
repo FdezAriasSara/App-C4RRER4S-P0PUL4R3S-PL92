@@ -17,6 +17,7 @@ public class CompeticionDto {
 	public int dorsalesReservados;
 	public Date limiteCancelacion;
 	public int aDevolver;// porcentaje que se devuelve en cancelación
+	public boolean hasListaDeEspera;
 
 	public CompeticionDto(int idCompeticion, String nombre,
 			Date fechaCompeticion, String organizador,
@@ -35,6 +36,26 @@ public class CompeticionDto {
 		this.plazoInicioInscripcion = plazoInicioInscripcion;
 		this.cuota = cuota;
 	}
+	
+	public CompeticionDto(int idCompeticion, String nombre,
+			Date fechaCompeticion, String organizador,
+			Date plazoInicioInscripcion, Date plazoFinInscripcion,
+			String tipoCompeticion, int distanciaKm, int plazasDisponibles,
+			double cuota,boolean hasListaDeEspera) {
+
+		this.idCompeticion = idCompeticion;
+		this.nombre = nombre;
+		this.fechaCompeticion = fechaCompeticion;
+		this.organizador = organizador;
+		this.tipoCompeticion = tipoCompeticion;
+		this.distanciaKm = distanciaKm;
+		this.plazasDisponibles = plazasDisponibles;
+		this.plazoFinInscripcion = plazoFinInscripcion;
+		this.plazoInicioInscripcion = plazoInicioInscripcion;
+		this.cuota = cuota;
+		this.hasListaDeEspera = hasListaDeEspera;
+	}
+
 
 //para competicion con cancelacion
 	public CompeticionDto(int idCompeticion, String nombre,
