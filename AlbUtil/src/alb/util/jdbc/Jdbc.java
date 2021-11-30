@@ -38,7 +38,7 @@ public class Jdbc {
 	}
 	
 	public static Connection getConnection() throws SQLException {
-		if(con == null) {
+		if(con == null || con.isClosed()) {
 			con = DriverManager.getConnection(URL, USER, PASS);
 		}
 		
